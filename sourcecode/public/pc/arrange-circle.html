@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<script type="text/javascript" src="../js/layout.js" ></script>
+		<meta charset="UTF-8">
+		<title>高州市人民医院 - 住院医师轮转系统 - 排轮转表</title>
+		<link rel="stylesheet" type="text/css" href="../css/bootstrap-datetimepicker.min.css"/>
+		<script type="text/javascript" src="../js/bootstrap-datetimepicker.min.js" ></script>
+		<style type="text/css">
+			button{
+				cursor:pointer;
+			}
+			button:hover{
+				color:white;
+			}
+			input{
+				padding-left:10px;
+			}
+
+			.label{
+				-moz-user-select: none;
+				-webkit-user-select: none;
+				-ms-user-select: none;
+				user-select: none; 
+			}
+
+			.topTitle{
+				width:100%; margin-top:10px; 
+				padding-left:30px; font-size:16px;margin-bottom:10px;
+			}
+			.topTitle>span{
+				border-bottom:2px solid #55D1A2;
+			}
+			.departmentOuter{
+				width:100%; padding-left:60px; padding-right:60px;
+			}
+			.departCon{
+				width:100%; border-bottom:1px solid #E3E3E3; padding-top:10px;
+			}
+			.father{
+				width:100%; padding-left:25px;
+			}
+			.father span{
+				cursor:pointer;
+			}
+			.child{
+				width:100%;
+			}
+			.child span{
+				margin-right:25px; cursor:pointer;
+			}
+			.checkboxOuter{
+				float:left; padding-bottom:10px;
+			}
+			.checkboxOuter>span{
+				color:black; font-size:14px; font-weight:normal;
+			}
+			.btn1{
+				display:block; background-color:#DC5C59; border-radius:5px;
+				color:white; font-weight:bold; width:90px; height:37px;
+			}
+			.nextStep{
+				margin:auto;
+			}
+			.childdepartOuter{
+				width:50%; float:left; margin-bottom:10px;
+			}
+			.childdepartOuter input{
+				width:30px; border:1px solid #9F9F9F; display:block; float:left;
+			}
+			.childdepartOuter span{
+				margin-right:20px; display:block; float:left; width:140px;
+			}
+			.childdepartOuter p{
+				display:block; float:left;
+			}
+			.btnrow{
+				width:100%; margin-top:20px;
+			}
+			.generate{
+				margin-left:280px; float:left;
+			}
+			.returnOne{
+				margin-left:50px; float:left;
+			}
+			.submit{
+				margin-left:280px; float:left;
+			}
+			.returntwo{
+				margin-left:50px; float:left;
+			}
+			.table1{
+				width:100%; padding-left:30px; padding-right:30px;
+				font-size:14px; text-align:center;
+			}
+			.tr{
+				width:100%;
+			}
+			.th .td{
+				margin-left:-1px; 
+				float:left; padding:5px;
+			}
+			.th{
+				background-color:#E3E3E5;
+			}
+			.tr:nth-child(odd){
+				background-color:#E1F0FA;
+			}
+			.tr .td{
+				margin-left:-1px; margin-top:-1px;
+				float:left; padding:5px;
+			}
+			.firstStep{
+				margin-bottom:30px;
+			}
+			.secondStep{
+				margin-bottom:30px; display:none;
+			}
+			.thirdStep{
+				margin-bottom:30px; display:none;
+			}
+			.table1Outer{
+				 overflow-x:auto;
+			}
+			.button{
+				cursor:pointer;
+			}
+			.startTimeOuter{
+				width:100%; padding-left:60px;
+			}
+			.startTimeOuter>span{
+				display:block; float:left;
+			}
+			.startTimeOuter input{
+				display:block; width:200px; border:1px solid #9F9F9F;
+			}
+			.startTimeOuter>div{
+				float:left; width:210px; margin-left:30px;
+			}
+
+		</style>
+		<script>
+			//$('.bootstrap').remove();
+		</script>
+	</head>
+	<body>
+		<div class="childTitle">
+			排轮转表
+		</div>
+
+		<div class="firstStep">
+			<div class="topTitle">
+				<span>选择科室</span>
+			</div>
+
+			<div class="departmentOuter departmentOuter1">
+
+				<div class="departCon clearfix">
+					
+				</div>
+
+			</div>
+
+			<div class="btnrow clearfix">
+				<button type="button" class="btn1 nextStep">下一步</button>
+			</div>
+
+		</div>
+
+		<div class="secondStep">
+			<div class="topTitle">
+				<span>时间设置</span>
+			</div>
+
+			<div class="departmentOuter departmentOuter2 clearfix">
+				
+			</div>
+
+			<div class="startTimeOuter clearfix">
+				<span>轮转开始时间</span>
+				<div class="clearfix">
+					<input type="text" class="ctime" />
+				</div>
+			</div>
+
+			<div class="btnrow clearfix">
+				<button type="button" class="btn1 generate">生成轮转表</button>
+				<button type="button" class="btn1 returnOne">返回</button>
+			</div>
+
+		</div>
+
+		<div class="thirdStep">
+			<div class="table1Outer">
+				<div class="table1 clearfix">
+					<div class="th clearfix">
+						<div class="td">姓名</div><div class="td">骨科</div><div class="td">呼吸科</div><div class="td">内科</div>
+					</div>
+					<div class="tr clearfix">
+						<div class="td">章一星</div><div class="td">2016-11-21</div><div class="td">2016-11-21</div><div class="td">2016-11-21</div>
+					</div>
+					<div class="tr clearfix">
+						<div class="td">章一星</div><div class="td">2016-11-21</div><div class="td">2016-11-21</div><div class="td">2016-11-21</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="btnrow clearfix">
+				<button type="button" class="btn1 submit">提交</button>
+				<button type="button" class="btn1 returntwo">返回</button>
+			</div>
+
+		</div>
+
+	</body>
+	<script type="text/javascript">
+		var date;//存放轮转表开始时间
+		var rooms = [];//存放科室信息
+
+		function setDatePicker(){//时间日期插件设置
+			var nowtime = new Date();
+			var strtime = nowtime.getFullYear()+'-'+(nowtime.getMonth()+1)+'-'+nowtime.getDate()+' '+nowtime.getHours()+':'+nowtime.getMinutes()+':00';
+
+			$(".ctime").datetimepicker({
+				minView:'2',
+				startDate:strtime,
+				format: "yyyy-mm-dd",
+				autoclose: true,
+				pickerPosition: "bottom-left"
+			});
+		}
+
+		function clickCheckBox(){//注册复选框的点击事件
+			$(".label").click(function() {
+				$(this).prev().click();
+			});
+
+			$(".childInp").click(function() {//点击子科室
+				 if($(this).attr('ischeck') == 'true'){//如果是要取消选中子科室
+				 	$(this).attr('ischeck','false');
+
+				 	var inputGroup = $(this).parents('.child').find('input');
+				 	var inputLen = inputGroup.length;
+				 	var isNull = 1;
+				 	for( var i = 0; i < inputLen; i++ ){
+				 		if( inputGroup.eq(i).attr('ischeck') == 'true' ){
+				 			isNull = 0;
+				 		}
+				 	}
+				 	var fatherInput = $(this).parents('.child').prev().find('input');
+				 	if( isNull == 1 && fatherInput.attr('ischeck') == 'true'){//如果全部不选，父科室也不选
+				 		fatherInput.click();
+				 	}
+				 }else{//如果是要选中子科室
+				 	$(this).attr('ischeck','true');
+
+				 	var inputGroup = $(this).parents('.child').find('input');
+				 	var inputLen = inputGroup.length;
+				 	var isFull = 1;
+				 	for( var i = 0; i < inputLen; i++ ){
+				 		if( inputGroup.eq(i).attr('ischeck') == 'false' ){
+				 			isFull = 0;
+				 		}
+				 	}
+				 	var fatherInput = $(this).parents('.child').prev().find('input');
+				 	if( isFull == 1 && fatherInput.attr('ischeck') == 'false'){//如果全部选，父科室也选
+				 		fatherInput.click();
+				 	}
+				 }
+				
+			});
+
+			$(".fatherInp").click(function() {//点击父科室
+				 if($(this).attr('ischeck') == 'true' ){//如果是要取消选中父科室
+				 	$(this).attr('ischeck','false');
+				 	$(this).parents('.departCon').find("input[ischeck='true']").click();
+				 }else{//如果是要选中父科室
+				 	$(this).attr('ischeck','true');
+				 	$(this).parents('.departCon').find("input[ischeck='false']").click();
+				 }
+				
+			});
+		}
+
+
+		$(function() {
+			getDepartment();//获取父科室和子科室并显示
+			setDatePicker();
+		});
+
+
+		function getDepartment(){//获取父科室和子科室并显示
+			Api.cycle({
+				fn:function (arr) {
+					console.log(arr);
+					var fatherLen = arr.length;
+					for( var i = 0; i < fatherLen; i++ ){//循环父科室
+						$(".departmentOuter1").append(
+							'<div class="departCon clearfix">'+
+								'<div class="father clearfix">'+
+									'<div class="checkboxOuter">'+
+										'<input type="checkbox" name="" value="" class="fatherInp" ischeck="false"/><span class="label">'+arr[i]['name']+'</span>'+
+									'</div>'+
+								'</div>'+
+								'<div class="child clearfix">'+
+								'</div>'+
+							'</div>'
+						);
+
+						var childLen = arr[i]['child'].length;
+						for( var j = 0; j < childLen; j++ ){//循环子科室
+							$(".child:last").append(
+								'<div class="checkboxOuter">'+
+									'<input type="checkbox" name="'+arr[i]['child'][j]['name']+'" departmentId="'+arr[i]['child'][j]['id']+'" class="childInp" ischeck="false"/><span class="label">'+arr[i]['child'][j]['name']+'</span>'+
+								'</div>'
+							);
+						}
+					}
+
+					clickCheckBox();//注册复选框的点击事件
+
+				}
+			});
+
+		}
+
+		$(".nextStep").click(function() {
+			var childInpLen = $(".childInp[ischeck='true']").length;
+			if( childInpLen < 1 ){//如果用户没有选择科室给出提示
+				layer.alert('请选择科室!', {
+					btn: ['确定']
+				});
+
+			}else{
+				$(".firstStep").css('display', 'none');
+				$(".secondStep").css('display', 'block');
+				$(".departmentOuter2").empty();
+				for( var i = 0; i < childInpLen; i++ ) {
+					var name = $(".childInp[ischeck='true']").eq(i).attr('name');
+					var id = $(".childInp[ischeck='true']").eq(i).attr('departmentId');
+
+					$(".departmentOuter2").append(
+						'<div class="childdepartOuter" name="'+name+'" departmentId="'+id+'">'+
+							'<span>'+name+'</span>'+
+							'<input class="week" /><p>周</p>'+
+							'<input class="group" /><p>组</p>'+
+						'</div>'
+					);
+				}
+				$('.week').change(function() {
+					this.value = this.value.replace(/[^\d]/g, '');
+				});
+				$('.group').change(function() {
+					this.value = this.value.replace(/[^\d]/g, '');
+				});
+			}
+
+		});
+
+		$(".returnOne").click(function() {
+			$(".secondStep").css('display', 'none');
+			$(".firstStep").css('display', 'block');
+		});
+
+		$(".generate").click(function() {//点击生成轮转表的按钮
+			//防止按钮重复点击
+			$('.generate').attr('disabled', 'disabled');
+			setTimeout(function(){
+				$('.generate').removeAttr('disabled');
+			},3000);
+
+		    //验证表单是否空
+		    var isNull = 0;
+		    var inputLen = $(".departmentOuter2").find('input').length;
+		    for( var i = 0; i < inputLen; i++ ){
+		    	var val = $(".departmentOuter2").find('input').eq(i).val();
+		    	if( val.trim() == "" ){
+		    		isNull = 1;
+		    	}
+		    	
+		    }
+		    if( $(".ctime").val().trim() == "" ){
+		    	isNull = 1;
+		    }
+		    if( isNull == 1 ){
+		    	layer.alert('您有表单未填写!', 
+		    	{btn: ['确定']}
+					
+				);
+				return false;
+		    }
+
+		    //给后台传数据
+
+		    var departmentLen = $(".childdepartOuter").length;//获取用户选择的科室的个数
+		    date = $(".ctime").val();
+		    rooms = [];
+		    var token = getCookie("token");
+		    for( var i = 0; i < departmentLen; i++ ) {
+		    	var departmentId = $(".childdepartOuter").eq(i).attr('departmentId');
+		    	var name = $(".childdepartOuter").eq(i).attr('name');
+		    	var weeks = $(".childdepartOuter").eq(i).find('.week').val();
+		    	var people = $(".childdepartOuter").eq(i).find('.group').val();
+		    	rooms[departmentId] = {id:departmentId,name:name,weeks:weeks,people:people};
+		    }
+		    /*var json = {
+		    		date:date,
+		    		rooms:rooms,
+		    		bz:0
+		    	};
+		    	console.log(json);*/
+
+		    Api.makeCycle({
+		    	json:{
+		    		date:date,
+		    		rooms:rooms,
+		    		bz:0
+		    	},
+				fn:function (arr) {
+					if(arr['no'] == 'notallow' ){
+						uselayer(3,arr['msg'],function () {
+							window.location.href = 'circle-list.html';
+						});
+
+					}
+
+					$('.secondStep').css('display','none');
+					$('.thirdStep').css('display','block');
+
+					$('.th').empty();
+					
+					var rms = [];
+					var arr_rms = arr['rms'];
+					for (var name in arr_rms) {
+						rms.push(arr_rms[name]);
+					}
+
+					var departLen = rms.length;
+					var tdNum = departLen + 1;//一行有多少列
+					var tdLen = 100/tdNum;
+					var table1Len = 25*tdNum;
+
+					$(".th").append('<div class="td">姓名</div>');
+					for( var i = 0; i < departLen; i++ ){//生成表头
+						$(".th").append('<div class="td">'+rms[i]['name']+'</div>');
+					}
+
+					$('.tr').remove();
+					//var stuLen = arr['arr5'].length;
+					for( var key in arr['arr5'] ){//循环学生
+						$('.table1').append('<div class="tr clearfix">'+
+							'<div class="td">'+key+'</div>'+
+						'</div>');
+
+						var tempLen = arr['arr5'][key]['time'].length;
+						for( var i = 0; i < tempLen; i++ ){//循环日期
+							$('.tr:last').append('<div class="td">'+arr['arr5'][key]['time'][i]+'</div>');
+						}
+					}
+					//$('.table1').css('width', table1Len+'%');
+					$('.td').css('width', tdLen+'%');
+				}
+			});
+		});
+
+
+		$(".returntwo").click(function() {
+			$(".thirdStep").css('display', 'none');
+			$(".secondStep").css('display', 'block');
+		});
+
+		$('.submit').click(function() {
+			//防止按钮重复点击
+			$('.submit').attr('disabled', 'disabled');
+			setTimeout(function(){
+				$('.submit').removeAttr('disabled');
+			},3000);
+
+			layer.alert(
+				'您确定要提交吗？',
+				{btn: ['确定','取消']},
+				function(){
+					layer.close();
+					Api.makeCycle({
+				    	json:{
+				    		date:date,
+				    		rooms:rooms,
+				    		bz:1
+				    	},
+						fn:function (arr) {
+							uselayer(3,arr['msg'],function () {
+								if( arr['msg'] == '成功生成轮转表' ){
+									window.location.href = 'circle-list.html';
+								}
+							});
+
+						}
+					});
+
+				}
+
+			);
+
+		});
+
+
+		/*Object {status: 1, msg: "只有等此次轮转结束才可以重新生成新的轮转信息", no: "notallow"}*/
+
+	</script>
+</html>

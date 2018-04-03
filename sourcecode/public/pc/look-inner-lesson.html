@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<script type="text/javascript" src="../js/layout.js" ></script>
+		<meta charset="UTF-8">
+		<title>高州市人民医院 - 住院医师轮转系统 - 查看大纲内课程</title>
+		<link rel="stylesheet" type="text/css" href="../css/bootstrap-datetimepicker.min.css"/>
+		<script type="text/javascript" src="../js/bootstrap-datetimepicker.min.js" ></script>
+		<style type="text/css">
+			.messageCon{
+				width:100%; padding-left:35px; padding-right:35px; font-size:14px;
+				padding-top:25px;
+			}
+			.selectrow{
+				height:34px; line-height:34px;
+			}
+			.xinghao{
+				color:red;
+			}
+			.selectBtn{
+				margin-top: 4px;
+    			line-height: 26px;
+			}
+			.btn1{
+				display:block; background-color:#DC5C59; border-radius:5px;
+				color:white; font-weight:bold; width:90px; height:26px;
+				cursor:pointer; margin:auto;
+			}
+			.row{
+				line-height:34px; margin-bottom:10px;
+			}
+
+		</style>
+		<script>
+			//$('.bootstrap').remove();
+		</script>
+	</head>
+	<body>
+		<div class="childTitle hascancle">
+			查看大纲内课程
+		</div>
+
+		<div class="messageCon clearfix">
+			<div class="row">
+				<div class="col-xs-4 right">
+					<span class="xinghao">*</span>方向科室
+				</div>
+				<div class="col-xs-5">
+					<select name="" class="form-control fatherdepart" disabled="disabled">
+					</select>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-xs-4 right">
+					<span class="xinghao">*</span>科室
+				</div>
+				<div class="col-xs-5">
+					<select name="" class="form-control childdepart" disabled="disabled">
+					</select>
+				</div>
+			</div>
+
+			<div class="row selectrow">
+
+				<div class="col-xs-4 right">
+					<span class="xinghao">*</span>题目
+				</div>
+				<div class="col-xs-5">
+					<input type="text" class="form-control titleInp" readonly="readonly" />
+				</div>
+
+			</div>
+
+			<div class="row selectrow">
+
+				<div class="col-xs-4 right">
+					<span class="xinghao">*</span>类型
+				</div>
+				<div class="col-xs-5">
+					<select name="" class="typeSelect form-control" disabled="disabled">
+						<option value=""></option>
+						<option value=""></option>
+					</select>
+				</div>
+				
+			</div>
+
+			<div class="row selectrow">
+
+				<div class="col-xs-4 right">
+					<span class="xinghao">*</span>份数
+				</div>
+				<div class="col-xs-5">
+					<input type="text" class="form-control numInp" readonly="readonly" />
+				</div>
+				
+			</div>
+
+			<div class="row selectrow">
+
+				<div class="col-xs-4 right">
+					<span class="xinghao">*</span>熟练程度
+				</div>
+				<div class="col-xs-5">
+					<select name="" class="form-control ctypeInp" disabled="disabled">
+						<option value="1">熟练</option>
+						<option value="2">掌握</option>
+					</select>
+				</div>
+				
+			</div>
+
+			<div class="row selectrow">
+				<div class="col-xs-5"></div>
+				<div class="col-xs-2">
+					<button class="btn1 selectBtn returnBtn" type="button">返回</button>
+				</div>
+				<div class="col-xs-5"></div>
+			</div>
+
+		</div>
+
+
+	</body>
+	<script type="text/javascript">
+		$(function() {
+			common();
+			getFatherdepart();//获取父科室
+			getChilddepart();//获取子科室
+			getCourseType();//获取课程类型
+			updateCourse();//提交大纲内课程修改
+			showCourseInfo();//显示单个课程信息
+			
+			
+		function showCourseInfo(){//显示单个课程信息
+			//从url获取课程信息
+			/*var ctype = GetQueryString('ctype');
+			var num = GetQueryString('num');
+			var title = decodeURIComponent(GetQueryString('title'));*/
+			var ctype; var num; var title;
+
+			var id = GetQueryString('id');
+
+			Api.editCourse({
+				json:{
+					id:id
+				},
+				fn:function (arr) {
+					ctype = arr[0]['ctype'];
+					num = arr[0]['num'];
+					title = arr[0]['title'];
+					$('.titleInp').val( title );
+					$('.numInp').val( num );
+					$('.ctypeInp').find('option[value='+ctype+']').attr('selected', 'selected');
+				}
+			});
+		}
+
+		function getFatherdepart(){//获取父科室
+			Api.fatherdepart({
+				fn:function (arr) {
+					console.log(arr);
+					$(".fatherdepart").empty();
+					//$(".fatherdepart").append('<option value="0">全部</option>');
+					for(var i = 0; i < arr.length; i++){
+						$(".fatherdepart").append('<option value="'+arr[i]['id']+'">'+arr[i]['name']+'</option>');
+					}
+					childPartFirst();//父科室加载完后加载子科室
+				}
+			});
+		}
+
+		function getChilddepart(){//获取子科室
+			$(".fatherdepart").change(function() {
+				var fatherId = $(".fatherdepart").val();
+				/*if( fatherId == 0 ){
+					$(".childdepart").append('<option value="0">全部</option>');
+					return false;
+				}*/
+				$(".childdepart").empty(); $('.childdepart').val('');
+				Api.childdepart({
+					json:{
+						pid:fatherId
+					},
+					fn:function (arr) {
+						//$(".childdepart").append('<option value="0">全部</option>');
+						for(var i = 0; i < arr.length; i++){
+							$(".childdepart").append('<option value="'+arr[i]['id']+'">'+arr[i]['name']+'</option>');
+						}
+					}
+				});
+			});
+
+		}
+
+		function childPartFirst(){//父科室加载完后加载子科室
+			var department_id = GetQueryString('department_id');
+			var pid = GetQueryString('pid');
+			$('.fatherdepart').find('option[value='+pid+']').attr('selected', 'selected');
+			//var fatherId = $(".fatherdepart").find('option:first').val();
+			$(".childdepart").empty(); $('.childdepart').val('');
+			Api.childdepart({
+				json:{
+					pid:pid
+				},
+				fn:function (arr) {
+					//$(".childdepart").append('<option value="0">全部</option>');
+					for(var i = 0; i < arr.length; i++){
+						$(".childdepart").append('<option value="'+arr[i]['id']+'">'+arr[i]['name']+'</option>');
+					}
+					$('.childdepart').find('option[value='+department_id+']').attr('selected', 'selected');
+				}
+			});
+		}
+		
+		$('.returnBtn').click(function() {
+			history.go(-1);
+//			var pid = GetQueryString('pid');
+//			var department_id = GetQueryString('department_id');
+//			window.location.href = 'inner-lesson-set.html?faId='+pid+'&chId='+department_id;
+		});
+
+		function getCourseType (){
+			Api.courseType({
+				json:{
+
+				},
+				fn:function (arr) {
+					console.log(arr);
+					$('.typeSelect').empty();
+					//var courseType = [];
+					var course_type = arr;
+					for (var name in course_type) {
+						//courseType.push(course_type[name]);
+						$('.typeSelect').append('<option value="'+name+'">'+course_type[name]+'</option>');
+					}
+					var type = GetQueryString('type');
+					$('.typeSelect').find('option[value='+type+']').attr('selected', 'selected');
+				}
+			});
+		}
+
+		function updateCourse(){//提交大纲内课程修改
+			$('.submitBtn').click(function() {
+				$('.submitBtn').attr('disabled', 'disabled');//防止重复按
+				setTimeout(function(){
+					$('.submitBtn').removeAttr('disabled');
+				},3000);
+
+				var isNull = 0;//判断表单是否空
+				var inpNum = $('input').length;
+				for( var i = 0; i < inpNum; i++ ){
+					if( $('input').eq(i).val().trim() == '' ){
+						isNull = 1;
+					}
+				}
+				if( isNull == 1 ){
+					layer.alert('您还有表单未填写！');
+					return false;
+				}
+
+				layer.alert('您确定要更新课程吗？', {
+					btn: ['确定','取消']},function(){
+						var id = GetQueryString('id');
+						var department_id = $('.childdepart').find('option:selected').val();
+						var type = $('.typeSelect').find('option:selected').val();
+						var title = $('.titleInp').val();
+						var ctype = $('.ctypeInp').val();
+						var num = $('.numInp').val();
+						Api.updateCourse({
+							json:{
+								id:id,
+								department_id:department_id,
+								type:type,
+								title:title,
+								ctype:ctype,
+								num:num
+							},
+							fn:function (arr) {
+								console.log(arr);
+								layer.alert(arr['msg']);
+							}
+						});
+					}
+				);
+
+				
+			});
+		}			
+			
+			
+			
+			
+			
+			
+		});
+
+
+	</script>
+</html>

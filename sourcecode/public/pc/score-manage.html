@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<script type="text/javascript" src="../js/layout.js" ></script>
+		<link rel="stylesheet" type="text/css" href="../css/bootstrap-datetimepicker.min.css"/>
+		<script type="text/javascript" src="../js/bootstrap-datetimepicker.min.js" ></script>
+		<meta charset="UTF-8">
+		<title>高州市人民医院 - 住院医师轮转系统 - 成绩管理</title>
+		<link rel="stylesheet" type="text/css" href="../css/common2.css"/>
+		<style type="text/css">
+			.conOuter{
+				padding: 17px; font-size: 14px; background: #fff; margin:17px;
+			}
+			.btn1{
+				display:block; background-color:#DC5C59; border-radius:5px;
+				color:white; font-weight:bold; width:90px; height:26px;
+				cursor:pointer; margin:auto;
+			}
+			.selectRow{
+				height:34px; line-height:34px; margin-bottom:20px;
+			}
+			.selectBtn{
+				margin-top: 4px; line-height: 26px;
+			}
+			.tableaa{
+				width:100%; text-align:center;
+				margin-top:30px; font-size:14px; display:none;
+			}
+			.tr{
+				width:100%;
+			}
+			.th .td{
+				margin-left:-1px; 
+				float:left; padding:5px;
+			}
+			.tr:nth-child(odd){
+				background-color:#E1F0FA;
+			}
+			.tr .td{
+				margin-left:-1px; margin-top:-1px;
+				float:left; padding:5px;
+			}
+			.th{
+				font-weight:bold; 
+			}
+			.td1{
+				width:16.6%;
+			}
+			.td2{
+				width:14.28%;
+			}
+			.td3{
+				width:20%;
+			}
+			.timeSelectOuter{
+				display:none;
+			}
+			.chukeCol{
+				display:none;
+			}
+			.jieyeCol{
+				display:none;
+			}
+			.publicCol{
+				display:none;
+			}
+			.seeDetail{
+				color:red; text-decoration:underline; cursor:pointer;
+			}
+			.fenyeCon{
+				width:700px; padding-bottom:50px; margin:auto;
+			}
+			.pad0 {
+			    padding: 0;
+			}
+			.right {
+				text-align: left!important;
+				margin-left:20px;
+			}
+			label {
+			    font-weight: normal;
+			    margin: 0;
+			}
+			button{
+				padding: 0;
+			    list-style: none;
+			    outline: none;
+			    resize: none;
+			    border: none;
+			    text-decoration: none;
+			}
+			.radio input[type=radio]{
+				position: relative!important;
+				margin-left: 0px!important;
+			}
+		</style>
+		<script>
+			$('.commonCss').remove();
+		</script>
+		<script type="text/javascript" src="../js/jqPaginator.js"></script>
+	</head>
+	<body>
+		<div class="childTitle hascancle">
+			成绩管理
+		</div>
+
+		<div class="conOuter">
+			<div class="row selectRow">
+				<div class="col-xs-1 pad0 right">
+					类型选择:
+				</div>
+				<div class="col-xs-2 chukeCol">
+					<input type="radio" name="examType" value="1" id="chukeRadio" ischeck='1' class="examTypeRadio" checked="checked" />
+					<label for="chukeRadio">出科考试</label>
+				</div>					
+
+				<div class="col-xs-2 jieyeCol">
+					<input type="radio" name="examType" value="2" id="jieyeRadio"  ischeck='0' class="examTypeRadio"/>
+					<label for="jieyeRadio">结业考试</label>
+				</div>
+
+				<div class="col-xs-2 publicCol">
+					<input type="radio" name="examType" value="3" id="publicRadio"  ischeck='0' class="examTypeRadio"/>
+					<label for="publicRadio">公共考试</label>
+				</div>
+			</div>
+
+			<div class="row selectRow departmentSelectOuter">
+				<div class="col-xs-1 pad0 right">主科室:</div>
+				<div class="col-xs-2">
+					<select name="" class="form-control fatherdepart">
+					</select>
+				</div>
+
+				<div class="col-xs-1 pad0 right">科室:</div>
+				<div class="col-xs-2">
+					<select name="" class="form-control childdepart">
+					</select>
+				</div>
+			</div>
+
+			<div class="row selectRow timeSelectOuter">
+				<div class="col-xs-1 pad0 right">选择时间:</div>
+				<div class="col-xs-2">
+					<input type="text" class="ctime form-control startInp" />
+				</div>
+
+				<div class="col-xs-1 pad0 right">至</div>
+				<div class="col-xs-2">
+					<input type="text" class="ctime form-control endInp" />
+				</div>
+				<div class="col-xs-2">
+						<button class="btn1 selectBtn" type="button">查询</button>
+					</div>
+			</div>
+			<!-- <div class="row selectRow">
+				<div class="col-xs-9"></div>
+				<div class="col-xs-2">
+					<button class="btn1 selectBtn" type="button">查询</button>
+				</div>
+			</div> -->
+
+			<div class="tableaa table3 clearfix"><!--管理员表格-->
+				<div class="th clearfix">
+					<table class="table table-striped">
+						<thead>
+						<tr>
+							<th>科室</th>
+							<th>考试时间</th>
+							<th>客观题平均得分</th>
+							<th>主观题平均得分</th>
+							<th>带教老师</th>
+						</tr>
+						</thead>
+						<tbody class="tabletr3"> 
+								<!-- <tr>
+										<td>科室</td>
+										<td>考试时间</td>
+										<td>客观题平均得分</td>
+										<td>主观题平均得分</td>
+										<td>带教老师</td>
+									</tr> -->
+						</tbody>
+					</table>
+					<!-- <div class="td td3">科室</div><div class="td td3">考试时间</div><div class="td td3">客观题平均得分</div><div class="td td3">主观题平均得分</div><div class="td td3">带教老师</div> -->
+				</div>
+				
+
+			</div>
+
+			<div class="tableaa table2 clearfix"><!--老师表格-->
+				<div class="th clearfix">
+						<table class="table table-striped">
+								<thead>
+								<tr>
+									<th>姓名</th>
+									<th>科室</th>
+									<th>考试时间</th>
+									<th>客观题得分</th>
+									<th>主观题得分</th>
+									<th>负责人签字</th>
+									<th>查看试卷</th>
+								</tr>
+								</thead>
+								<tbody class="tabletr2"> 
+										<!-- <tr>
+												<td>科室</td>
+												<td>考试时间</td>
+												<td>客观题平均得分</td>
+												<td>主观题平均得分</td>
+												<td>带教老师</td>
+											</tr> -->
+								</tbody>
+							</table>
+					<!-- <div class="td td2">姓名</div><div class="td td2">科室</div><div class="td td2">考试时间</div><div class="td td2">客观题得分</div><div class="td td2">主观题得分</div><div class="td td2">负责人签字</div><div class="td td2">查看试卷</div> -->
+				</div>
+			</div>
+
+			<div class="tableaa table1 clearfix"><!--学生表格-->
+				<div class="th clearfix">
+						<table class="table table-striped">
+								<thead>
+								<tr>
+									<th>科室</th>
+									<th>考试时间</th>
+									<th>客观题平均得分</th>
+									<th>主观题平均得分</th>
+									<th>负责人签字</th>
+									<th>查看试卷</th>
+								</tr>
+								</thead>
+								<tbody class="tabletr1"> 
+										<!-- <tr>
+												<td>科室</td>
+												<td>考试时间</td>
+												<td>客观题平均得分</td>
+												<td>主观题平均得分</td>
+												<td>带教老师</td>
+											</tr> -->
+								</tbody>
+							</table>
+					<!-- <div class="td td1">科室</div><div class="td td1">考试时间</div><div class="td td1">客观题得分</div><div class="td td1">主观题得分</div><div class="td td1">负责人签字</div><div class="td td1">查看试卷</div> -->
+				</div>
+			</div>
+
+			
+
+
+
+
+
+
+			<p class="no-data" style="display:none;">该条件下暂无数据<p>
+
+			<div class="fenyeCon">
+				<ul class="pagination" id="pagination1"></ul>
+			</div>
+		</div>
+		
+	</body>
+	<script type="text/javascript">
+		function setDatePicker(){//时间日期插件设置
+			$(".ctime").datetimepicker({
+				minView:'2',
+				format: "yyyy-mm-dd",
+				autoclose: true,
+				pickerPosition: "bottom-left"
+			});
+		}
+
+		$('.examTypeRadio').click(function() {
+			if( $(this).attr('ischeck') == 0 ){
+				$('.examTypeRadio').attr('ischeck', '0');
+				$(this).attr('ischeck', '1');
+			}
+			
+		});
+
+		function fenye(allcount,page){//分页的方法
+			var totalPages =  Math.ceil(allcount/10);
+			$.jqPaginator('#pagination1', {//分页
+		        totalPages:totalPages,
+	            visiblePages: 10,
+	            currentPage: page,
+	            first: '<li class="first"><a href="javascript:void(0);">首页</a></li>',
+	            prev: '<li class="prev"><a href="javascript:void(0);"><i class="arrow arrow2"></i>上一页</a></li>',
+	            next: '<li class="next"><a href="javascript:void(0);">下一页<i class="arrow arrow3"></i></a></li>',
+	            last: '<li class="last"><a href="javascript:void(0);">末页</a></li>',
+	            page: '<li class="page"><a href="javascript:void(0);">{{page}}</a></li>',
+		        onPageChange: function (num, type) {
+		        	if(type == 'change'){
+		        		getList(num);
+		        	}
+		            
+		        }
+		    });
+		}
+
+
+		function getList(page){//生成列表的方法
+			var type;
+			if ($('#chukeRadio').attr('ischeck') == 1 ){
+				type = 1;
+			}else if ($('#publicRadio').attr('ischeck') == 1 ){
+				type = 2;
+			}else if ($('#jieyeRadio').attr('ischeck') == 1 ){
+				type = 3;
+			}
+			var usertype = getCookie('r');
+			var userid = getCookie('id');
+			var department_id = $('.childdepart').val();
+			var starttime = $('.startInp').val();
+			var endtime = $('.endInp').val();
+
+			if( usertype == 2 || usertype == 3 ){//管理员和教师验证时间输入框是否为空
+				if( starttime.trim() == '' ){
+					starttime = 0;
+				}else{
+					starttime = datetotime(starttime);
+				}
+				if( endtime.trim() == '' ){
+					endtime = 0;
+				}else{
+					endtime = datetotime(endtime);
+				}
+			}
+			Api.scorelist({
+				json:{
+					page:page,
+					pagecount:10,
+					userid:userid,
+					department_id:department_id,
+					type:type,
+					usertype:usertype,
+					starttime:starttime,
+					endtime:endtime
+
+				},
+				fn:function (arr) {
+
+					console.log(arr);
+					var arrLen = arr['data'].length;
+					if(arrLen == 0){
+
+						$('.pagination').css('display', 'none');
+						$('.no-data').css('display', 'block');
+					}else{
+						$('.no-data').css('display', 'none');
+						$('.pagination').css('display', 'block');
+					}
+					if( usertype == 1 ){//学生
+						var arrLen = arr['data'].length;
+						$('.table1').css('display', 'block');
+						$('.tr').remove();
+						for ( var i = 0; i < arrLen; i++ ){
+							var stuid = getCookie('id');
+							var row = arr['data'][i];
+							var starttime = timetodate(row['starttime'],1);
+							$('.tabletr1').append('<tr>'+
+								'<td>'+row['departname']+'</td>'+
+								'<td>'+starttime+'</td>'+
+								'<td>'+row['objective']+'</td>'+
+								'<td>'+row['subjective']+'</td>'+
+								'<td>'+row['teachername']+'</td>'+
+								'<td"><a href="exam-checkdetail.html?from=view&logid='+row.logid+'&stuid='+stuid+'" class="seeDetail">查看</a></td>'+
+							'</tr>');
+						}
+					}else if( usertype == 2 ){//老师
+						var arrLen = arr['data'].length;
+						$('.table2').css('display', 'block');
+						$('.tr').remove();
+						for ( var i = 0; i < arrLen; i++ ){
+							var row = arr['data'][0][i];
+							var starttime = timetodate(row['starttime'],1);
+							$('.tabletr2').append('<tr>'+
+								'<td>'+row['stuname']+'</td>'+
+								'<td>'+row['departname']+'</td>'+
+								'<td>'+starttime+'</td>'+
+								'<td>'+row['objective']+'</td>'+
+								'<td>'+row['subjective']+'</td>'+
+								'<td>'+row['teachername']+'</td>'+
+								'<td><a href="exam-checkdetail.html?from=view&logid='+row.logid+'&stuid='+row.stuid+'" class="seeDetail">查看</a></td>'+
+							'</tr>');
+						}
+					}else if( usertype == 3 ){//管理员
+						var arrLen = arr['data'].length;
+						$('.table3').css('display', 'block');
+						$('.tr').remove();
+						for ( var i = 0; i < arrLen; i++ ){
+							var row = arr['data'][i];
+							var starttime = timetodate(row['starttime'],1);
+							$('.tabletr3').append('<tr>'+
+								'<td>'+row['departname']+'</td>'+
+								'<td>'+starttime+'</td>'+
+								'<td>'+row['objaverage']+'</td>'+
+								'<td>'+row['subaverage']+'</td>'+
+								'<td>'+row['teachername']+'</td>'+
+							'</tr>');
+						}
+					}
+					var allcount = arr['allcount'];
+					fenye(allcount,page);//生成分页
+				}
+			});
+		}
+
+		$('.selectBtn').click(function() {
+			getList(1);//生成列表的方法
+		});
+
+		$(document).ready(function() {
+			common();
+			setDatePicker();//设置时间插件
+			getFatherdepart();//获取父科室
+			roleShow();//根据不同的角色显示不同的界面
+
+			$('.tableaa').click(function (e) {
+				if (e.target.tagName.toLowerCase()=='a') {
+					var type;
+					if ($('#chukeRadio').attr('ischeck') == 1 ){
+						type = 1;
+					}else if ($('#publicRadio').attr('ischeck') == 1 ){
+						type = 2;
+					}else if ($('#jieyeRadio').attr('ischeck') == 1 ){
+						type = 3;
+					}
+					var starttime = datetotime($('.startInp').val());
+					var endtime = datetotime($('.endInp').val());
+					var f_id = $('.fatherdepart').val();
+					var c_id = $('.childdepart').val();
+					window.location.href+='#type='+type+'&starttime='+starttime+'&endtime='+endtime+'&f_id='+f_id+'&c_id='+c_id;
+				}
+				
+			});
+
+
+		});
+
+		function roleShow(){//根据不同的角色显示不同的界面
+			var role = getCookie('r');
+			if( role == 1 ){//学生
+				$('.chukeCol').css('display', 'block');
+				$('.jieyeCol').css('display', 'block');
+				$('.publicCol').css('display', 'block');
+			}else if( role == 2 ){//老师
+				$('.chukeCol').css('display', 'block');
+				$('.publicCol').css('display', 'block');
+				$('.timeSelectOuter').css('display', 'block');
+				$('.departmentSelectOuter').css('display', 'none');
+			}else if( role == 3 ){//管理员
+				$('.chukeCol').css('display', 'block');
+				$('.publicCol').css('display', 'block');
+				$('.jieyeCol').css('display', 'block');
+				$('.timeSelectOuter').css('display', 'block');
+			}
+		}
+
+		function getFatherdepart(){//获取父科室
+
+			Api.fatherdepart({
+				istoken:1,
+				fn:function (arr) {
+					console.log(arr);
+					$(".fatherdepart").empty();
+					$('.fatherdepart').append('<option value="0">全部</option>');
+					for(var i = 0; i < arr.length; i++){
+						$(".fatherdepart").append('<option value="'+arr[i]['id']+'">'+arr[i]['name']+'</option>');
+					}
+					
+					childPartFirst();//父科室加载完后加载子科室
+				}
+			});
+		}
+
+		function getChilddepart(){//获取子科室
+
+			$(".fatherdepart").change(function() {
+				var fatherId = $(".fatherdepart").val();
+				$(".childdepart").empty(); $('.childdepart').val('');
+				if( fatherId == 0 ){
+					$(".childdepart").append('<option value="0">全部</option>');
+				}else{
+					Api.childdepart({
+						istoken:1,
+						json:{
+							pid:fatherId
+						},
+						fn:function (arr) {
+							for(var i = 0; i < arr.length; i++){
+								$(".childdepart").append('<option value="'+arr[i]['id']+'">'+arr[i]['name']+'</option>');
+							}
+						}
+					});
+				}
+				
+
+			});
+
+		}
+
+		function childPartFirst(){//父科室加载完后加载子科室
+			$(".childdepart").empty(); $('.childdepart').val('');
+			$(".childdepart").append('<option value="0">全部</option>');
+			//getChilddepart();//获取子科室
+			showLast();//根据url还原上一次的筛选条件
+		}
+
+		function showLast(){//根据url生成筛选条件
+			if (window.location.href.indexOf('#')!=-1) {
+				var type = findurltype('type');
+				var starttime = findurltype('starttime');
+				var endtime = findurltype('endtime');
+				var f_id = findurltype('f_id');
+				var c_id = findurltype('c_id');
+				if (!isNaN(starttime)) {
+					$('.startInp').val(timetodate(starttime));
+					$('.endInp').val(timetodate(endtime));					
+				}
+				$('.examTypeRadio[value='+type+']').click();
+
+				$('.fatherdepart').find('option[value='+f_id+']').attr('selected', 'selected');
+
+				$(".childdepart").empty(); $('.childdepart').val('');
+				
+				Api.childdepart({
+					istoken:1,
+					json:{
+						pid:f_id
+					},
+					fn:function (arr) {
+						for(var i = 0; i < arr.length; i++){
+							$(".childdepart").append('<option value="'+arr[i]['id']+'">'+arr[i]['name']+'</option>');
+						}
+						getChilddepart();//注册父科室的改变事件
+						$('.selectBtn').click();
+					}
+				});
+				
+			}else{
+				getChilddepart();//注册父科室的改变事件
+			}
+
+		}
+
+
+	</script>
+</html>

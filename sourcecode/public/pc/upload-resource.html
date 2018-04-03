@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<script type="text/javascript" src="../js/layout.js" ></script>
+		<link rel="stylesheet" type="text/css" href="../css/bootstrap-datetimepicker.min.css"/>
+		<script type="text/javascript" src="../js/bootstrap-datetimepicker.min.js" ></script>
+		<meta charset="UTF-8">
+		<title>高州市人民医院 - 住院医师轮转系统 - 资源上传</title>
+		<style type="text/css">
+			.conOuter{
+				width: 100%; padding-left:130px; padding-right:130px;
+				font-size: 14px; padding-top: 25px;
+			}
+			.btn1{
+				display:block; background-color:#DC5C59; border-radius:5px;
+				color:white; font-weight:bold;
+				margin:auto;
+			}
+			.selectBtn{
+				width:100px; height:26px; position:absolute; left:20px;
+				text-align:center; top:5px;
+			}
+			.selectBtn1{
+				z-index:10; opacity:0;
+			}
+			.selectBtn2{
+				z-index:5; line-height:26px;
+			}
+			.uploadBtn{
+				width:545px; height:38px; cursor:pointer; 
+			}
+			.subTit{
+				border-bottom:2px solid #55D1A2;
+			}
+			.row{
+				margin-bottom:30px;
+			}
+			.selectRow{
+				height:34px; line-height:34px; margin-bottom:20px;
+			}
+			
+		</style>
+		<script>
+			
+		</script>
+	</head>
+	<body>
+		<div class="childTitle">
+			资源上传
+		</div>
+
+		<div class="conOuter">
+			<div class="row">
+				<span class="subTit">文件类型</span>
+			</div>
+			<div class="row">
+				<div class="col-xs-3">
+					<select name="" class="form-control fileTypeSelect">
+						<option value="1">图片</option>
+						<option value="2">视频</option>
+						<option value="3">音频</option>
+						<option value="4">文档</option>
+					</select>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-xs-6">
+					<input type="text" class="form-control fileName" readonly="readonly" />
+				</div>
+				<div class="col-xs-6" style="position:relative;">
+					<input class="btn1 selectBtn selectBtn1" type="file" value="文件选择" accept="image/*" />
+					<div class="btn1 selectBtn selectBtn2">文件选择</div>
+				</div>
+			</div>
+
+			<div class="row">
+				<span class="subTit">分类选择</span>
+			</div>
+
+			<div class="row selectRow">
+				<div class="col-xs-1 pad0 right">主科室:</div>
+				<div class="col-xs-3">
+					<select name="" class="form-control fatherdepart">
+					</select>
+				</div>
+
+				<div class="col-xs-1 pad0 right">科室:</div>
+				<div class="col-xs-3">
+					<select name="" class="form-control childdepart">
+					</select>
+				</div>
+			</div>
+
+			<div class="row">
+				<button class="btn1 uploadBtn" type="button">立即上传</button>
+			</div>
+
+		</div>
+		
+	</body>
+	<script type="text/javascript">
+/*var oFile = document.getElementById('file');
+	
+	oFile.onchange = function () {
+		var str = this.value;
+		var i = str.lastIndexOf("\\");
+		console.log(str.substring(i+1,str.length));
+		
+	}
+*/
+
+		$('.fileTypeSelect').change(function() {
+			var type = $('.fileTypeSelect').val();
+			if( type == 1 ){
+				$('.selectBtn1').attr('accept', 'image/*');
+			}else if( type == 2 ){
+				$('.selectBtn1').attr('accept', 'video/*');
+			}else if( type == 3 ){
+				$('.selectBtn1').attr('accept', 'audio/*');
+			}else if( type == 4 ){
+				$('.selectBtn1').attr(
+					'accept', 'text/plain,application/pdf,application/vnd.ms-excel,'+
+					'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,'+
+					'application/msword,'+
+					'application/vnd.openxmlformats-officedocument.wordprocessingml.document,'+
+					'application/vnd.ms-powerpoint,'+
+					'application/vnd.openxmlformats-officedocument.presentationml.presentation'
+				);
+			}
+		});
+
+		$('.selectBtn1').change(function() {//显示用户选择文件的名称
+			var str = $(this).val();
+			var i = str.lastIndexOf("\\");
+
+			$('.fileName').val(str.substring(i+1,str.length));
+		});
+
+		function isTypeRight(){//检查文件的类型是否符合
+			var str = $('.selectBtn1').val();
+			var j = str.lastIndexOf(".");
+			var format = str.substring(j+1,str.length);//文件的后缀
+			var type = $('.fileTypeSelect').val();//文件的类型
+			var isType = 1;//判断类型是否正确的变量
+			if( type == 1 ){//图片
+				if (format!='bmp' && format!='gif' && format!='jpg' && format!='jpeg' && format!='png') {
+					isType = 0;
+				}
+			}else if( type == 2 ){//视频
+				if (format!='mp4' && format!='avi' && format!='rm' && format!='asf' && format!='wmv') {
+					isType = 0;
+				}
+			}else if( type == 3 ){//音频
+				if (format!='mp3' && format!='wma' && format!='wav' && format!='asf') {
+					isType = 0;
+				}
+			}else if( type == 4 ){//文档
+				if (format!='doc' && format!='docx' && format!='rtf' && format!='txt' && format!='pdf' && format!='ppt' && format!='pptx' && format!='xls' && format!='xlsx' ) {
+					isType = 0;
+				}
+			}
+
+			if( isType == 0 ){//格式不对，不能上传
+				uselayer(3,'格式不对,请选择对应格式的文件！');
+			}else{//可以上传
+				uselayer(3,'格式正确！');
+			}
+		}
+
+		$('.uploadBtn').click(function() {
+			isTypeRight();//判断文件的格式是否正确
+		});
+
+		$(function() {
+			common();
+			getFatherdepart();//获取父科室
+		});
+
+		function getFatherdepart(fatherdepartid,department_id){//获取父科室
+
+			Api.fatherdepart({
+				istoken:1,
+				fn:function (arr) {
+					$(".fatherdepart").empty();
+					for(var i = 0; i < arr.length; i++){
+						$(".fatherdepart").append('<option value="'+arr[i]['id']+'">'+arr[i]['name']+'</option>');
+					}
+					$(".fatherdepart").children('[value='+fatherdepartid+']').attr('selected', 'selected');//选择用户对应的父科室
+					childPartFirst(fatherdepartid,department_id);//父科室加载完后加载子科室
+				}
+			});
+		}
+
+		function getChilddepart(){//获取子科室
+
+			$(".fatherdepart").change(function() {
+				var fatherId = $(".fatherdepart").val();
+				$(".childdepart").empty(); $('.childdepart').val('');
+				Api.childdepart({
+					istoken:1,
+					json:{
+						pid:fatherId
+					},
+					fn:function (arr) {
+						for(var i = 0; i < arr.length; i++){
+							$(".childdepart").append('<option value="'+arr[i]['id']+'">'+arr[i]['name']+'</option>');
+						}
+					}
+				});
+			});
+
+		}
+
+		function childPartFirst(fatherdepartid,department_id){//父科室加载完后加载子科室
+			$(".childdepart").empty(); $('.childdepart').val('');
+			Api.childdepart({
+				istoken:1,
+				json:{
+					pid:fatherdepartid
+				},
+				fn:function (arr) {
+					for(var i = 0; i < arr.length; i++){
+						$(".childdepart").append('<option value="'+arr[i]['id']+'">'+arr[i]['name']+'</option>');
+					}
+					$(".childdepart").children('[value='+department_id+']').attr('selected', 'selected');//选择用户对应的子科室
+					getChilddepart();//获取子科室
+				}
+			});
+		}
+
+	</script>
+</html>

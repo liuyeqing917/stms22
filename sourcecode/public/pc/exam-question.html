@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<script type="text/javascript" src="../js/layout.js" ></script>
+		<meta charset="UTF-8">
+		<title>高州市人民医院 - 住院医师轮转系统 - 题库管理</title>
+		<style>
+		
+			.topsel { margin:17px; font-size: 14px;  padding:20px;background: #fff}
+			.sel-depart { float: left; width: 240px; margin-right: 10px;}
+			.sel-depart select { margin-left: 10px; width: 150px; display: inline-block; height: 25px; padding: 0 12px;}
+			.sel-type { float: left; width: 120px;}			
+
+			.btn1{
+				display:block; background-color:#DC5C59; border-radius:5px;
+				color:white; font-weight:bold;
+				margin:auto;
+			}
+			.selectBtn{
+				width:100px; height:26px; position:absolute; left:20px;
+				text-align:center; top:5px;
+			}
+			.selectBtn1{
+				z-index:10; opacity:0;
+			}
+			.selectBtn2{
+				z-index:5; line-height:26px; 
+			}			
+			
+			
+			.question-con { margin: 17px; font-size: 14px; padding: 20px;background: #fff}
+			.question-list h4 span { font-size: 16px; border-bottom: 2px solid #55D1A2;}
+			.question-list ul { padding: 30px 0px;}
+			.question-list ul li { border-bottom: 1px solid #ccc ; height: 32px; line-height: 32px;}
+			.question-list ul li p { float: left; width: 440px; overflow: hidden;}
+			.question-list ul li div { float: right; width: 60px;}
+			.question-list ul li div a { display: inline-block; margin: 0 5px; width: 40px; height: 24px; text-align: center; line-height: 24px; color: #fff; text-decoration: none; }
+			
+			.view {background: #dc5c59;}
+			.edit { background: green;}
+			.delete { background: red;}
+			
+			
+		</style>
+		
+		<script>
+			window.onload = function () {
+				
+				'use strict';	
+				common();
+				togetfatherdepart(function (arr) {
+					writesel('全部方向科室','.sel-fatherdepart',arr,1,function () {
+						togetchilddepart($('.sel-fatherdepart').val(),function (arr) {
+							writesel('全部科室','.sel-childdepart',arr,1,function () {
+								showquestion();
+							});
+						});
+					});
+				});					
+				
+				$('.question-con').click(function (e) {
+					if (e.target.className.toLowerCase()=='delete') {
+						uselayer(2,'确定要删除该试题吗',function () {
+							Api.DelTest({
+								json:{
+									id:$(e.target).attr('_id')
+								},
+								fn:function (json) {
+									showquestion();
+									uselayer(3,json.msg);
+								}
+							});
+							
+							
+						})
+					}
+					
+				});
+				
+				
+				
+				
+				
+				$('.selectBtn1').click(function () {
+					if ($('.sel-childdepart').val()==0) {
+						uselayer(1,'必须选择科室导入!');
+						return false;
+					} else {
+						toupload($('.selectBtn1')[0],Api.ImportTest,{department_id:$('.sel-childdepart').val()},function (json) {
+							uselayer(1,json.msg,function () {
+								if (json.status==1) {
+									window.location.reload();
+								}
+							});
+						});
+					}					
+				});
+				
+				
+				function showquestion() {
+					Api.ChooseTest({
+						json:{
+							father_id:$('.sel-fatherdepart').val(),
+							son_id:$('.sel-childdepart').val()
+
+						},
+						fn:function (arr) {
+							if (arr.length==0) {
+								$('.question-con').html('<p class="no-data">暂无相关数据</p>');
+								return false;
+							}
+							$('.question-con').html('');
+							var json = {};
+							for (var i = 0 ; i < arr.length; i++) {
+								if (!json[arr[i].dname]) {
+									json[arr[i].dname] = [];
+								} 
+								json[arr[i].dname].push(arr[i]);
+							}
+							for (var name in json) {
+								var _str = '';
+								var _arr = json[name];
+								for (var i = 0 ; i < _arr.length; i++) {
+									_str+=
+										'<li>'
+											+'<p>'+_arr[i].name+'</p>'
+											+'<div>'
+//												+'<a href="exam-addquestion.html?from=view&id='+_arr[i].id+'" class="view">查看</a>'
+//												+'<a href="exam-addquestion.html?from=edit&id='+_arr[i].id+'" class="edit">编辑</a>'
+												+'<a href="javascript:;" _id="'+_arr[i].id+'" class="delete">删除</a>'
+											+'</div>'
+										+'</li>';									
+								}
+								var str = 
+									'<div class="question-list">'
+										+'<h4><span>'+name+'</span></h4>'
+										+'<ul>'
+											+_str
+										+'</ul>'
+									+'</div>'								
+								$('.question-con').append(str);
+							}							
+						}
+						
+					});
+					
+				}
+				
+				
+			};			
+		</script>
+		
+		
+	</head>
+	<body>
+		<div class="childTitle">题库管理</div>
+		
+		
+
+
+
+		<div class="topsel clearfix">
+			<div class="sel-depart">
+				<span>方向科室</span>
+				<select class="form-control sel-fatherdepart"></select>
+			</div>
+			<div class="sel-depart">
+				<span>科室</span>
+				<select class="form-control sel-childdepart"></select>
+			</div>
+			
+			<div class="" style="position:relative; width: 120px; height: 26px; float: left;">
+				<input class="btn1 selectBtn selectBtn1" type="file" value="" accept="application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet">
+				<div class="btn1 selectBtn selectBtn2">导入试题</div>
+			</div>	
+			
+			<div class="" style="position:relative; float: left;">
+				<a href="../题库模板.xls" target="_blank" class="btn1 selectBtn selectBtn2" style="color: #fff; text-decoration: none;">模版下载</a>
+			</div>			
+			
+		</div>		
+		
+		<div class="question-con">
+			
+		</div>
+		
+			
+	</body>
+</html>

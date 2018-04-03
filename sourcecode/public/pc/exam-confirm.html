@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<script type="text/javascript" src="../js/layout.js" ></script>
+		<link rel="stylesheet" type="text/css" href="../css/bootstrap-datetimepicker.min.css"/>
+		<script type="text/javascript" src="../js/bootstrap-datetimepicker.min.js" ></script>
+		<meta charset="UTF-8">
+		<title>高州市人民医院 - 住院医师轮转系统 - 考试监管</title>
+		<link rel="stylesheet" type="text/css" href="../css/common2.css"/>
+		<style type="text/css">
+			.conOuter{
+				width: 100%; padding-left: 35px; padding-right: 35px;
+				font-size: 14px; padding-top: 25px;
+			}
+			.btn1{
+				display:block; background-color:#DC5C59; border-radius:5px;
+				color:white; font-weight:bold; height:26px;
+				cursor:pointer; margin:auto;
+			}
+			.detailBtn{
+				width:60px;
+			}
+			
+			.return1{
+				width:60px;
+			}
+			.sureBtn{width:70px;}
+			.table{
+				width:100%; text-align:center;
+				margin-top:30px; font-size:14px;
+			}
+			.tr{
+				width:100%;
+			}
+			.th .td{
+				margin-left:-1px; 
+				float:left; padding:5px;
+			}
+			.tr:nth-child(odd){
+				background-color:#E1F0FA;
+			}
+			.tr .td{
+				margin-left:-1px; margin-top:-1px;
+				float:left; padding:5px;
+			}
+			.th{
+				font-weight:bold; background-color:#E3E3E5;
+			}
+			.td1{
+				width:13.28%;
+			}
+			.td2{
+				width:12.5%;
+			}
+			.col-xs-1,.col-xs-2{
+				margin-bottom:5px;
+			}
+			.content2{
+				display:none;
+			}
+			.pad0 {
+			    padding: 0;
+			}
+			.right {
+			    text-align: right;
+			}
+			button{
+				padding: 0;
+			    list-style: none;
+			    outline: none;
+			    resize: none;
+			    border: none;
+			    text-decoration: none;
+			}
+			.fenyeCon{
+				width:700px; padding-bottom:50px; margin:auto;
+			}
+			
+			.w16 { width: 17%;}
+			
+		</style>
+		<script>
+			$('.commonCss').remove();
+		</script>
+		<script type="text/javascript" src="../js/jqPaginator.js"></script>
+	</head>
+	<body>
+		<div class="childTitle">
+			考试监管
+		</div>
+
+		<div class="conOuter">
+
+			<div class="table1Outer">
+				<div class="table table1 clearfix"><!--管理员表格-->
+					<div class="th clearfix">
+						<div class="td td1">科室</div><div class="td td1 w16">考试开始时间</div><div class="td td1 w16">考试结束时间</div><div class="td td1">监考地点</div><div class="td td1">试卷名称</div><div class="td td1">监考人</div><div class="td td1">学员列表</div>
+					</div>
+
+					<div class="tr clearfix">
+						<div class="td td1">科室</div><div class="td td1 w16">考试开始时间</div><div class="td td1 w16">考试结束时间</div><div class="td td1">监考地点</div><div class="td td1">试卷名称</div><div class="td td1">监考人</div><div class="td td1"><button class="btn1 detailBtn" type="button">查看</button></div>
+					</div>
+
+				</div>
+
+				<div class="fenyeCon">
+					<ul class="pagination" id="pagination1"></ul>
+				</div>
+			</div>
+
+			<div class="content2">
+				<div class="row table2">
+					<div class="col-xs-2 pad0 right">章一星</div>
+					<div class="col-xs-2 red">
+						<button class="btn1 sureBtn" type="button">确认考试</button>
+					</div>
+
+				</div>
+
+				<div class="row">
+					<button class="btn1 return1" type="button">返回</button>
+				</div>
+			</div>
+
+		</div>
+		
+	</body>
+	<script type="text/javascript">
+		$(function() {
+			examList(1);//生成考试列表
+		});
+		
+		function sureExam(){//确认考试按钮的点击事件
+			$('.sureBtn').click(function() {
+				var div = $(this).parent();
+				var id = $(this).attr('stuid');
+				var logid = $(this).attr('logid');
+				Api.surestudnet({
+					json:{
+						logid:logid,
+						id:id
+					},
+					fn:function (arr) {
+						console.log(arr);
+						if( arr['status'] == 1 ){
+							div.html('已确认');
+						}
+						uselayer(3,arr['msg']);
+					}
+				});
+			});
+		}
+
+		function studentList (){//注册查看按钮的点击事件
+			$('.detailBtn').click(function() {
+				var department_id = $(this).attr('department_id');
+				var logid = $(this).attr('logid');
+				
+				Api.studentlist({
+					json:{
+						logid:logid,
+						department_id:department_id
+					},
+					fn:function (arr) {
+						console.log(arr);
+						$('.table1Outer').css('display', 'none');
+						$('.content2').css('display', 'block');
+						var arrLen = arr.length;
+						$('.table2').empty();
+						
+						for( var i = 0; i < arrLen; i++ ){
+							if( arr[i]['ifexam']==null){
+								$('.table2').append(
+									'<div class="col-xs-2 pad0 right">'+arr[i]['name']+'</div>'+
+									'<div class="col-xs-2 red">'+
+										'<button class="btn1 sureBtn" type="button" logid="'+logid+'" stuid="'+arr[i]['stuid']+'">'+
+											'确认考试'+
+										'</button>'+
+									'</div>'
+								);
+							}else{
+								$('.table2').append(
+									'<div class="col-xs-2 pad0 right">'+arr[i]['name']+'</div>'+
+									'<div class="col-xs-2 red">'+
+										'已确认'+
+									'</div>'
+								);
+							}
+							
+						}
+						sureExam();//确认考试按钮的点击事件
+					}
+				});
+			});
+				
+		}
+
+		$('.return1').click(function() {
+			$('.table1Outer').css('display', 'block');
+			$('.content2').css('display', 'none');
+		});
+
+		function fenye(allcount,page){//分页的方法
+			var totalPages =  Math.ceil(allcount/10);
+			$.jqPaginator('#pagination1', {//分页
+		        totalPages:totalPages,
+	            visiblePages: 10,
+	            currentPage: page,
+	            first: '<li class="first"><a href="javascript:void(0);">首页</a></li>',
+	            prev: '<li class="prev"><a href="javascript:void(0);"><i class="arrow arrow2"></i>上一页</a></li>',
+	            next: '<li class="next"><a href="javascript:void(0);">下一页<i class="arrow arrow3"></i></a></li>',
+	            last: '<li class="last"><a href="javascript:void(0);">末页</a></li>',
+	            page: '<li class="page"><a href="javascript:void(0);">{{page}}</a></li>',
+		        onPageChange: function (num, type) {
+		        	if(type == 'change'){
+		        		examList(num);
+		        	}
+		            
+		        }
+		    });
+		}
+
+		function examList(page){//生成考试列表
+			$('.table1').find('.tr').remove();
+			var usertype = getCookie('r');
+			var id = getCookie('id');
+			Api.examlist({
+				json:{
+					page:page,
+					pagecount:10,
+					usertype:usertype,
+					id:id
+				},
+				fn:function (arr) {
+					console.log(arr);
+					var data = arr['data'];
+					var arrLen = data.length;
+					if(arrLen == 0){
+						$('.pagination').css('display', 'none');
+					}
+					for ( var i = 0; i < arrLen; i++ ){
+						var start = timetodate(data[i]['start']);
+						var end = timetodate(data[i]['end']);
+						$('.table1').append('<div class="tr clearfix">'+
+							'<div class="td td1">'+data[i]['departname']+'</div>'+
+							'<div class="td td1 w16">'+start+'</div>'+
+							'<div class="td td1 w16">'+end+'</div>'+
+							'<div class="td td1">'+data[i]['classroom']+'</div>'+
+							'<div class="td td1">'+data[i]['examname']+'</div>'+
+							'<div class="td td1">'+data[i]['teachername']+'</div>'+
+							'<div class="td td1"><button class="btn1 detailBtn" type="button" logid="'+data[i].id+'" department_id="'+data[i]['department_id']+'">查看</button></div>'+
+						'</div>');
+					}
+					studentList();//注册查看按钮的点击事件
+					var allcount = arr['allcount'];
+					fenye(allcount,page);//生成分页
+				}
+			});
+		}
+
+	</script>
+</html>

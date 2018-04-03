@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<script type="text/javascript" src="../js/layout.js" ></script>
+		<meta charset="UTF-8">
+		<title>高州市人民医院 - 住院医师轮转系统 - 考勤管理</title>
+		<link rel="stylesheet" type="text/css" href="../css/bootstrap-datetimepicker.min.css"/>
+		<script type="text/javascript" src="../js/bootstrap-datetimepicker.min.js" ></script>
+		<link rel="stylesheet" type="text/css" href="../css/common2.css"/>
+		<style type="text/css">
+
+			.messageCon{
+				width:100%; padding-left:35px; padding-right:35px; font-size:14px;
+				padding-top:25px;
+			}
+			.btn1{
+				display:block; background-color:#DC5C59; border-radius:5px;
+				color:white; font-weight:bold; width:90px; height:26px;
+				cursor:pointer; margin:auto;
+			}
+			.selectBtn{
+				margin:auto; margin-top: 4px;
+    			line-height:26px;
+			}
+			.table{
+				width:100%; text-align:center;
+				margin-top:10px; font-size:14px;
+			}
+			.tr{
+				width:100%;
+			}
+			.th .td{
+				margin-left:-1px; 
+				float:left; padding:5px;
+			}
+			.tr:nth-child(odd){
+				background-color:#E1F0FA;
+			}
+			.tr .td{
+				margin-left:-1px; margin-top:-1px;
+				float:left; padding:5px;
+			}
+			.th{
+				font-weight:bold; background-color:#E3E3E5;
+			}
+			.td1{
+				width:14.25%;
+			}
+			.ctime{
+				display:block; border:1px solid #9F9F9F;
+			}
+			.add{
+				color:red; cursor:pointer; text-decoration:underline;
+			}
+			.row{
+				margin-bottom:20px; line-height:34px;
+			}
+			.pad0 {
+			    padding: 0;
+			}
+			.right {
+			    text-align: right;
+			}
+			button{
+				padding: 0;
+			    list-style: none;
+			    outline: none;
+			    resize: none;
+			    border: none;
+			    text-decoration: none;
+			}
+			.fenyeCon{
+				width:700px; padding-bottom:50px; margin:auto;
+			}
+
+		</style>
+		<script>
+			$('.commonCss').remove();
+		</script>
+		<script type="text/javascript" src="../js/jqPaginator.js"></script>
+	</head>
+	<body>
+		<div class="childTitle">
+			考勤统计
+		</div>
+
+		<div class="messageCon clearfix">
+
+			<div class="row">
+				
+				<div class="col-xs-1 pad0 right">开始时间:</div>
+				<div class="col-xs-2">
+					<input type="text" class="ctime form-control startInp">
+				</div>
+
+				<div class="col-xs-1 pad0 right">结束时间:</div>
+				<div class="col-xs-2">
+					<input type="text" class="ctime form-control endInp">
+				</div>
+
+				<div class="departmentCon">
+				<div class="col-xs-1 pad0 right">主科室:</div>
+				<div class="col-xs-2">
+					<select name="" class="form-control fatherdepart"></select>
+				</div>
+
+				<div class="col-xs-1 pad0 right">科室:</div>
+				<div class="col-xs-2">
+					<select name="" class="form-control childdepart"></select>
+				</div>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-xs-2">
+					<button class="btn1 selectBtn selectBtn2" type="button">查询</button>
+				</div>
+			</div>
+
+		</div>
+
+		<div class="messageCon clearfix firstPage">
+			<div class="table clearfix">
+				<div class="th clearfix">
+					<div class="td td1">姓名</div><div class="td td1">科室</div><div class="td td1">出勤天数</div><div class="td td1">迟到天数</div><div class="td td1">早退天数</div><div class="td td1">请假天数</div><div class="td td1">教师填写</div>
+				</div>
+				
+			</div>
+			
+			<p class="no-data" style="display:none;">该条件下暂无数据<p>
+
+			<div class="fenyeCon">
+				<ul class="pagination" id="pagination1"></ul>
+			</div>
+		</div>
+
+
+	</body>
+	<script type="text/javascript">
+		function setDatePicker(){//时间日期插件设置
+
+			$(".ctime").datetimepicker({
+				minView:'2',
+				format: "yyyy-mm-dd",
+				autoclose: true,
+				pickerPosition: "bottom-left"
+			});
+		}
+
+		$(function() {
+			getFatherdepart();//获取父科室
+			getChilddepart();//获取子科室
+			setDatePicker();//设置时间输入框
+			var type = getCookie('r');
+			if( type == 1 ){//如果是学生就隐藏科室下拉框
+				$('.departmentCon').css('display', 'none');
+			}
+		});
+
+		function addAttendance(){//注册填写考勤管理的点击事件
+			$('.add').click(function() {
+				var stuid = $(this).attr('stuid');
+				var department_id = $(this).attr('department_id');
+				var teacherid = $(this).attr('teacherid');
+				var name = $(this).attr('name');
+				var departmentname = $(this).attr('departmentname');
+				var faId = $('.fatherdepart').val();
+				var chId = $('.childdepart').val();
+				var starttime = $('.startInp').val();
+				var endtime = $('.endInp').val();
+				window.location.href = 'add-attendance.html?stuid='+stuid+'&department_id='+department_id+'&name='+name+'&departmentname='+departmentname+'&faId='+faId+'&chId='+chId+'&starttime='+starttime+'&endtime='+endtime;
+			});
+		}
+
+		function getFatherdepart(){//获取父科室
+			Api.fatherdepart({
+				fn:function (arr) {
+					console.log(arr);
+					$(".fatherdepart").empty();
+					//$(".fatherdepart").append('<option value="0">全部</option>');
+					for(var i = 0; i < arr.length; i++){
+						$(".fatherdepart").append('<option value="'+arr[i]['id']+'">'+arr[i]['name']+'</option>');
+					}
+					childPartFirst();//父科室加载完后加载子科室
+				}
+			});
+		}
+
+		function getChilddepart(){//获取子科室
+			$(".fatherdepart").change(function() {
+				var fatherId = $(".fatherdepart").val();
+				/*if( fatherId == 0 ){
+					$(".childdepart").append('<option value="0">全部</option>');
+					return false;
+				}*/
+				$(".childdepart").empty(); $('.childdepart').val('');
+				Api.childdepart({
+					json:{
+						pid:fatherId
+					},
+					fn:function (arr) {
+						console.log(arr);
+						//$(".childdepart").append('<option value="0">全部</option>');
+						for(var i = 0; i < arr.length; i++){
+							$(".childdepart").append('<option value="'+arr[i]['id']+'">'+arr[i]['name']+'</option>');
+						}
+					}
+				});
+			});
+
+		}
+
+		function childPartFirst(){//父科室加载完后加载子科室
+			var fatherId = $(".fatherdepart").find('option:first').val();
+
+			var faId = GetQueryString('faId');
+			var chId = GetQueryString('chId');
+			if( faId == null ){
+				
+			}else{
+				fatherId = faId;
+				$('.fatherdepart').find('option[value='+fatherId+']').attr('selected', 'selected');
+			}
+			$(".childdepart").empty(); $('.childdepart').val('');
+			Api.childdepart({
+				json:{
+					pid:fatherId
+				},
+				fn:function (arr) {
+					//$(".childdepart").append('<option value="0">全部</option>');
+					for(var i = 0; i < arr.length; i++){
+						$(".childdepart").append('<option value="'+arr[i]['id']+'">'+arr[i]['name']+'</option>');
+					}
+					if( chId == null ){
+				
+					}else{
+						$('.childdepart').find('option[value='+chId+']').attr('selected', 'selected');
+					}
+					showTime();//在查询考勤信息之前输入框添加之前设置的时间
+					searchAttendance(1);//查询考勤信息
+				}
+			});
+			
+		}
+
+		function showTime(){//在查询考勤信息之前输入框添加之前设置的时间
+			var starttime = GetQueryString('starttime');
+			var endtime = GetQueryString('endtime');
+			$('.startInp').val(starttime);
+			$('.endInp').val(endtime);
+		}
+
+		function fenye(allcount,page){//分页的方法
+			var totalPages =  Math.ceil(allcount/10);
+				$.jqPaginator('#pagination1', {//分页
+			        totalPages:totalPages,
+		            visiblePages: 10,
+		            currentPage: page,
+		            first: '<li class="first"><a href="javascript:void(0);">首页</a></li>',
+		            prev: '<li class="prev"><a href="javascript:void(0);"><i class="arrow arrow2"></i>上一页</a></li>',
+		            next: '<li class="next"><a href="javascript:void(0);">下一页<i class="arrow arrow3"></i></a></li>',
+		            last: '<li class="last"><a href="javascript:void(0);">末页</a></li>',
+		            page: '<li class="page"><a href="javascript:void(0);">{{page}}</a></li>',
+			        onPageChange: function (num, type) {
+			        	if(type == 'change'){
+			        		searchAttendance(num);
+			        	}
+			            
+			        }
+			    });
+			}
+
+		function searchAttendance(page){//查询考勤信息，生成列表
+			var stuid;
+			var pagecount = 10;
+			var department_id = $('.childdepart').val();
+			var type = getCookie('r');
+			if( type == 2 || type == 3 ){//如果是老师或者是管理员
+				stuid = 0;
+			}else{//如果是学生
+				stuid = getCookie('id');
+				department_id = 0;
+			}
+			var btime = $('.startInp').val();
+			var etime = $('.endInp').val();
+
+			if( btime.trim() == '' && etime.trim() == '' ){
+				btime = 0; etime = 0;
+			}else{
+				btime = datetotime(btime);
+				etime = datetotime(etime);
+			}
+
+			Api.searchAttendance({
+				json:{
+					department_id:department_id,
+					stuid:stuid,
+					page:page,
+					pagecount:pagecount,
+					btime:btime,
+					etime:etime,
+					type:type
+				},
+				fn:function (arr) {
+					console.log(arr);
+					var dataLen = arr['data'].length;
+					
+					var data = arr['data'];
+					$('.tr').remove();
+					//判断学生老师，有没有填写
+					if ( type == 1 ){//是学生
+						for( var i = 0; i < dataLen; i++ ){
+							if( data[i]['teacher'] == '' ){//如果没有填写
+								$('.table').append(
+								'<div class="tr clearfix">'+
+									'<div class="td td1">'+data[i]['stuname']+'</div><div class="td td1">'+data[i]['depart']+'</div><div class="td td1"></div><div class="td td1"></div><div class="td td1"></div><div class="td td1"></div><div class="td td1">未填写</div>'+
+								'</div>'
+								);
+							}else{//如果填写过
+								$('.table').append(
+								'<div class="tr clearfix">'+
+									'<div class="td td1">'+data[i]['stuname']+'</div><div class="td td1">'+data[i]['depart']+'</div><div class="td td1">'+data[i]['attendance']+'</div><div class="td td1">'+data[i]['late']+'</div><div class="td td1">'+data[i]['early']+'</div><div class="td td1">'+data[i]['leave']+'</div><div class="td td1">'+data[i]['teacher']+'</div>'+
+								'</div>'
+								);
+							}
+
+						}
+					}else if ( type == 2 ){//是老师
+						for( var i = 0; i < dataLen; i++ ){
+							if( data[i]['teacher'] == '' ){//如果没有填写
+								$('.table').append(
+								'<div class="tr clearfix">'+
+									'<div class="td td1">'+data[i]['stuname']+'</div><div class="td td1">'+data[i]['depart']+'</div><div class="td td1"></div><div class="td td1"></div><div class="td td1"></div><div class="td td1"></div><div class="td td1"><span class="add" stuid="'+data[i]['stuid']+'" department_id="'+data[i]['department_id']+'" name="'+data[i]['stuname']+'" departmentname="'+data[i]['depart']+'">填写</span></div>'+
+								'</div>'
+								);
+							}else{//如果填写过
+								$('.table').append(
+								'<div class="tr clearfix">'+
+									'<div class="td td1">'+data[i]['stuname']+'</div><div class="td td1">'+data[i]['depart']+'</div><div class="td td1">'+data[i]['attendance']+'</div><div class="td td1">'+data[i]['late']+'</div><div class="td td1">'+data[i]['early']+'</div><div class="td td1">'+data[i]['leave']+'</div><div class="td td1">'+data[i]['teacher']+'</div>'+
+								'</div>'
+								);
+							}
+							
+						}
+					}else if( type == 3 ){//如果是管理员
+						for( var i = 0; i < dataLen; i++ ){
+							if( data[i]['teacher'] == '' ){//如果没有填写,就不显示
+								
+							}else{//如果填写过
+								$('.table').append(
+								'<div class="tr clearfix">'+
+									'<div class="td td1">'+data[i]['stuname']+'</div><div class="td td1">'+data[i]['depart']+'</div><div class="td td1">'+data[i]['attendance']+'</div><div class="td td1">'+data[i]['late']+'</div><div class="td td1">'+data[i]['early']+'</div><div class="td td1">'+data[i]['leave']+'</div><div class="td td1">'+data[i]['teacher']+'</div>'+
+								'</div>'
+								);
+							}
+							
+						}
+					}
+					
+					if($('.tr').length == 0){
+						$('.no-data').css('display', 'block');
+						$('.pagination').css('display', 'none');
+					}else{
+						$('.no-data').css('display', 'none');
+						$('.pagination').css('display', 'block');
+					}
+
+					addAttendance();//注册填写考勤管理的点击事件
+					var allcount = arr['allcount'];
+					fenye(allcount,page);//生成分页
+				}
+			});
+		}
+
+		$('.selectBtn2').click(function() {
+			searchAttendance(1);
+		});
+	</script>
+</html>

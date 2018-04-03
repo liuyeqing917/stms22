@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<script type="text/javascript" src="../js/layout.js" ></script>
+		<meta charset="UTF-8">
+		<title>高州市人民医院 - 住院医师轮转系统 - 添加课程</title>
+		<style>
+			.addlesson { width: 300px; margin: 50px auto; }
+			.addlesson ul li { height: 34px; line-height: 34px; font-size: 14px; margin-top: 30px;}
+			.addlesson ul li span {  float: left; width: 80px;}
+			.addlesson ul li span em { color: red;}
+			.addlesson ul li div {  float: left; width: 220px;}
+			.addlesson-btn { width: 300px; margin: 50px auto 0;}
+			.addlesson-btn .btn-default {background: #dc5c59; color: #fff; margin:0 20px;}
+			.delete{ display: none;}
+			
+		</style>
+		<link rel="stylesheet" type="text/css" href="../css/bootstrap-datetimepicker.min.css"/>
+		<script type="text/javascript" src="../js/bootstrap-datetimepicker.min.js" ></script>
+		<script>
+			window.onload = function () {
+				common();
+				var nowtime = new Date();
+				var strtime = nowtime.getFullYear()+'-'+(nowtime.getMonth()+1)+'-'+nowtime.getDate()+' '+nowtime.getHours()+':'+nowtime.getMinutes()+':00';				
+				$(".ctime").datetimepicker({
+					startDate:strtime,
+					format: "yyyy-mm-dd hh:ii",
+					autoclose: true,
+					pickerPosition: "bottom-left"
+				});				
+				
+				var jsonMsg = {};
+				var oFrom = findurl('from');
+				var oId = findurl('id');				
+				if (oFrom=='edit') {
+					$('.addbtn').val('修改');
+					$('.childTitle').val('修改教师');
+					
+					$('.delete').css('display','inline-block');
+					Api.searchTeacher({
+						json:{
+							id:oId
+						},
+						fn:function (arr) {
+							console.log(arr)
+							var json = arr[0];
+							jsonMsg = json;
+							$('.name').val(json.name);
+							$('.stu_nu').val(json.stu_nu);
+							$('.phone_number').val(json.phone_number);
+							$('.email').val(json.email);
+							$('.certificate_number').val(json.certificate_number);
+
+							if(json.sex==0){
+
+								$('#woman').attr('checked','checked');
+							}else{
+								$('#man').attr('checked','checked');
+							}
+
+						}
+					});
+				}else{
+
+					$('#man').attr('checked','checked');
+				}
+
+				var sex = 1;
+
+				$('.addbtn').click(function () {
+
+					if ($.trim($('.name').val())=='') {
+						layer.alert('姓名不能为空');
+						return false;
+					}
+					if ($.trim($('.stu_nu').val())=='') {
+						layer.alert('工号不能为空');
+						return false;
+					}
+					if ($.trim($('.phone_number').val())=='') {
+						layer.alert('电话不能为空');
+						return false;
+					}
+					if ($.trim($('.email').val())=='') {
+						layer.alert('邮箱不能为空');
+						return false;
+					}
+					if ($.trim($('.certificate_number').val())=='') {
+						layer.alert('身份证号不能为空');
+						return false;
+					}
+
+
+					var json = {
+						name:$.trim($('.name').val()),
+						stu_nu:$.trim($('.stu_nu').val()),
+						phone_number:$.trim($('.phone_number').val()),
+						email:$.trim($('.email').val()),
+						certificate_number:$.trim($('.certificate_number').val()),
+						certificate_type:2,
+						password:111111,
+						hospital_id:1,
+						sex:sex,
+						national:"",
+						birthday:"",
+						fixed_number:"",
+						self_introduce:"",
+						stu_type:"",
+						foreign_blity:"",
+						communication_adress:"",
+						emergency_contact:"",
+						ec_number:"",
+						department_id:0,
+						ec_adress:""
+						};
+
+					if (oFrom=='edit') {
+						json.id = oId;
+
+						var alayer = layer.confirm(
+								"确定要修改嘛?",
+								{btn:['确定','取消']},
+								function () {
+									layer.close(alayer);
+									Api.modifyTeacher({
+										json:json,
+										fn:function (json) {
+											console.log(json);
+											uselayer(3,json.msg,function () {
+												if (json.status==1) {
+													history.go(-1);
+												}
+											});
+										}
+									});
+								},
+								function () {
+									layer.close(alayer);
+
+								}
+						);
+
+					} else {
+						Api.addTeacher({
+
+							isrepeat:$(this),
+							json:json,
+							fn:function (json) {
+								uselayer(1,json.msg,function () {
+									if (json.status==1) {
+
+										var ilayer = layer.confirm(
+												"新增成功是否继续新增",
+												{btn:['确定','取消']},
+												function () {
+													layer.close(ilayer);
+													location.reload();
+												},
+												function () {
+													layer.close(ilayer);
+													window.location.href = "teacher-set.html";
+												}
+										);
+									}
+								});
+							}
+						});
+					}
+
+				});
+
+				$('.sexinput').change(function () {
+
+					sex= $(this).val();
+
+				});
+				$('.delete').click(function () {
+					uselayer(2,'确定要删除该老师的信息吗？',function () {
+						Api.deleteTeacher({
+							json:{id:oId},
+							fn:function (json) {
+								uselayer(3,json.msg,function () {
+									history.go(-1);		
+								});
+							}
+						});
+					});
+					
+				});
+			};
+			
+		</script>
+		
+	</head>
+	<body>
+		<div class="childTitle hascancle">添加教师</div>
+		<div class="addlesson">
+			<ul>
+				<li>
+					<span><em>* </em>性别</span>
+					<div>
+						<span class="col-xs-1 radioDiv">
+							<input type="radio" name="sex" value="1"  id="man" class="sexinput"/>
+							<label for="man">男</label>
+						</span>
+						<span class="col-xs-1 radioDiv">
+							<input type="radio" name="sex" value="0" id="woman" class="sexinput"/>
+							<label for="woman">女</label>
+						</span>
+					</div>
+				</li>
+				<li>
+					<span><em>* </em>姓名</span>
+					<div>
+						<!--<input type="text" class="cname form-control" />-->
+						<input type="text" class="name form-control" />
+					</div>
+				</li>
+				<li>
+					<span><em>* </em>工号</span>
+					<div>
+						<input type="text" class="stu_nu form-control" />
+					</div>	
+				</li>
+				<li>
+					<span><em>* </em>电话</span>
+					<div>
+						<input type="text" class="phone_number form-control" />
+					</div>						
+				</li>
+
+				<li>
+					<span><em>* </em>邮箱</span>
+					<div>
+						<input type="text" class="email form-control" />
+					</div>						
+				</li>
+				<li>
+					<span><em>* </em>证件号</span>
+					<div>
+						<input type="text" class="certificate_number form-control" />
+					</div>
+				</li>
+			</ul>
+
+
+			<div class="addlesson-btn">
+				<input type="button" class="btn btn-default addbtn" value="提交" />
+				<input type="button" class="btn btn-default delete" value="删除" />
+				<input type="button" class="btn btn-default cancle" value="返回" />
+			</div>
+
+		</div>
+
+
+		
+	</body>
+</html>

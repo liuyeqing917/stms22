@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<script type="text/javascript" src="../js/layout.js" ></script>
+		<meta charset="UTF-8">
+		<title>高州市人民医院 - 住院医师轮转系统 - 轮转方案列表</title>
+		<style type="text/css">
+			.messageCon{
+				width:100%; padding-left:35px; padding-right:35px; font-size:14px;
+				padding-top:25px;
+			}
+			.btn1{
+				display:block; background-color:#DC5C59; border-radius:5px;
+				color:white; font-weight:bold; width:90px; height:26px;
+				cursor:pointer; margin:auto;
+			}
+			
+			.table{
+				width:100%; text-align:center;
+				margin-top:10px; font-size:14px;
+			}
+			.tr{
+				width:100%;
+			}
+			.th .td{
+				margin-left:-1px; 
+				float:left; padding:5px;
+			}
+			.tr:nth-child(odd){
+				background-color:#E1F0FA;
+			}
+			.tr .td{
+				margin-left:-1px; margin-top:-1px;
+				float:left; padding:5px;
+			}
+			.th{
+				font-weight:bold; background-color:#E3E3E5;
+			}
+			.td1{
+				width:25%;
+			}
+			.td2 { width: 12.5%;}
+			.edit,.add{
+				color:red; cursor:pointer; text-decoration:underline;
+			}
+			.edit { color: green;}
+			.eidt-view { width: 500px; padding-top: 100px; height: 300px; background: #fff; display: none;}
+			.eidt-view-con { width: 80%; height: 34px; line-height: 34px; margin: 0 auto;}
+			.eidt-view-con span {float: left; width: 25%;}
+			.eidt-view-con div {float: left; width: 55%;}
+			.eidt-view-con input {float: left; width: 15%; margin-left: 5%; }
+		</style>
+		<script>
+			//$('.bootstrap').remove();
+		</script>
+	</head>
+	<body>
+		<div class="childTitle">
+			轮转方案列表
+		</div>
+
+
+		<div class="messageCon clearfix firstPage">
+			<div class="table clearfix">
+				<div class="th clearfix">
+					<div class="td td1">轮转表名</div><div class="td td1">开始时间</div><div class="td td1">结束时间</div><div class="td td1">操作</div>
+				</div>
+				<!--<div class="tr clearfix">
+					<div class="td td1">表1</div><div class="td td1">2016-11-11</div><div class="td td1">2016-11-11</div><div class="td td1"><span class='delete'>删除</span></div><div class="td td1"><span class='add'>添加</span></div>
+				</div>
+
+				<div class="tr clearfix">
+					<div class="td td1">表1</div><div class="td td1">2016-11-11</div><div class="td td1">2016-11-11</div><div class="td td1"><span class='delete'>删除</span></div><div class="td td1"><span class='add'>添加</span></div>
+				</div>-->
+				
+			</div>
+
+		</div>
+		
+		<div class="eidt-view" id="eidt-view">
+			<div class="eidt-view-con">
+				<span>请选择方案</span>
+				<div>
+					<select name=""  class="form-control sel-cycle">
+						<option value=""></option>
+					</select>
+				</div>
+				<input type="button" value="复制" class="btn btn-success eidt-view-cycle" />
+			</div>
+			
+			
+		</div>
+		
+		
+
+	</body>
+	<script type="text/javascript">
+		$(function() {
+			
+			Api.listmcycle({
+				json:{
+					
+				},
+				fn:function (arr) {
+					console.log(arr);
+					$(".tr").remove();
+					var arrLen = arr.length;
+					
+					for( var i = 0; i < arrLen; i++ ){
+						var starttime = timetodate(arr[i]['starttime'],1);
+						var endtime = timetodate(arr[i]['endtime'],1);
+						$(".table").append(
+							'<div class="tr clearfix">'+
+								'<div class="td td1">'+arr[i]['name']+'</div>'+
+								'<div class="td td1">'+starttime+'</div>'+
+								'<div class="td td1">'+endtime+'</div>'+
+								'<div class="td td2"><span class="edit" mid="'+arr[i].id+'">编辑</span></div>'+
+								'<div class="td td2"><a href="inner-lesson-set.html?mid='+arr[i].id+'" class="add" >添加</a></div>'+
+							'</div>'
+						);
+					}
+					writesel('','.sel-cycle',arr);
+					$(".edit").click(function() {
+						$('.eidt-view-cycle').attr('mid',$(this).attr('mid'));
+						$('.eidt-view-cycle')[0].layer = layer.open({
+						  type: 1,
+						  title: false,
+						  closeBtn: 0,
+						  area: '500px',
+						  skin: 'layui-layer-nobg', //没有背景色
+						  shadeClose: true,
+						  content: $('#eidt-view')
+						});				
+					});					
+					
+				}
+			});
+			
+			
+			
+			$('.eidt-view-cycle').click(function () {
+				uselayer(2,'确定要变更方案吗？',function () {
+					Api.copyCourse({
+						json:{
+							mid:$('.eidt-view-cycle').attr('mid'),
+							cmid:$('.sel-cycle').val()
+						},
+						fn:function (data) {
+							console.log(data);
+							uselayer(3,data.msg);
+							layer.close($('.eidt-view-cycle')[0].layer);
+						}
+					});
+				});
+			});
+			
+			
+			
+			
+			
+			
+			
+			
+			
+
+		});
+
+
+	</script>
+</html>

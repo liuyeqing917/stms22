@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<script type="text/javascript" src="../js/layout.js" ></script>
+		<meta charset="UTF-8">
+		<title>高州市人民医院 - 住院医师轮转系统 - 在线批卷</title>
+		<link rel="stylesheet" href="../css/lesson-set.css" />
+		<style>
+			.outline-out { display: block; width: 800px;}
+			.w140 { width: 140px;}
+			.w120 { width: 120px; }
+			.w180 { width: 180px; }
+			.outline-out a { margin: 0 5px;}
+			.outline-out-list li .bl{ border-left: 1px solid #ccc;}
+			
+		</style>
+		<script>
+			window.onload = function () {
+				'use strict';
+				common();
+				var oList = $('.outline-out-list')[0];
+				oList.showpage = false;
+				oList.page=1;	
+				getlist();
+				function getlist() {
+					Api.Dptexamlist({
+						json:{
+							id:getCookie('id'),
+							page:oList.page,
+							pagecount:Api.perpage
+						},
+						fn:function (json) {
+							writelist(json,getlist);
+						}
+					});					
+				};
+				
+				function writelist(json,fn) {
+					console.log(json);
+					var arr = json.data;
+
+					flipover(json.allcount,Api.perpage,fn,oList);
+					
+					for (var i = 0 ; i < arr.length; i++) {
+						var _str = '<a href="javascript:;" _id="'+arr[i].id+'" class="">公布成绩</a>';
+						if (arr[i].ifshow==0&&json.nowtime>arr[i].end) {
+							var _str = '<a href="javascript:;" _id="'+arr[i].id+'" class="write canshow">公布成绩</a>';
+						}
+						
+						var str = 
+							'<li class="clearfix">'
+								+'<div class="w180 bl">'+arr[i].examname+'</div>'
+								+'<div class="w140">'+timetodate(arr[i].end)+'</div>'
+								+'<div class="w120">'+arr[i].departname+'</div>'
+								+'<div class="w90">'+arr[i].address+'</div>'
+								+'<div class="w90">'+arr[i].teachername+'</div>'
+								+'<div class="w180">'+_str+'<a href="exam-checkstudent.html?id='+arr[i].id+'" class="view">查看</a></div>'						
+							+'</li>';			
+						$('.outline-out-list').append(str);
+					}
+					$('.canshow').click(function () {
+						var oId = $(this).attr('_id');
+						uselayer(2,'公布成绩后将只能查看，确定要公布？',function () {
+							Api.surecanshow({
+								isrepeat:$('.canshow'),
+								json:{
+									id:oId
+								},
+								fn:function (json) {
+									uselayer(1,json.msg,function () {
+										if (json.status==1) {
+											window.location.reload();
+										}
+									});
+								}
+							});
+						});
+					});					
+				};
+				
+				
+				
+				
+			};
+			
+			
+			
+		</script>
+		
+		
+	</head>
+	<body>
+		<div class="childTitle">在线批卷</div>
+		
+		
+		<div class="outline outline-out">
+			<div class="outline-out-top clearfix">
+				<div class="w180">试题</div>
+				<div class="w140">结束时间</div>
+				<div class="w120">科室</div>
+				<div class="w90">考试地点</div>
+				<div class="w90">监考老师</div>
+				<div class="w180">操作</div>				
+			</div>
+			<ul class="outline-out-list"></ul>
+			<div class="clearfix page" id="page"></div>			
+		</div>		
+		
+		
+		
+		
+		
+		
+	</body>
+</html>

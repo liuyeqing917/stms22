@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<script type="text/javascript" src="../js/layout.js" ></script>
+		<meta charset="UTF-8">
+		<title>高州市人民医院 - 住院医师轮转系统 - 在线批卷</title>
+		<link rel="stylesheet" href="../css/lesson-set.css" />
+		<style>
+			.outline-out { display: block; width: 800px;}
+			.w200 { width: 200px;}
+			.w140 { width: 140px;}
+			.w160 { width: 160px;}
+			.w130 { width: 130px;}
+			.outline-out-list li .bl{ border-left: 1px solid #ccc;}
+			
+			
+		</style>
+		<script>
+			window.onload = function () {
+				'use strict';
+				common();	
+				var oList = $('.outline-out-list')[0];
+				oList.showpage = false;
+				oList.page=1;	
+				getlist();
+				function getlist() {
+					Api.AnswerList({
+						json:{
+							logid:findurl('id'),
+							page:oList.page,
+							pagecount:Api.perpage
+						},
+						fn:function (json) {
+							writelist(json,getlist);
+						}
+					});					
+				};
+				
+				function writelist(json,fn) {
+					console.log(json);
+					var arr = json.data;
+
+					flipover(json.allcount,Api.perpage,fn,oList);
+					
+					for (var i = 0 ; i < arr.length; i++) {
+						var _str = '<a href="exam-checkdetail.html?from=view&logid='+arr[i].logid+'&stuid='+arr[i].stuid+'" class="view">查看</a>';
+						if (arr[i].status==0&&arr[i].ifshow==0) {
+							var _str = '<a href="exam-checkdetail.html?from=edit&logid='+arr[i].logid+'&stuid='+arr[i].stuid+'" class="edit">批卷</a>';
+						}
+						
+						var str = 
+							'<li class="clearfix">'
+								+'<div class="w140 bl">'+arr[i].stuname+'</div>'
+								+'<div class="w140">'+arr[i].stu_nu+'</div>'
+								+'<div class="w160">'+arr[i].departname+'</div>'
+								+'<div class="w130">'+arr[i].objective+'</div>'
+								+'<div class="w130">'+arr[i].subjective+'</div>'
+								+'<div class="w100">'+_str+'</div>'						
+							+'</li>';			
+						$('.outline-out-list').append(str);
+					}						
+				};
+				
+
+			};
+			
+			
+			
+		</script>
+		
+		
+	</head>
+	<body>
+		<div class="childTitle hascancle">在线批卷</div>
+		
+		
+		<div class="outline outline-out">
+			<div class="outline-out-top clearfix">
+				<div class="w140">姓名</div>
+				<div class="w140">学号</div>
+				<div class="w160">科室</div>
+				<div class="w130">客观题得分</div>
+				<div class="w130">主观题得分</div>
+				<div class="w100">操作</div>				
+			</div>
+			<ul class="outline-out-list"></ul>
+			<div class="clearfix page" id="page"></div>		
+		</div>		
+		
+		
+		
+		
+		
+		
+	</body>
+</html>

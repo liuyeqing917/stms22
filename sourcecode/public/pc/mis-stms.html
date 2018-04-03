@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<script type="text/javascript" src="../js/layout.js" ></script>
+		<meta charset="UTF-8">
+		<title>高州市人民医院 - 住院医师轮转系统</title>
+		<style>
+		
+	/* 设置滚动条的样式 */
+	::-webkit-scrollbar {width: 12px;}
+	/* 滚动槽 */
+	::-webkit-scrollbar-track {-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3); border-radius: 10px;}
+	/* 滚动条滑块 */
+	::-webkit-scrollbar-thumb {border-radius: 10px;background: rgba(0,0,0,0.1); -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5);}
+	
+		
+		
+			html,body { width: 100%; height: 100%; background: #c8ddee;}
+			.topbar {background: #0F5EAB; height: 120px; }
+			.topbarCon { width: 1100px; height: 120px; margin: 0 auto; }
+			.logo { width: 200px; height: 120px; border: 1px solid #797979; border-top: none; float: left; background:#1b9cfa url(../img/logo.png) no-repeat center; background-size: 60% ; }
+			.topbarCon-title { float: right; width: 870px; height: 120px; }
+			.topbarCon-title h3 { height: 90px; line-height: 90px; font-size: 34px; color: #fff; font-weight: bold;}
+			.topbarCon-con { height: 30px; line-height: 30px; background: #c8ddee;  color: #999; font-size: 12px; }
+			.topbarCon-con .topbarCon-left {text-indent: 2em;  }
+			.topbarCon-con .topbarCon-left span {color: #0099FF;}
+			.topbarCon-title .topbarCon-left { float: left; }
+			.topbarCon-title .topbarCon-right { float: right; }
+			.topbarCon-title .topbarCon-right div { float: left; cursor: pointer; height: 30px; padding:8px 0; margin-right: 20px; }
+			.topbarCon-right div img{float:left; width:14px; height:14px;}
+			.topbarCon-right div span{  float:left; line-height:14px; margin-left: 4px; }
+			
+			.stms { width: 1100px; height: 100%; margin: 0 auto; margin-top: -120px; padding-top: 120px; padding-bottom: 40px; margin-bottom: -40px;}
+			.leftCon { float: left; width: 200px; height: 100%; background: #424a57; border: 1px solid #797979; border-top: none; overflow: auto; }
+			.leftCon div { display: none; width: 170px; margin: 0 auto; padding-bottom: 10px; border-bottom: 1px solid #4f5868; color: #fff; font-size: 14px;}
+			.leftCon div p { height: 36px; line-height: 36px; text-indent: 0.5em;}
+			.leftCon div ul li {display: none; height: 30px; line-height: 30px; cursor: pointer; text-indent: 2.5em;}
+			.leftCon div ul li:hover,.leftCon div ul li.active {  background: #4990D2;}
+			
+			.rightCon { float: right; width: 870px; padding-top: 24px; height: 100%;}
+			.rightCon-con { width: 100%; height: 100%; background: #fff;  }
+			.rightCon iframe { width: 100%; height: 100%; border: none; margin: 0; padding: 0;} 
+			
+			.Footer{ text-align: center; height: 40px; line-height: 40px; color:#0066FA;font-size:14px; text-align:center;}			
+			
+		</style>
+		
+		<script>
+			if (!getCookie("token")) {
+				window.location.href = "login.html";
+				
+			}		
+			window.onload = function () {
+				common();
+				setCookie('usernumber',getCookie('usernumber'),7);
+				var oRole = getCookie("r");
+				setJurisdiction('.leftCon div',oRole);
+				setJurisdiction('.leftCon div ul li',oRole);
+				
+				
+				$(".myname").html(codetostr(getCookie("n")));
+				switch (oRole){
+					case '1':
+						$(".role").html('同学');
+						break;
+					case '2':
+						$(".role").html("老师");
+						break;
+					case '3':
+						$(".role").html("管理员");
+						break;
+					default:
+						break;
+				}
+				showTime();
+				$('.leftCon div ul li').click(function () {
+					$('.leftCon div ul li').not($(this)).removeClass('active');
+					$(this).addClass('active'); 
+					changepage($(this).attr('src'));
+					if ($(this).attr('type')) {
+						$('.rightCon iframe').attr('src',$(this).attr('src')+'.html'+'?type='+$(this).attr('type'));
+					} else {
+						$('.rightCon iframe').attr('src',$(this).attr('src')+'.html');
+					}
+
+				});
+				var _href = window.location.href;
+				if (_href.indexOf('#')==-1) {
+					$('.leftCon div ul li').each(function () {
+						if ($(this).attr('role')) {
+							var arr = $(this).attr('role').split(',');
+							for (var i = 0 ; i < arr.length; i++) {
+								if (getCookie('r')==arr[i]) {
+									$(this).click();
+									return false;
+								}
+							}
+						} else {
+							$(this).click();
+							return false;							
+						}						
+					});
+					
+					
+				} else {
+					$('.leftCon div ul li').each(function () {
+						if ($(this).attr('src')==_href.substring(_href.indexOf('#')+1,_href.length)) {
+							$(this).click();
+							return false;
+						}
+					});
+				}
+								
+
+
+
+				$(".logout").click(function() {//登出功能
+					layer.alert('您确定要退出系统吗？', {
+						btn: ['确定','取消']
+					}, function(){//跳转到登录页面
+						removeCookie('token');
+						window.location.href = "login.html";
+					});
+				});
+
+				$(".changePassword").click(function() {//修改密码
+					$('.rightCon iframe').attr('src', 'change-pwd.html');
+				});
+			};
+			
+			function setJurisdiction(str,role) {
+				$(str).each(function () {
+					if ($(this).attr('role')) {
+						var _arr = $(this).attr('role').split(',');
+						for (var i = 0 ; i < _arr.length; i++) {
+							if (_arr[i]==role) {
+								$(this).css('display','block');
+							}								
+						}
+					} else {
+						$(this).css('display','block');
+					}
+				});									
+			};
+			function showTime(){//显示时间
+				var myDate = new Date();
+	    		var year = myDate.getFullYear();
+	    		var month = myDate.getMonth()+1;
+	    		var day = myDate.getDate();
+	    		$(".myDate").text(year + '.' + month + '.' + day);
+			};			
+
+			
+			
+		</script>
+		
+		
+	</head>
+	<body>
+		<div class="topbar">
+			<div class="topbarCon clearfix">
+				<div class="logo"></div>
+				<div class="topbarCon-title">
+					<h3>住院医师轮转系统</h3>
+					<div class="topbarCon-con">
+						<div class="topbarCon-left">
+							您好&nbsp;&nbsp;<span class="myname"></span>&nbsp;&nbsp;<span class="role"></span>,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;欢迎您登录到平台!&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;今天是:&nbsp;&nbsp;<span class="myDate"></span>
+						</div>
+						<div class="topbarCon-right">
+							<div class="changePassword"><img src="../img/changepassword.png" /><span>修改密码</span></div>
+							<!--<div class="changePerInfo"><img src="../img/changepassword.png" /><span>修改个人信息</span></div>-->
+							<div class="logout"><img src="../img/logout.png" /><span>退出系统</span></div>
+						</div>						
+					</div>
+				</div>
+				
+				
+			</div>
+		</div>
+		<div class="stms clearfix">
+			<div class="leftCon">
+				<div>
+					<p>消息中心</p>
+					<ul>
+						<li src="message-show" role='1,2'>消息查看</li>
+						<li src="new-show">新闻公告</li>
+						<!--<li src="message-push" role='3'>消息发布</li>-->
+						<li src="news-push" role='3'>新闻发布</li>
+					</ul>
+				</div>
+
+				<div role='3'>
+					<p>信息管理</p>
+					<ul>
+						<li src="teacher-set" role='3'>教师管理</li>
+						<li src="depart-set" role='3'>科室管理</li>
+					</ul>
+				</div>
+				<div role='1'>
+					<p>手册管理</p>
+					<ul>
+						<li src="manual-see">手册查看</li>
+						<li src="manual-look">手册填写</li>
+						<li src="editPInfo" role='1'>个人信息</li>
+					</ul>
+				</div>
+				<div>
+					<p>轮转表管理</p>
+					<ul>
+						<!--<li src="" role='1'>轮转查看</li>-->
+						<li src="attendance-manage" role='1'>考勤统计</li>
+						<li src="circle-manage" role='2,3'>轮转管理</li>
+						<li src="attendance-manage" role='2,3'>考勤管理</li>
+						<li src="arrange-circle" role='3'>排轮转表</li>
+						<li src="circle-list" role='3'>轮转列表</li>
+
+
+
+					</ul>
+				</div>
+				<div>
+					<p>课程管理</p>
+					<ul>
+						<li src="lesson-view" role='1,2'>课程查看</li>
+						<li src="lesson-activity" role='1'>活动录入</li>
+						<li src="lesson-manage" role='2'>活动管理</li>
+						<li src="outer-lesson-set" role='3'>大纲外课程设置</li>
+						<li src="inner-lesson-new" role='3'>大纲内课程设置</li>
+						<!--<li src="lesson-statistics" role='3'>课程统计</li>-->
+					</ul>
+				</div>
+				<div role='3'>
+					<p>评价管理</p>
+					<ul>
+						<li src="evaluate-look" type="1" role='3'>学员评价</li>
+						<li src="evaluate-look" type="2" role='3'>教师评价</li>
+						<!--<li src="javascript:;" role='3'>评价管理</li>-->
+					</ul>
+				</div>
+				<div role='1,2'>
+					<p>师生互评</p>
+					<ul>
+						<li src="evaluate-look" type="3" role='1'>评价查看</li>
+						<li src="evaluate-replay-list" type="student" role='1'>教师评价</li>
+						<li src="evaluate-replay-list" type="teacher" role='2'>学生评价</li>
+					</ul>
+				</div>
+				<div>
+					<p>考试管理</p>
+					<ul>
+						<li src="exam-online" role='1'>在线考试</li>
+						<li src="score-manage" role='1'>成绩查询</li>
+						<li src="exam-manage" role='2,3'>考试管理</li>
+						<li src="exam-checkquestion" role='2'>在线批卷</li>
+						<li src="score-manage" role='2,3'>成绩管理</li>
+						<li src="exam-question" role='3'>题库管理</li>
+						<li src="exam-confirm" role='2'>考试监管</li>
+					</ul>
+				</div>
+				<div>
+					<p>资源中心</p>
+					<ul>
+						<!--
+						<li src="search-resource" role='1,2,3'>资源搜索</li>
+						<li src="upload-resource" role='1,2,3'>资源上传</li>
+						-->
+						<li src="resource-page" role='1,2,3'>资源搜索</li>
+					</ul>
+				</div>
+				<div>
+					<p>论坛交流</p>
+					<ul>
+						<!--<li src="fourm/fourm_manage" role='3'>论坛管理</li>-->
+						<li src="fourm/fourm">学院论坛</li>
+					</ul>
+				</div>
+				
+			</div>
+			<div class="rightCon">
+				<div class="rightCon-con">
+					<iframe></iframe>
+					
+				</div>
+				
+			</div>			
+			
+		</div>
+		<div class="Footer">Copyright @ 2016 INC</div>
+		
+		
+	</body>
+</html>

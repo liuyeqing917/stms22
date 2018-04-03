@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<script type="text/javascript" src="../js/layout.js" ></script>
+		<link rel="stylesheet" type="text/css" href="../css/bootstrap-datetimepicker.min.css"/>
+		<script type="text/javascript" src="../js/bootstrap-datetimepicker.min.js" ></script>
+		<meta charset="UTF-8">
+		<title>高州市人民医院 - 住院医师轮转系统 - 注册</title>
+		<style type="text/css">
+
+			.goback{
+				display:block;float:right; height:60%; width:50px; margin-top:10px;
+				cursor:pointer; margin-right:10px;
+			}
+			.row{
+				margin-top:17px;
+			}
+			
+			.notnull{
+				color:red; text-align:left; height:34px; line-height:34px;
+			}
+			.text{text-align:right; height:34px; line-height:34px;}
+			.radioDiv{height:34px; line-height:34px;}
+
+			.btnRow button{
+				display:block; background-color:#DC5C59; border-radius:5px;
+				color:white; font-weight:bold; width:70px; height:30px;
+				margin:auto;
+			}
+			
+			.goback{
+
+			}
+		</style>
+		<script>
+			
+		</script>
+	</head>
+	<body>
+		<div class="childTitle ">
+			注册信息<img class="goback" src="../img/return.png" />
+		</div>
+		<form class="registerForm">
+		<input type="hidden" name="hospital_id" value="1" />
+		<div class="row clearfix">
+
+			<div class="col-xs-2 text">
+				姓名:
+			</div>
+			<div class="col-xs-3">
+				<input type="text" class="form-control notNullInput name" name="name" placeholder="汉字或字母" />
+			</div>
+			<div class="col-xs-1 notnull">
+				*
+			</div>
+
+			<div class="col-xs-2 text">
+				性别:
+			</div>
+			<div class="col-xs-1 radioDiv">
+				<input type="radio" name="sex" value="1" checked="checked" id="man"/>
+				<label for="man">男</label>
+			</div>
+			<div class="col-xs-1 radioDiv">
+				<input type="radio" name="sex" value="0" id="woman"/>
+				<label for="woman">女</label>
+			</div>
+		</div>
+
+		<div class="row clearfix">
+			<div class="col-xs-2 text">
+				学员类型:
+			</div>
+			<div class="col-xs-1 radioDiv" style="padding-right:0;">
+				<input type="radio" name="stu_type" value="1" checked="checked" id="schoolStu"/>
+				<label for="schoolStu">在校生</label>
+			</div>
+			<div class="col-xs-1 radioDiv">
+				<input type="radio" name="stu_type" value="2" id="fiveandthree"/>
+				<label for="fiveandthree">5+3</label>
+			</div>
+			<div class="col-xs-1 radioDiv">
+				<input type="radio" name="stu_type" value="3" id="hangye"/>
+				<label for="hangye">行业</label>
+			</div>
+			<div class="col-xs-1 notnull">
+				*
+			</div>
+
+			<div class="col-xs-2 text">
+				学号:
+			</div>
+			<div class="col-xs-3">
+				<input type="text" class="form-control notNullInput stu_nu" name="stu_nu" placeholder="字母或者数字" />
+			</div>
+			<div class="col-xs-1 notnull">
+				*
+			</div>
+
+		</div>
+
+		<div class="row clearfix">
+			<div class="col-xs-2 text">
+				密码:
+			</div>
+			<div class="col-xs-3">
+				<input type="password" class="form-control notNullInput pwd" name="password"  placeholder="6~18位数字、字母、下划线" />
+			</div>
+			<div class="col-xs-1 notnull">
+				*
+			</div>
+
+			<div class="col-xs-2 text">
+				确认密码:
+			</div>
+			<div class="col-xs-3">
+				<input type="password" class="form-control notNullInput pwdConfirm"  placeholder="6~18位数字、字母、下划线"/>
+			</div>
+			<div class="col-xs-1 notnull">
+				*
+			</div>
+		</div>
+		
+		<div class="row clearfix">
+			<div class="col-xs-2 text">
+				证件类型:
+			</div>
+			<div class="col-xs-3">
+				<select value="" class="form-control notNullInput" name="certificate_type">
+					<option value="1">身份证</option>
+					<option value="2">居住证</option>
+					<option value="3">户口本</option>
+					<option value="4">军人证</option>
+					<option value="5">护照</option>
+				</select>
+			</div>
+			<div class="col-xs-1 notnull">
+				*
+			</div>
+
+			<div class="col-xs-2 text">
+				证件号码:
+			</div>
+			<div class="col-xs-3">
+				<input type="text" class="form-control notNullInput certificate_number" name="certificate_number" placeholder="15~18位数字" />
+			</div>
+			<div class="col-xs-1 notnull">
+				*
+			</div>
+		</div>
+
+		<div class="row clearfix">
+			<div class="col-xs-2 text">
+				民族:
+			</div>
+			<div class="col-xs-3">
+				<input type="text" class="form-control notNullInput national" name="national" placeholder="汉字" />
+			</div>
+			<div class="col-xs-1 notnull">
+				*
+			</div>
+
+			<div class="col-xs-2 text">
+				生日:
+			</div>
+			<div class="col-xs-3">
+				<input type="text" class="form-control notNullInput ctime" name="birthday" />
+			</div>
+			<div class="col-xs-1 notnull">
+				*
+			</div>
+		</div>
+
+		<div class="row clearfix">
+			<div class="col-xs-2 text">
+				手机:
+			</div>
+			<div class="col-xs-3">
+				<input type="text" class="form-control notNullInput mobile" name="phone_number" />
+			</div>
+			<div class="col-xs-1 notnull">
+				*
+			</div>
+
+			<div class="col-xs-2 text">
+				固定电话:
+			</div>
+			<div class="col-xs-3">
+				<input type="text" class="form-control" name="fixed_number" />
+			</div>
+			<div class="col-xs-1">
+				
+			</div>
+		</div>
+
+		<div class="row clearfix">
+			<div class="col-xs-2 text">
+				电子邮箱:
+			</div>
+			<div class="col-xs-3">
+				<input type="text" class="form-control email" name="email" />
+			</div>
+			<div class="col-xs-1 notnull">
+				*
+			</div>
+
+			<div class="col-xs-2 text">
+				外语能力:
+			</div>
+			<div class="col-xs-3">
+				<input type="text" class="form-control" name="foreign_blity" />
+			</div>
+			<div class="col-xs-1">
+				
+			</div>
+		</div>
+
+		<div class="row clearfix">
+			<div class="col-xs-2 text">
+				方向科室:
+			</div>
+			<div class="col-xs-3">
+				<select class="form-control fatherdepart notNullSelect">
+					<option value="1">方向科室1</option>
+					<option value="2">方向科室2</option>
+					<option value="3">方向科室3</option>
+				</select>
+			</div>
+			<div class="col-xs-1 notnull">
+				*
+			</div>
+
+			<div class="col-xs-2 text">
+				科室选择:
+			</div>
+			<div class="col-xs-3">
+				<select value="" class="form-control childdepart notNullSelect" name="department_id">
+					<option value="1">专业1</option>
+					<option value="2">专业2</option>
+					<option value="3">专业3</option>
+				</select>
+			</div>
+			<div class="col-xs-1 notnull">
+				*
+			</div>
+
+		</div>
+
+		<div class="row clearfix">
+			<div class="col-xs-2 text">
+				通讯地址:
+			</div>
+			<div class="col-xs-9">
+				<input type="text" class="form-control" name="communication_adress" />
+			</div>
+
+		</div>
+
+		<div class="row clearfix">
+			<div class="col-xs-2 text">
+				紧急联系人:
+			</div>
+			<div class="col-xs-3">
+				<input type="text" class="form-control" name="emergency_contact" />
+			</div>
+			<div class="col-xs-1">
+				
+			</div>
+
+			<div class="col-xs-2 text">
+				联系人手机:
+			</div>
+			<div class="col-xs-3">
+				<input type="text" class="form-control" name="ec_number" />
+			</div>
+			<div class="col-xs-1">
+				
+			</div>
+		</div>
+
+		<div class="row clearfix">
+			<div class="col-xs-2 text">
+				紧急联系人地址:
+			</div>
+			<div class="col-xs-9">
+				<input type="text" class="form-control" name="ec_adress" />
+			</div>
+
+		</div>
+
+		<div class="row clearfix">
+			<div class="col-xs-2 text">
+				自我介绍
+			</div>
+
+		</div>
+
+		<div class="row clearfix">
+			<div class="col-xs-2">
+				
+			</div>
+			<div class="col-xs-9">
+				<textarea class="form-control" rows="5" name="self_introduce"></textarea>
+			</div>
+		</div>
+		</form>
+
+		<div class="row clearfix btnRow" style="margin-bottom:30px;">
+			<div class="col-xs-3"></div>
+			<div class="col-xs-2"><button type="button" class="save">保存</button></div>
+			<div class="col-xs-2"></div>
+			<div class="col-xs-2"><button type="button" class="return">返回</button></div>
+			<div class="col-xs-3"></div>
+		</div>
+	</body>
+	<script type="text/javascript">
+		function setDatePicker(){//时间日期插件设置
+
+			$(".ctime").datetimepicker({
+				minView:'2',
+				format: "yyyy-mm-dd",
+				autoclose: true,
+				pickerPosition: "bottom-left"
+			});
+		}
+
+		$(".goback").click(function() {
+			window.location.href = "login.html";
+		});
+
+		$(document).ready(function() {
+			getFatherdepart();//获取父科室
+			getChilddepart();//获取子科室
+			setDatePicker();//设置时间插件
+		});
+
+		function getFatherdepart(){//获取父科室
+
+			Api.fatherdepart({
+				istoken:1,
+				fn:function (arr) {
+					console.log(arr);
+					$(".fatherdepart").empty();
+					for(var i = 0; i < arr.length; i++){
+						$(".fatherdepart").append('<option value="'+arr[i]['id']+'">'+arr[i]['name']+'</option>');
+					}
+					childPartFirst();//父科室加载完后加载子科室
+				}
+			});
+		}
+
+		function getChilddepart(){//获取子科室
+
+			$(".fatherdepart").change(function() {
+				var fatherId = $(".fatherdepart").val();
+				$(".childdepart").empty(); $('.childdepart').val('');
+				Api.childdepart({
+					istoken:1,
+					json:{
+						pid:fatherId
+					},
+					fn:function (arr) {
+						for(var i = 0; i < arr.length; i++){
+							$(".childdepart").append('<option value="'+arr[i]['id']+'">'+arr[i]['name']+'</option>');
+						}
+					}
+				});
+			});
+
+		}
+
+		function childPartFirst(){//父科室加载完后加载子科室
+			var fatherId = $(".fatherdepart").children().eq(0).val();
+			$(".childdepart").empty(); $('.childdepart').val('');
+			Api.childdepart({
+				istoken:1,
+				json:{
+					pid:fatherId
+				},
+				fn:function (arr) {
+					for(var i = 0; i < arr.length; i++){
+						$(".childdepart").append('<option value="'+arr[i]['id']+'">'+arr[i]['name']+'</option>');
+					}
+				}
+			});
+		}
+
+
+		$(".save").click(function() {
+
+			if(!/^[\u4e00-\u9fa5|a-z|A-Z]{1,10}$/.test($.trim($('.name').val()))){// 验证汉字或者字母
+				$('.name').focus();
+				uselayer(3,'姓名只能是汉字或者字母');
+				return false;
+			}				
+			if(!/^\w{1,10}$/.test($.trim($('.stu_nu').val()))){// 验证字母或者数字
+				$('.stu_nu').focus();
+				uselayer(3,'学号只能是字母或者数字');
+				return false;
+			}		
+			
+			if(!/^\w{6,18}$/.test($.trim($('.pwd').val()))){// 验证字母或者数字
+				$('.pwd').focus();
+				uselayer(3,'密码只能是6-18位的数字、字母、下划线');
+				return false;
+			}
+			
+			if(!/^\w{6,18}$/.test($.trim($('.pwdConfirm').val()))){// 验证字母或者数字
+				$('.pwdConfirm').focus();
+				uselayer(3,'密码只能是6-18位的数字、字母、下划线');
+				return false;
+			}				
+			
+			if($.trim($('.pwdConfirm').val())!=$.trim($('.pwd').val())){// 验证字母或者数字
+				$('.pwdConfirm').focus();
+				uselayer(3,'你的密码和确认密码不一致，请确认！');
+				return false;
+			}	
+			
+			if(!/^\d{15,18}$/.test($.trim($('.certificate_number').val()))){// 数字
+				$('.certificate_number').focus();
+				uselayer(3,'请输入正确的证件号！');
+				return false;
+			}				
+			
+			if(!/^[\u4e00-\u9fa5]{1,10}$/.test($.trim($('.national').val()))){// 汉字
+				$('.national').focus();
+				uselayer(3,'名族必须为汉字！');
+				return false;
+			}				
+			
+			if(!/^\d{4}-\d{2}-\d{2}$/.test($.trim($('.ctime').val()))){
+				$('.ctime').focus();
+				uselayer(3,'日期格式错误');
+				return false;
+			}		
+			
+			if(!/^1[3-578]\d{9}$/.test($.trim($('.mobile').val()))){
+				$('.mobile').focus();
+				uselayer(3,'请输入正确的手机号');
+				return false;
+			}
+			
+			if(!/^\w{3,18}@[a-z0-9\-]+(\.[a-z]{2,6}){1,2}$/i.test($.trim($('.email').val()))){
+				$('.email').focus();
+				uselayer(3,'请输入正确的邮箱地址');
+				return false;
+			}		
+			
+			if(!$.trim($('.childdepart').val())){
+				$('.childdepart').focus();
+				uselayer(3,'科室必选，不能为空！');
+				return false;
+			}			
+			$('.ctime').val(new Date($('.ctime').val()).getTime()/1000);
+			var postData = $(".registerForm").serialize();
+			Api.register({
+				istoken:1,
+				json:postData,
+				fn:function (json) {
+					$('.ctime').val(timetodate($('.ctime').val(),1));
+					uselayer(3,json.msg,function () {
+						if (json.status==1) {
+							setCookie('usernumber',$(".stu_nu").val(),7);
+							window.location.href = "login.html";
+						}
+					});									
+				}
+			});
+		});
+
+		$(".return").click(function() {
+			 window.location.href = "login.html";
+		});
+
+
+
+		$(".pwdConfirm").focus(function() {
+			if( $(".pwd").val() == "" ){
+				uselayer(3,'请先填写密码！');
+				$(".pwd").focus();
+			}
+		});
+
+	</script>
+</html>

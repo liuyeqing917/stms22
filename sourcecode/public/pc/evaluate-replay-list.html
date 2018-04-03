@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<script type="text/javascript" src="../js/layout.js" ></script>
+		<meta charset="UTF-8">
+		<title>高州市人民医院 - 住院医师轮转系统 - 学员评价</title>
+		<link rel="stylesheet" href="../css/evaluate-replay-list.css" />
+		<script src="../js/evaluate-replay-list.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+	<body>
+	<form class="evaluateform ">
+		<div class="childTitle ">学员评价</div>
+		<div class="topsel clearfix ">
+			<div class="sel-depart">
+				<span>方向科室</span>
+				<select class="form-control sel-fatherdepart"></select>
+			</div>
+			<div class="sel-depart" style="width: 170px;">
+				<span>科室</span>
+				<select class="form-control sel-childdepart" name="depid"></select>
+			</div>
+			<div class="sel-depart" style="width: 170px;">
+				<span class="user-typespan">学员</span>
+				<select class="form-control users" name="evaluated_id">
+
+				</select>
+			</div>
+		</div>
+
+		<div class="bgmodel ">
+			<div class="question-content ">
+
+			</div>
+			<div class="allscoretitle">
+				<span>总分：</span>
+				<span class="score-data">0</span>
+			</div>
+			<input type="hidden" class="mainid" value="" name="main_id" />
+			<input type="hidden" class="evaluating_id" value="" name="evaluating_id" />
+			<input type="hidden" class="token" value="" name="token" />
+
+
+			<div class="adddepart-btn">
+				<input type="button" class="btn btn-default addbtn" value="提交" />
+			</div>
+		</div>
+
+		</form>
+
+		<div class="tishi-message ">
+
+		</div>
+
+
+	</body>
+</html>

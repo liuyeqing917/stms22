@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<script type="text/javascript" src="../js/layout.js" ></script>
+		<meta charset="UTF-8">
+		<title>高州市人民医院 - 住院医师轮转系统 - 添加科室</title>
+		<style>
+			.addlesson { width: 300px; margin: 50px auto; }
+			.addlesson ul li { height: 34px; line-height: 34px; font-size: 14px; margin-top: 30px;}
+			.addlesson ul li span {  float: left; width: 80px;}
+			.addlesson ul li span em { color: red;}
+			.addlesson ul li div {  float: left; width: 220px;}
+			.adddepart-btn { width: 300px; margin: 100px auto 0;}
+			.adddepart-btn .btn-default {background: #dc5c59; color: #fff; margin:0 20px;}
+
+			.addteacher-btn { width:300px; margin: 20px auto 0;}
+			.addteacher-btn .btn-default {background: lightblue; color: #fff; margin:0 20px;}
+			.delete{ display: none;}
+			.none{
+				display: none;
+			}
+			.block{
+				display: block;
+			}
+			.father .sj-father{ display: none;}
+			.father .zycfatherli{ display: none;}
+			.child .sj-father{ display: none;}
+			.child .zycfatherli{ display: block;}
+			
+		
+			
+			
+		</style>
+		<link rel="stylesheet" type="text/css" href="../css/bootstrap-datetimepicker.min.css"/>
+		<script type="text/javascript" src="../js/bootstrap-datetimepicker.min.js" ></script>
+		<script>
+			window.onload = function () {
+				'use strict';
+				common();				
+
+				var oFrom = findurl('from');
+				var oId = findurl('id'); 
+				var oPid = findurl('pid');
+				
+				//获取当前所有方向科室
+				togetfatherdepart(function (arr) {
+					writesel('','.zycfatherdepart',arr,0);
+				});
+				
+				//获取所有老师
+				Api.searchteacher({
+					json:{
+						id:0,
+						department_id:0
+					},
+					fn:function (arr) {
+						writesel('请选择教师','.sel-teacher',arr,0);
+						writesel('请选择老师','.conentteacher',arr,0);
+					}
+				});
+				
+				//判断新增还是编辑
+				if (oFrom=='add') {
+					$('.zycdepart').change(function () {
+						//方向科室
+						if ($(this).val()==1) {
+							changepage('father');
+							$('#departform')[0].className = 'father';
+							
+						} else {//科室
+							changepage('child');
+							$('#departform')[0].className = 'child';
+							
+						}
+					});						
+					
+					//判断进来的时候新增的是方向科室还是科室
+					var _href = window.location.href;
+					if (_href.indexOf('#')==-1) {
+						$('.zycdepart').val(2);
+						changepage('child');
+						$('#departform')[0].className = 'child';					
+					} else {
+						_href = _href.substring(_href.indexOf('#')+1,_href.length);
+						$('.zycdepart option.'+_href).attr('selected','selected');
+						$('#departform')[0].className = _href;
+					}		
+					
+					$('.addlesson').removeClass('none');
+					
+				} else if (oFrom=='edit') {
+					var oType = findurl('type');//判断类型，方向科室还是科室
+					if (oType=='father') {
+						$('.zycdepart').val(1);
+						$('.childTitle').html('修改方向科室');
+					} else if (oType=='child') {
+						$('.zycdepart').val(2);
+						$('.childTitle').html('修改科室');
+					}
+					$('.zycdepart').attr('disabled','disabled');
+					$('.zycfatherdepart').attr('disabled','disabled');
+					$('.addbtn').val('修改');
+					$('.departid').val(oId);
+					$('.delete').css('display','inline-block');
+
+					Api.onedepart({
+						json:{
+							pid:oPid,
+							department_id:oId,
+							type:2
+						},
+						fn:function (json) {
+							//方向科室信息
+							if(json[0].pid==0){ 
+								$('#departform')[0].className = 'father';
+								$('.zycfatherli').addClass('none');
+								$('.guanliteacher').addClass('none');
+								$('.addteacherdiv').addClass('none');
+								$('.addteacher-btn').addClass('none');		
+								$('.zycfatherli-name').addClass('none');								
+								$('.sj-father-name').val(json[0].name);
+								
+							}else{//科室信息
+								$('#departform')[0].className = 'child';
+
+								$(".zycfatherdepart").val(json[0].pid);
+
+								$('.cname').val(json[0].name);
+
+								$('.sel-teacher').val(json[0].teacher_id);
+
+								var teacherArray =json[0].teacherids;
+
+								for(var i=0;i<teacherArray.length;i++){
+									if (i==0) {
+										$(".conentteacher").eq(i).val(teacherArray[i]);
+									} else {
+										addteachers(teacherArray[i]);
+									}
+								}
+							}
+							$('.addlesson').removeClass('none');
+						}
+					});
+
+				} 
+				
+
+				$('.addbtn').click(function () {
+
+					if ($('.zycdepart').val()=='1') {
+						if ($.trim($('.cname').val())=='') {
+							uselayer(3,'方向科室名字不能为空');
+							$('.cname').focus();
+							return false;
+						}						
+					}
+					
+					if (oType=='father') {
+						
+						
+					} else {
+						if ($.trim($('.cname').val())=='') {
+							uselayer(3,'科室名字不能为空');
+							$('.cname').focus();
+							return false;
+						}
+	
+						if ($.trim($('.sel-teacher').val())==0) {
+							uselayer(3,'请选择负责教师');
+							$('.sel-teacher').focus();
+							return false;
+						}						
+						
+						var aTeachers = [];
+						$('.conentteacher').each(function () {
+							if ($.trim($(this).val())!=0) {
+								for (var i = 0 ; i < aTeachers.length; i++) {
+									if (aTeachers[i]==$.trim($(this).val())) {
+										aTeachers.repeat = true;
+										$(this).focus();
+										return true;
+									}
+								}
+								aTeachers.push($.trim($(this).val()));
+							}
+						});
+						if (aTeachers.length==0) {
+							uselayer(3,'请选择老师');
+							$('.conentteacher:first').focus();
+							return false;
+						}
+						if (aTeachers.repeat) {
+							uselayer(3,'老师不能重复');
+							return false;
+						}
+					}
+					
+
+					var json = {
+							name:$.trim($('.cname').val()),
+							hospital_id:1,
+							teacher_id:$.trim($('.sel-teacher').val()),
+							teacher_ids:aTeachers						
+					};
+					
+					if (oFrom=='add') {
+						uselayer(2,'是否确定要新增',function () {
+							//新增方向科室
+							if ($('.zycdepart').val()==1) {
+								json.fathername = $.trim($('.cname').val());
+								
+								Api.addFather({
+									json:json,
+									fn:function (data) {
+										if (data.status!=1) {
+											uselayer(1,data.msg);
+										} else {
+											uselayer(2,'新增成功是否继续新增?',function () {
+												window.location.reload();
+											},function () {
+												window.location.href = "depart-set.html";
+											});
+										}
+									}
+								});						
+								
+								
+							} else {//新增子科室
+								json.pid = $('.zycfatherdepart').val();
+								Api.addDepart({
+									json:json,
+									fn:function (data) {
+										if (data.status!=1) {
+											uselayer(1,data.msg);
+										} else {
+											uselayer(2,'新增成功是否继续新增?',function () {
+												window.location.reload();
+											},function () {
+												window.location.href = "depart-set.html";
+											});
+										}
+									}
+								});							
+							}							
+						});								
+					} else {
+						uselayer(2,'是否确定要修改',function () {
+							json.pid = oPid;
+							json.id = oId;
+							if (oPid==0) {
+								json.name=$.trim($('.sj-father-name').val());
+							}
+							Api.modifyDepart({
+								json:json,
+								fn:function (data) {
+									uselayer(1,data.msg,function () {
+										if (data.status==1) {
+											window.location.href="depart-set.html";
+										}
+									});
+								}
+							});														
+						});	
+					}				
+				});													
+				
+				//新增教师
+				$('.teacheraddbtn').click(addteachers);
+				
+				function addteachers(id) {
+					var str ='<li class="addteacherli"><span><em> &nbsp;</em></span><div><select class="conentteacher form-control" name="teacher_ids[]">'+$('.sel-teacher').html()+'</select></div></li>';
+					$('.zycteacherdiv').append(str);
+					if (typeof id == 'string') {
+						$(".zycteacherdiv .conentteacher:last").val(id);
+					}
+				};
+				
+				//删除教师
+				$('.teachercancle').click(function () {
+					$(".zycteacherdiv").children(".addteacherli:last-child").remove();
+				});
+
+				$('.delete').click(function () {
+					uselayer(2,'确定要删除该科室吗？',function () {
+						Api.deleteDepart({
+							json:{id:oId},
+							fn:function (json) {
+								uselayer(1,json.msg,function () {
+									if (json.status==1) {
+										window.location.href="depart-set.html";
+									}
+								});
+							}
+						});
+					});
+
+				});
+			};
+
+		</script>
+		
+	</head>
+	<body>
+		<div class="childTitle hascancle">添加科室</div>
+		<div class="addlesson none">
+
+			<div class="" id="departform">
+				<ul >
+					<li class="selectdeparturl">
+						<span><em>* </em>添加类型</span>
+						<div>
+							<!--<input type="text" class="cname form-control" />-->
+							<select class="zycdepart form-control">
+								<option value="1" class="father">方向科室</option>
+								<option value="2" class="child">科室</option>
+	
+							</select>
+						</div>
+					</li>
+					<li class="sj-father">
+						<span><em>* </em>方向科室</span>
+						<div>	
+							<input type="text" class=" form-control sj-father-name"   name=""/>
+						</div>	
+					</li>				
+					<li class="zycfatherli none">
+						<span><em>* </em>方向科室</span>
+						<div>
+	
+							<select class="zycfatherdepart form-control" name="pid">
+	
+							</select>
+						</div>
+					</li>
+					<li class="zycfatherli-name">
+						<span><em>* </em>科室名字</span>
+						<div>	
+							<input type="text" class=" form-control cname "   name="name"/>
+						</div>	
+					</li>
+					<li class="guanliteacher ">
+						<span><em>* </em>负责教师</span>
+						<div>
+							<select class="sel-teacher form-control"  name="teacher_id"></select>
+						</div>						
+					</li>
+	
+					<div class="addteacherdiv ">
+						<li class="addteacherli">
+							<span><em>* </em>所属老师</span>
+							<div>
+								<select class="conentteacher form-control"  name="teacher_ids[]"></select>
+							</div>
+						</li>
+					</div>
+	
+					<div class="zycteacherdiv ">
+	
+					</div>
+	
+					<div class="addteacher-btn ">
+						<input type="button" class="btn btn-default teacheraddbtn " value="增加" />
+	
+						<input type="button" class="btn btn-default teachercancle" value="减少" />
+					</div>
+	
+				</ul>
+			</div>
+			
+
+			<div class="adddepart-btn">
+				<input type="button" class="btn btn-default addbtn" value="提交" />
+				<input type="button" class="btn btn-default delete" value="删除" />
+				<input type="button" class="btn btn-default cancle" value="返回" />
+			</div>
+			
+		</div>	
+		
+		
+		
+	</body>
+</html>

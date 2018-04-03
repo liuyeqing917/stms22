@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<script type="text/javascript" src="../js/layout.js" ></script>
+		<meta charset="UTF-8">
+		<title>高州市人民医院 - 住院医师轮转系统 - 学员评价</title>
+		<link rel="stylesheet" href="../css/lesson-set.css" />
+		<script type="text/javascript" src="../js/highcharts.js" ></script>
+		<script src="../js/evaluate-look.js" type="text/javascript" charset="utf-8"></script>
+		<style>
+			.sel-depart { width: 190px;}
+			.sel-depart select { width: 110px;}
+			
+			.addlesson {right: 30px; top: -38px; background-color:#dc5c59;color: white  }
+			.w220 { width: 220px;}
+			.w50 { width: 50px;}
+			.w130 { width: 130px;}			
+			.none{display: none}
+			.line-div{cursor: pointer}
+			.outline-out { display: block;}
+		</style>
+	</head>
+	<body>
+		<div class="childTitle ">评价查看</div>
+		
+		<div class="topsel clearfix ">
+			<div class="sel-depart">
+				<span>方向科室</span>
+				<select class="form-control sel-fatherdepart"></select>
+			</div>
+			<div class="sel-depart" style="width: 170px;">
+				<span>科室</span>
+				<select class="form-control sel-childdepart"></select>
+			</div>
+			<div class="sel-depart" style="width: 170px;">
+				<span class="user-typespan">学员</span>
+				<select class="form-control users">
+				</select>
+			</div>
+		</div>
+
+		<div class="outline outline-out">
+			<button class="addlesson none">统计分析</button>
+			<div class="outline-out-top clearfix">
+				<!-- <div class="w90">姓名</div>
+				<div class="w130">科室</div>
+				<div class="w220">轮转时间</div>
+				<div class="w90">得分</div>
+				<div class="w130 usersure">教师签字</div> -->
+				<table class="table table-striped">
+						<thead>
+							<tr>
+								<th></th>
+								<th>姓名</th>
+								<th>科室</th>
+								<th>轮转时间</th>
+								<th>得分</th>
+								<th class="usersure">教师签字</th>
+							</tr>
+						</thead>
+						<tbody class="outline-out-list"> 
+								<!-- <tr>
+										<td>科室</td>
+										<td>考试时间</td>
+										<td>客观题平均得分</td>
+										<td>主观题平均得分</td>
+										<td>带教老师</td>
+									</tr> -->
+						</tbody>
+					</table>
+			</div>
+			<!-- <ul class="outline-out-list"></ul> -->
+			<div class="clearfix page" id="page"></div>			
+		</div>
+		
+		<div class="statistics none" style="width: 600px; height: 400px; margin: 0 auto; border: 1px solid #ccc; padding-top: 16px;"></div>
+
+		
+	</body>
+</html>

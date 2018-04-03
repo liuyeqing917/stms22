@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<script type="text/javascript" src="../js/layout.js" ></script>
+		<link rel="stylesheet" type="text/css" href="../css/bootstrap-datetimepicker.min.css"/>
+		<script type="text/javascript" src="../js/bootstrap-datetimepicker.min.js" ></script>
+		<meta charset="UTF-8">
+		<title>高州市人民医院 - 住院医师轮转系统 - 资源搜索</title>
+		<style type="text/css">
+			.conOuter{
+				width: 100%; padding-left:130px; padding-right:130px;
+				font-size: 14px; padding-top: 25px;
+			}
+			.btn1{
+				display:block; background-color:#DC5C59; border-radius:5px;
+				color:white; font-weight:bold;
+				margin:auto;
+			}
+			
+			.uploadBtn{
+				width:545px; height:38px; cursor:pointer; 
+			}
+			.sourchBtn{
+				width:100px; height:33px; cursor:pointer;
+			}
+			.subTit{
+				border-bottom:2px solid #55D1A2;
+			}
+			.row{
+				margin-bottom:30px;
+			}
+			.selectRow{
+				height:34px; line-height:34px; margin-bottom:20px;
+			}
+			
+		</style>
+		<script>
+			
+		</script>
+	</head>
+	<body>
+		<div class="childTitle">
+			资源搜索
+		</div>
+
+		<div class="conOuter">
+			<div class="row">
+				<span class="subTit">文件类型</span>
+			</div>
+			<div class="row">
+				<div class="col-xs-3">
+					<select name="" class="form-control fileTypeSelect">
+						<option value="1">图片</option>
+						<option value="2">视频</option>
+						<option value="3">音频</option>
+						<option value="4">文档</option>
+					</select>
+				</div>
+			</div>
+
+			<div class="row"><!--精确搜索框-->
+				<div class="col-xs-8">
+					<input type="text" class="form-control" placeholder="请输入关键字进行查询" />
+				</div>
+				<div class="col-xs-3">
+					<button class="btn1 sourchBtn" type="button">立即搜索</button>
+				</div>
+			</div>
+
+			<div class="row">
+				<span class="subTit">分类选择</span>
+			</div>
+
+			<div class="row selectRow">
+				<div class="col-xs-2 pad0 right">主科室:</div>
+				<div class="col-xs-3">
+					<select name="" class="form-control fatherdepart">
+					</select>
+				</div>
+
+				<div class="col-xs-2 pad0 right">科室:</div>
+				<div class="col-xs-3">
+					<select name="" class="form-control childdepart">
+					</select>
+				</div>
+			</div>
+
+			<div class="row selectRow">
+				<div class="col-xs-2 pad0 right">类型:</div>
+				<div class="col-xs-3">
+					<select name="" class="form-control classSelect">
+						<option value="1">病种</option>
+						<option value="2">临床操作</option>
+						<option value="3">大病历书写</option>
+						<option value="4">活动记录</option>
+					</select>
+				</div>
+
+				<div class="col-xs-2 pad0 right">题目:</div>
+				<div class="col-xs-3">
+					<select name="" class="form-control typeSelect">
+					</select>
+				</div>
+			</div>
+
+			<div class="row">
+				<span class="subTit">时间</span>
+			</div>
+
+			<div class="row selectRow">
+				<div class="col-xs-2 pad0 right">开始时间:</div>
+				<div class="col-xs-3">
+					<input type="text" class="ctime form-control startInp">
+				</div>
+
+				<div class="col-xs-2 pad0 right">结束时间:</div>
+				<div class="col-xs-3">
+					<input type="text" class="ctime form-control endInp">
+				</div>
+			</div>
+
+			<div class="row">
+				<button class="btn1 uploadBtn" type="button">立即搜索</button>
+			</div>
+
+		</div>
+		
+	</body>
+	<script type="text/javascript">
+/*var oFile = document.getElementById('file');
+	
+	oFile.onchange = function () {
+		var str = this.value;
+		var i = str.lastIndexOf("\\");
+		console.log(str.substring(i+1,str.length));
+		
+	}
+*/
+		function setDatePicker(){//时间日期插件设置
+
+			$(".ctime").datetimepicker({
+				minView:'2',
+				format: "yyyy-mm-dd",
+				autoclose: true,
+				pickerPosition: "bottom-left"
+			});
+		}
+
+		$(function() {
+			common();
+			setDatePicker();//时间日期插件设置
+			getFatherdepart();//获取父科室
+		});
+
+		function getFatherdepart(){//获取父科室
+
+			Api.fatherdepart({
+				istoken:1,
+				fn:function (arr) {
+					$(".fatherdepart").empty();
+					for(var i = 0; i < arr.length; i++){
+						$(".fatherdepart").append('<option value="'+arr[i]['id']+'">'+arr[i]['name']+'</option>');
+					}
+					var fatherdepartid = $('.fatherdepart').val();
+					childPartFirst(fatherdepartid);//父科室加载完后加载子科室
+				}
+			});
+		}
+
+		function getChilddepart(){//获取子科室
+
+			$(".fatherdepart").change(function() {
+				var fatherId = $(".fatherdepart").val();
+				$(".childdepart").empty(); $('.childdepart').val('');
+				Api.childdepart({
+					istoken:1,
+					json:{
+						pid:fatherId
+					},
+					fn:function (arr) {
+						for(var i = 0; i < arr.length; i++){
+							$(".childdepart").append('<option value="'+arr[i]['id']+'">'+arr[i]['name']+'</option>');
+						}
+						$('.childdepart').change();
+					}
+				});
+			});
+
+		}
+
+		function childPartFirst(fatherdepartid){//父科室加载完后加载子科室
+			$(".childdepart").empty(); $('.childdepart').val('');
+			Api.childdepart({
+				istoken:1,
+				json:{
+					pid:fatherdepartid
+				},
+				fn:function (arr) {
+					for(var i = 0; i < arr.length; i++){
+						$(".childdepart").append('<option value="'+arr[i]['id']+'">'+arr[i]['name']+'</option>');
+					}
+					$('.childdepart').change();
+					getChilddepart();//获取子科室
+				}
+			});
+		}
+
+		$('.childdepart').change(function() {
+			generateTypeList();//生成类型下拉框
+		});
+
+		$('.classSelect').change(function() {
+			generateTypeList();//生成类型下拉框
+		});
+
+		function generateTypeList(){//生成类型下拉框
+			var department_id = $('.childdepart').val();
+			var pid = $('.classSelect').val();
+			$(".typeSelect").empty(); $('.typeSelect').val('');
+			if( pid == 1 ){
+				Api.getManualType({
+					json:{
+						department_id:department_id
+					},
+					fn:function (arr) {
+						var typeLen = arr.length;
+						for ( var i = 0; i < typeLen; i++ ) {
+							$('.typeSelect').append(
+								'<option value="'+arr[i]['id']+'">'+arr[i]['title']+'</option>'
+							);
+						}
+					}
+				});
+			}else if( pid == 2 ){
+				Api.getManualType2({
+					json:{
+						department_id:department_id
+					},
+					fn:function (arr) {
+						var typeLen = arr.length;
+						for ( var i = 0; i < typeLen; i++ ) {
+							$('.typeSelect').append(
+								'<option value="'+arr[i]['id']+'">'+arr[i]['title']+'</option>'
+							);
+						}
+					}
+				});
+			}else if( pid == 3 ){
+				Api.getManualType3({
+					json:{
+						department_id:department_id
+					},
+					fn:function (arr) {
+						var typeLen = arr.length;
+						for ( var i = 0; i < typeLen; i++ ) {
+							$('.typeSelect').append(
+								'<option value="'+arr[i]['id']+'">'+arr[i]['title']+'</option>'
+							);
+						}
+					}
+				});
+			}else if( pid == 4 ){
+				Api.getManualType4({
+					json:{
+						department_id:department_id
+					},
+					fn:function (arr) {
+						var typeLen = arr.length;
+						for ( var i = 0; i < typeLen; i++ ) {
+							$('.typeSelect').append(
+								'<option value="'+arr[i]['id']+'">'+arr[i]['title']+'</option>'
+							);
+						}
+					}
+				});
+			}
+
+		}
+
+	</script>
+</html>

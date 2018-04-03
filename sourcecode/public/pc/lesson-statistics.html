@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<script type="text/javascript" src="../js/layout.js" ></script>
+		<meta charset="UTF-8">
+		<title>高州市人民医院 - 住院医师轮转系统 - 课程统计</title>
+		<link rel="stylesheet" href="../css/lesson-set.css" />
+		<style>
+			.w140 { width: 140px;} 
+			.topsel { width: 510px;}
+			.outline-out {display: block; width: 800px;}
+			.outline-out-top { width: 800px;}
+			.lesson-title { height: 36px; line-height: 36px;}
+			.lesson-title span { border-bottom: 2px solid #55D1A2; font-size: 16px; font-weight: bold; }
+			
+			
+		</style>
+		<script>
+			window.onload = function () {
+			'use strict';	
+				common();
+				togetfatherdepart(function (arr) {
+					writesel('','.sel-fatherdepart',arr,1,function () {
+						getlist();
+					});
+				});	
+			
+			
+				$('input[name=outline-type]').change(function () {
+					getlist();
+				});
+				
+				
+				function getlist() {
+					alert($("input[name=outline-type]:checked").val());
+					
+						
+				};	
+			};
+		
+		</script>
+	</head>
+	<body>
+		<div class="childTitle">课程统计</div>
+		
+		<div class="topsel clearfix">
+			<div class="sel-depart">
+				<span>方向科室</span>
+				<select class="form-control sel-fatherdepart"></select>
+			</div>
+			<div class="sel-type">
+				<input type="radio" name="outline-type" value="0" id="outline-in" checked="checked" />
+				<label for="outline-in">大纲课程设置</label>
+			</div>
+			<div class="sel-type">
+				<input type="radio" name="outline-type" value="1" id="outline-out" />
+				<label for="outline-out">大纲外课程设置</label>
+			</div>
+		</div>
+
+		
+		<div class="outline outline-out">
+			<div class="lesson-list">
+				<h3 class="lesson-title"><span>急症科</span></h3>
+				<div class="outline-out-top clearfix">
+					<div class="w140">科室</div>
+					<div class="w110">教师姓名</div>
+					<div class="w110">职称</div>
+					<div class="w110">出勤率</div>
+					<div class="w110">计划课时</div>
+					<div class="w110">实际课时</div>			
+					<div class="w110">带教学生数</div>				
+				</div>
+			<ul class="outline-out-list"></ul>
+			<div class="clearfix page" id="page"></div>				
+			</div>
+			
+		</div>
+		
+		
+	</body>
+</html>

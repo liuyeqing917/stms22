@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<script type="text/javascript" src="../js/layout.js" ></script>
+		<meta charset="UTF-8">
+		<title>高州市人民医院 - 住院医师轮转系统 - 新闻查看</title>
+		<link rel="stylesheet" type="text/css" href="../css/common2.css"/>
+		<style type="text/css">
+			.messageCon{
+				width:100%; padding-left:60px; padding-right:100px; font-size:14px;
+				padding-top:30px; word-break:break-all; height:400px;
+			}
+			.messageBox{
+				border-bottom:1px dotted #cccccc; line-height:18px; padding-top:10px;
+				padding-bottom:5px; cursor:pointer;
+			}
+			.messageTxt{
+				width:100%; float:left; padding-right:150px;
+			}
+			.messageBox>span{
+				float:left; width:90px; margin-left:-90px;
+			}
+			.fenyeCon{
+				width:700px; padding-bottom:50px; margin:auto;
+			}
+
+		</style>
+		<script>
+			$('.commonCss').remove();
+		</script>
+		<script type="text/javascript" src="../js/jqPaginator.js"></script>
+	</head>
+	<body>
+		<div class="childTitle">
+			新闻查看
+		</div>
+
+		<div class="messageCon">
+
+		</div>
+		<div class="fenyeCon">
+			<ul class="pagination" id="pagination1"></ul>
+		</div>
+	</body>
+	<script type="text/javascript">
+		function fenye(allcount,page){//分页的方法
+			var totalPages =  Math.ceil(allcount/10);
+			$.jqPaginator('#pagination1', {//分页
+		        totalPages:totalPages,
+	            visiblePages: 10,
+	            currentPage: page,
+	            first: '<li class="first"><a href="javascript:void(0);">首页</a></li>',
+	            prev: '<li class="prev"><a href="javascript:void(0);"><i class="arrow arrow2"></i>上一页</a></li>',
+	            next: '<li class="next"><a href="javascript:void(0);">下一页<i class="arrow arrow3"></i></a></li>',
+	            last: '<li class="last"><a href="javascript:void(0);">末页</a></li>',
+	            page: '<li class="page"><a href="javascript:void(0);">{{page}}</a></li>',
+		        onPageChange: function (num, type) {
+		        	if(type == 'change'){
+		        		getList(num);
+		        	}
+		            
+		        }
+		    });
+		}
+
+		
+
+		function timeFormat(str){//转时间格式20141122
+			var str = str.toString();
+			var time = str.substring(0,4)+'-'+str.substring(4,6)+'-'+str.substring(6,8);
+			return time;
+		}
+
+		function getList(page){//获取新闻列表的方法
+			var type = getCookie('r');
+			Api.messageCheck({
+				json:{
+					page:page,
+					pagecount:10,
+					type:type,
+					userId:getCookie("id"),
+					token:getCookie("token")
+				},
+				fn:function (obj) {
+					console.log(obj);
+					$(".messageCon").empty();
+					if (obj.data.length==0) {
+						$(".messageCon").html('<p class="no-data">暂无新闻公告</p>');
+						return false;
+					}					
+					var arr = obj['data'];
+					
+					if(arr.length == 0){
+						$('.pagination').css('display', 'none');
+					}
+
+					for(var i = 0; i < arr.length; i++){
+						var time = timeFormat(arr[i]['time']);
+						$(".messageCon").append('<div class="messageBox clearfix" index="'+arr[i]['id']+'">'+
+							'<div class="messageTxt">'+
+								arr[i]['title']+
+							'</div>'+
+							'<span>['+time+']</span>'+
+						'</div>'
+						);
+					}
+					var allcount = obj['allcount'];
+					fenye(allcount,page);//生成分页
+					$(".messageBox").click(function() {
+						window.location.href = "news-content.html?id="+$(this).attr('index');
+					});
+				}
+			});
+		}
+
+		$(function() {
+			common();
+			getList(1);//获取新闻列表开始是第一页
+		});
+
+		
+	</script>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+

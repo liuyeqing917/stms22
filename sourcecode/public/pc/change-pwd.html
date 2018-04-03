@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<script type="text/javascript" src="../js/layout.js" ></script>
+		<meta charset="UTF-8">
+		<title>高州市人民医院 - 住院医师轮转系统 - 修改个人密码</title>
+		<style type="text/css">
+			
+			.row{
+				margin-top:17px;
+			}
+			
+			.notnull{
+				color:red; text-align:left; height:34px; line-height:34px;
+			}
+			.text{text-align:right; height:34px; line-height:34px;}
+			.radioDiv{height:34px; line-height:34px;}
+
+			.btnRow button{
+				display:block; background-color:#DC5C59; border-radius:5px;
+				color:white; font-weight:bold; width:70px; height:30px;
+				margin:auto;
+			}
+			
+			.goback{
+
+			}
+		</style>
+		<script>
+			
+		</script>
+	</head>
+	<body>
+		<div class="childTitle hascancle">
+			修改个人密码
+		</div>
+		<form class="registerForm">
+		<input type="hidden" name="hospital_id" value="1" />
+		
+		
+		<div class="row clearfix">
+
+			<div class="col-xs-2 text">
+				原密码:
+			</div>
+			<div class="col-xs-3">
+				<input type="password" class="form-control notNullInput" name="oldpassword" />
+			</div>
+			<div class="col-xs-1 notnull">
+				*
+			</div>
+		</div>
+
+		<div class="row clearfix">
+			<div class="col-xs-2 text">
+				新密码:
+			</div>
+			<div class="col-xs-3">
+				<input type="password" class="form-control notNullInput pwd" name="" />
+			</div>
+			<div class="col-xs-1 notnull">
+				*
+			</div>
+
+			<div class="col-xs-2 text">
+				确认密码:
+			</div>
+			<div class="col-xs-3">
+				<input type="password" class="form-control notNullInput pwdConfirm" name="newpassword" />
+			</div>
+			<div class="col-xs-1 notnull">
+				*
+			</div>
+		</div>
+		<input type="hidden" name="token" value="" class="token" />
+		<input type="hidden" name="id" value="" class="idInput" />
+		</form>
+
+		<div class="row clearfix btnRow" style="margin-bottom:30px;">
+			<div class="col-xs-3"></div>
+			<div class="col-xs-2"><button type="button" class="save">修改</button></div>
+			<div class="col-xs-2"></div>
+			<div class="col-xs-2"><button type="button" class="return">取消</button></div>
+			<div class="col-xs-3"></div>
+		</div>
+	</body>
+	<script type="text/javascript">
+
+		$(document).ready(function() {
+			common();
+			$(".token").val(getCookie("token"));
+			$(".idInput").val(getCookie("id"));
+		});
+
+
+		$(".save").click(function() {
+			if( checkNull() == 1 ){
+				return false;
+			}
+			if( checkPwd() == 1 ){
+				return false;
+			}
+			
+			$(".save").attr('disabled', 'disabled');
+			var t = setTimeout(function(){
+				$(".save").removeAttr('disabled');
+			},3000);
+			layer.alert('你确定要提交修改吗?', {
+				btn: ['确定','取消']
+			}, function(){
+				layer.close();
+				//提交个人信息修改
+				var postData = $(".registerForm").serialize();
+				Api.editpassword({
+					istoken:1,
+					json:postData,
+					fn:function (arr) {
+						if(arr['msg'] == '修改成功' ){
+							uselayer(3,'修改成功！',function () {
+								removeCookie('token');
+								window.parent.location.href = "login.html";
+							});
+
+						}else {
+							uselayer(3,arr['msg']);
+						}
+						
+					}
+				});
+			});
+
+		});
+
+		$(".return").click(function() {
+			 history.go(-1);
+		});
+
+		function checkNull(){//判断表单是否空
+			var isNull = 0;
+			$(".notNullInput").each(function(){
+			    if( $(this).val().trim() == "" ){
+			    	isNull = 1;
+			    	
+			    }
+			});
+			if( isNull == 1 ){
+				uselayer(3,'你有必填的表单为空！');
+			}
+			return isNull;
+		}
+
+		function checkPwd(){//检查密码是否一致
+			isNull = 0;
+			if( $(".pwd").val() != $(".pwdConfirm").val() ){
+				uselayer(3,'你的密码和确认密码不一致，请重新填写密码！');
+				isNull = 1;
+			}
+			return isNull;
+		};
+
+		$(".pwdConfirm").focus(function() {
+			if( $(".pwd").val() == "" ){
+				uselayer(3,'请先填写密码！');
+				$(".pwd").focus();
+			}
+		});
+
+	</script>
+</html>

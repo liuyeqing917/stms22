@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<script type="text/javascript" src="../js/layout.js" ></script>
+		<meta charset="UTF-8">
+		<title>高州市人民医院 - 住院医师轮转系统 - 轮转方案列表</title>
+		<style type="text/css">
+			.messageCon{
+				width:100%; padding-left:35px; padding-right:35px; font-size:14px;
+				padding-top:25px;
+			}
+			.btn1{
+				display:block; background-color:#DC5C59; border-radius:5px;
+				color:white; font-weight:bold; width:90px; height:26px;
+				cursor:pointer; margin:auto;
+			}
+			
+			.table{
+				width:100%; text-align:center;
+				margin-top:10px; font-size:14px;
+			}
+			.tr{
+				width:100%;
+			}
+			.th .td{
+				margin-left:-1px; 
+				float:left; padding:5px;
+			}
+			.tr:nth-child(odd){
+				background-color:#E1F0FA;
+			}
+			.tr .td{
+				margin-left:-1px; margin-top:-1px;
+				float:left; padding:5px;
+			}
+			.th{
+				font-weight:bold; background-color:#E3E3E5;
+			}
+			.td1{
+				width:20%;
+			}
+			.delete,.add{
+				color:red; cursor:pointer; text-decoration:underline;
+			}
+
+		</style>
+		<script>
+			//$('.bootstrap').remove();
+		</script>
+	</head>
+	<body>
+		<div class="childTitle">
+			轮转方案列表
+		</div>
+
+
+		<div class="messageCon clearfix firstPage">
+			<div class="table clearfix">
+				<div class="th clearfix">
+					<div class="td td1">轮转表名</div><div class="td td1">开始时间</div><div class="td td1">结束时间</div><div class="td td1">操作</div><div class="td td1">添加轮转评价</div>
+				</div>
+				<!--<div class="tr clearfix">
+					<div class="td td1">表1</div><div class="td td1">2016-11-11</div><div class="td td1">2016-11-11</div><div class="td td1"><span class='delete'>删除</span></div><div class="td td1"><span class='add'>添加</span></div>
+				</div>
+
+				<div class="tr clearfix">
+					<div class="td td1">表1</div><div class="td td1">2016-11-11</div><div class="td td1">2016-11-11</div><div class="td td1"><span class='delete'>删除</span></div><div class="td td1"><span class='add'>添加</span></div>
+				</div>-->
+				
+			</div>
+
+		</div>
+
+
+	</body>
+	<script type="text/javascript">
+		$(function() {
+			
+			Api.listmcycle({
+				json:{
+					
+				},
+				fn:function (arr) {
+					console.log(arr);
+					$(".tr").remove();
+					var arrLen = arr.length;
+					
+					for( var i = 0; i < arrLen; i++ ){
+						var starttime = timetodate(arr[i]['starttime'],1);
+						var endtime = timetodate(arr[i]['endtime'],1);
+						$(".table").append(
+							'<div class="tr clearfix">'+
+								'<div class="td td1">'+arr[i]['name']+'</div>'+
+								'<div class="td td1">'+starttime+'</div>'+
+								'<div class="td td1">'+endtime+'</div>'+
+								'<div class="td td1"><span class="delete" listId="'+arr[i]['id']+'">删除</span></div>'+
+								'<div class="td td1"><span class="add" listId="'+arr[i]['id']+'" pj="'+arr[i]['pj']+'">添加</span></div>'+
+							'</div>'
+						);
+					}
+					deleteList();//删除某条轮转表的方法
+					addEvaluate();//跳转到轮转评价设置页面
+				}
+			});
+
+		});
+
+		function deleteList(){//删除某条轮转表的方法
+			$(".delete").click(function() {
+				var id = $(this).attr('listId');
+				var thistd = $(this).parents('.tr');
+				layer.alert('您确定要删除这条评价表吗？',{
+					btn: ['确定','取消']},function(){
+						layer.close();
+						Api.delcycle({
+							json:{
+								id:id,
+							},
+							fn:function (arr) {
+								uselayer(3,arr['msg']);
+
+								if( arr['status'] == '1' ){
+									thistd.remove();
+								}
+							}
+						});
+					}
+				);
+			});
+
+			
+		}
+
+		function addEvaluate(){//跳转到轮转评价设置页面
+			$('.add').click(function() {
+				var id = $(this).attr('listId');
+				var pj = $(this).attr('pj');
+				if( pj == 1 ){
+					layer.alert('已存在轮转评价，请勿重复添加！');
+				}else{
+					window.location.href = 'evaluate-add.html?mid='+id;
+				}
+			});
+		}
+	</script>
+</html>

@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<script type="text/javascript" src="../js/layout.js" ></script>
+		<meta charset="UTF-8">
+		<title>高州市人民医院 - 住院医师轮转系统 - 消息查看</title>
+		<link rel="stylesheet" type="text/css" href="../css/common2.css"/>
+		<style type="text/css">
+			.messageCon{
+				width:100%; padding-left:60px; padding-right:100px; font-size:14px;
+				padding-top:30px; word-break:break-all; height:400px;
+			}
+			.messageBox,.messageBox2{
+				border-bottom:1px dotted #cccccc; line-height:18px; padding-top:10px;
+				padding-bottom:5px;
+			}
+			.messageBox{
+				cursor:pointer;
+			}
+			.messageTxt{
+				width:100%; float:left; padding-right:220px;
+			}
+			.messageBox>span,.messageBox2>span{
+				float:left; width:170px; margin-left:-170px;
+			}
+			.detailOuter{
+				display:none;
+			}
+			.messageTit{
+				width:100%; padding-left:60px; padding-right:100px;
+				padding-top:30px; text-align:center; font-size:20px; font-weight:bold;
+			}
+			.messageCon2{
+				width:100%; padding-left:60px; padding-right:100px;
+				padding-top:30px; font-size:16px; text-indent:2em;
+			}
+			.return1{
+			    display: block;
+			    background-color: #DC5C59;
+			    border-radius:5px;
+			    color:white;
+			    font-weight:bold;
+			    width:70px;
+			    height:30px; cursor:pointer;
+			    margin:auto; margin-top:20px;
+			}
+			.fenyeCon{
+				width:700px; padding-bottom:50px; margin:auto;
+			}
+
+		</style>
+		<script>
+			$('.commonCss').remove();
+		</script>
+		<script type="text/javascript" src="../js/jqPaginator.js"></script>
+	</head>
+	<body>
+		<div class="childTitle hascancle">
+			消息查看
+		</div>
+
+		<div class="messageConOuter">
+			<div class="messageCon">
+
+			</div>
+			<div class="fenyeCon">
+				<ul class="pagination" id="pagination1"></ul>
+			</div>
+		</div>
+
+		<div class="detailOuter">
+			<div class="messageTit">
+			
+			</div>
+			<div class="messageCon2">
+				
+			</div>
+			<button type="button" class="return1">返回</button>
+		</div>
+	</body>
+	<script type="text/javascript">
+		function fenye(allcount,page){//分页的方法
+			var totalPages =  Math.ceil(allcount/10);
+			$.jqPaginator('#pagination1', {//分页
+		        totalPages:totalPages,
+	            visiblePages: 10,
+	            currentPage: page,
+	            first: '<li class="first"><a href="javascript:void(0);">首页</a></li>',
+	            prev: '<li class="prev"><a href="javascript:void(0);"><i class="arrow arrow2"></i>上一页</a></li>',
+	            next: '<li class="next"><a href="javascript:void(0);">下一页<i class="arrow arrow3"></i></a></li>',
+	            last: '<li class="last"><a href="javascript:void(0);">末页</a></li>',
+	            page: '<li class="page"><a href="javascript:void(0);">{{page}}</a></li>',
+		        onPageChange: function (num, type) {
+		        	if(type == 'change'){
+		        		getList(num);
+		        	}
+		            
+		        }
+		    });
+		}
+
+		
+		function timeFormat(str){//转时间格式20141122
+			var str = str.toString();
+			var time = str.substring(0,4)+'-'+str.substring(4,6)+'-'+str.substring(6,8);
+			return time;
+		}
+
+		function getList(page){//获取消息列表的方法
+			var type = getCookie('r');
+			Api.messageinform({
+				json:{
+					type:type,
+					userid:getCookie("id"),
+					page:page,
+					pagecount:10,
+				},
+				fn:function (data) {
+					console.log(data);
+					$(".messageCon").empty();
+					if (data.data.length==0) {
+						$(".messageCon").html('<p class="no-data">暂无消息</p>');
+						return false;
+					}
+					var type = getCookie('r');
+					
+					var arr = data['data'];
+					if(arr.length == 0){
+						$('.pagination').css('display', 'none');
+					}
+
+					if( type == 1 ){//如果是学生
+						for(var i = 0; i < arr.length; i++){
+							var msgType;
+							if( arr[i]['newstype'] == 1 ){
+								msgType = '出科消息';
+							}else if( arr[i]['newstype'] == 2 ){
+								msgType = '入科消息';
+							}else if( arr[i]['newstype'] == 3 ){
+								msgType = '考试消息';
+							}
+							if( arr[i]['newstype'] == 3 ){//如果是考试消息
+								var start = timetodate(arr[i]['start']);
+								var end = timetodate(arr[i]['end']);
+								var examtype;
+								if( arr[i]['examtype'] == 1 ){
+									examtype = '出科考试';
+								}else if( arr[i]['examtype'] == 2 ){
+									examtype = '公共考试';
+								}else if( arr[i]['examtype'] == 3 ){
+									examtype = '毕业考试';
+								}
+								$(".messageCon").append('<div class="messageBox clearfix" newstype="'+arr[i]['newstype']+'" stuname="'+arr[i]['stuname']+'" asdepartname="'+arr[i]['asdepartname']+'" start="'+start+'" end="'+end+'" classrom="'+arr[i]['classrom']+'" examtype="'+examtype+'">'+
+									'<div class="messageTxt">'+
+										msgType+
+									'</div>'+
+									'<span>['+arr[i]['asdepartname']+']</span>'+
+								'</div>'
+								);
+							}else{
+								$(".messageCon").append('<div class="messageBox clearfix" newstype="'+arr[i]['newstype']+'" stuname="'+arr[i]['stuname']+'" asdepartname="'+arr[i]['asdepartname']+'">'+
+									'<div class="messageTxt">'+
+										msgType+
+									'</div>'+
+									'<span>['+arr[i]['asdepartname']+']</span>'+
+								'</div>'
+								);
+							}
+								
+						}
+						msgDetail();//查看具体消息的方法
+					}else if( type == 2 ){//如果是老师
+						for( var i = 0; i < arr.length; i++ ){
+							var time = timetodate(arr[i][0]['time']);
+							var str;
+							if(arr[i][0]['newstype'] == 4){
+								str = '即将入科！';
+							}else{
+								str = '即将出科！';
+							}
+							$(".messageCon").append('<div class="messageBox2 clearfix">'+
+								'<div class="messageTxt">'+
+									arr[i][0]['departname']+str+
+								'</div>'+
+								'<span>['+time+']</span>'+
+								'</div>'
+							);
+						}
+					}
+					var allcount = data['allcount'];
+					fenye(allcount,page);//生成分页
+				}
+			});
+		}
+
+		$(function() {
+			common();
+			getList(1);
+		});
+		
+		function msgDetail(){//查看具体消息的方法
+			$(".messageBox").click(function() {
+				$('.messageConOuter').css('display', 'none');
+				$('.detailOuter').css('display', 'block');
+
+				var stuname = $(this).attr('stuname');
+				var asdepartname = $(this).attr('asdepartname');
+
+				if( $(this).attr('newstype')== 1 ){
+					$('.messageTit').html('出科消息');
+					$('.messageCon2').html(stuname+'同学，您已从'+asdepartname+'出科！');
+
+				}else if( $(this).attr('newstype')== 2 ){
+					$('.messageTit').html('入科消息');
+					$('.messageCon2').html(stuname+'您已进入'+asdepartname+'科！');
+				}else if( $(this).attr('newstype')== 3 ){
+					$('.messageTit').html('考试消息');
+					var examtype = $(this).attr('examtype');
+					var start = $(this).attr('start');
+					var end = $(this).attr('end');
+					var classrom = $(this).attr('classrom');
+					$('.messageCon2').html(stuname+'同学，请您务必参加 '+asdepartname+' 科的'+examtype+'，考试开始时间为：'+start+'，考试结束时间为：'+end+'，教室号为：'+classrom+'。');
+				}
+			});
+		}
+
+		$('.return1').click(function() {
+			$('.messageConOuter').css('display', 'block');
+			$('.detailOuter').css('display', 'none');
+		});
+	</script>
+</html>

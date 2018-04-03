@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<script type="text/javascript" src="../js/layout.js" ></script>
+		<meta charset="UTF-8">
+		<title>高州市人民医院 - 住院医师轮转系统 - 科室管理</title>
+		<link rel="stylesheet" href="../css/lesson-set.css" />
+		<script src="../js/depart-set.js" type="text/javascript" charset="utf-8"></script>
+		<style>
+			.outline-out { display: block;}
+			.topsel {margin: 10px auto; }
+			.sel-depart { width: 190px; }
+			.sel-depart select { width: 110px;}
+			.outline-out { width: 620px;}
+			.addlesson { position: absolute; right: 0; top: -40px; height: 30px; line-height: 30px;  width: 80px; font-size: 14px; text-align: center; border-radius: 4px; }
+			.editdepart,.editdepart:hover { position: absolute; text-decoration: none; color: #fff; background: green; left: 300px; top:52px; height: 30px; line-height: 30px;  width: 80px; font-size: 14px; text-align: center; border-radius: 4px; }
+			.disnone{display: none}
+			.disblock{display:block}						
+			.outline-out-list li .w210 { border-left: none;}
+			.outline-out { margin-top: 0;}
+		</style>
+		
+	</head>
+	<body>
+		<div class="childTitle">科室管理</div>
+		
+		<div class="topsel clearfix ">
+			<div class="sel-depart">
+				<span>方向科室</span>
+				<select class="form-control sel-fatherdepart"></select>
+			</div>
+
+
+			<a href="" class="editdepart disnone ">编辑</a>
+		</div>
+
+		<div class="outline outline-out">
+			<a href="depart-add.html?from=add" class="addlesson">添加科室</a>
+			<div class="outline-out-top clearfix">
+				<div class="w110">方向科室</div>
+				<div class="w110">科室</div>
+				<div class="w100">科室负责人</div>
+				<div class="w210">科室老师</div>
+				<div class="w90"></div>
+
+			</div>
+			<ul class="outline-out-list"></ul>
+			<div class="clearfix page" id="page"></div>			
+		</div>
+
+
+		
+		
+	</body>
+</html>

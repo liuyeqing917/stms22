@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<script type="text/javascript" src="../js/layout.js" ></script>
+		<meta charset="UTF-8">
+		<title>高州市人民医院 - 住院医师轮转系统 - 新闻内容</title>
+		<style type="text/css">
+			body{
+				padding-bottom:30px;
+			}
+			.messageTit{
+				width:100%; padding-left:60px; padding-right:100px;
+				padding-top:30px; text-align:center; font-size:20px; font-weight:bold;
+			}
+			.messageCon{
+				width:100%; padding-left:60px; padding-right:100px;
+				padding-top:30px; font-size:16px; text-indent:2em; min-height:250px;
+			}
+			.btn1 {
+			    display: block; background-color: #DC5C59; border-radius: 5px;
+			    color: white; font-weight: bold; width: 90px;
+			    height: 26px; cursor: pointer; margin: auto;
+			    line-height: 26px;
+			}
+
+		</style>
+		<script>
+			$('.bootstrap').remove();
+		</script>
+	</head>
+	<body>
+		<div class="childTitle hascancle">
+			新闻内容
+		</div>
+
+		<div class="messageTit">
+			
+		</div>
+		<div class="messageCon break">
+			
+		</div>
+
+		<button class="btn1 return1" type="button">返回</button>
+		
+	</body>
+	<script type="text/javascript">
+		function getMessage (){
+			var id = GetQueryString("id");
+			Api.messageContent({
+				json:{
+					token:getCookie("token"),
+					id:id
+				},
+				fn:function (arr) {
+					$(".messageTit").text(arr[0]['title']);
+					$(".messageCon").text(arr[0]['content']);
+				}
+			});
+		}
+
+		$(function() {
+			common();
+			getMessage();
+		});
+
+		$('.return1').click(function() {
+			window.location.href = 'new-show.html';
+		});
+	</script>
+</html>

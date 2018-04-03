@@ -1,0 +1,988 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<script type="text/javascript" src="../js/layout.js" ></script>
+		<meta charset="UTF-8">
+		<title>高州市人民医院 - 住院医师轮转系统 - 添加学生手册</title>
+		<link rel="stylesheet" type="text/css" href="../css/bootstrap-datetimepicker.min.css"/>
+		<script type="text/javascript" src="../js/bootstrap-datetimepicker.min.js" ></script>
+		<style type="text/css">
+			.messageCon{
+				width:100%; padding-left:35px; padding-right:35px; font-size:14px;
+				padding-top:25px;
+			}
+			.selectrow{
+				height:34px; line-height:34px;
+			}
+			.xinghao{
+				color:red;
+			}
+			.selectBtn{
+				margin-top: 4px;
+    			line-height: 26px;
+			}
+			.btn1{
+				display:block; background-color:#DC5C59; border-radius:5px;
+				color:white; font-weight:bold; width:90px; height:26px;
+				cursor:pointer; margin:auto;
+			}
+			.row{
+				line-height:34px; margin-bottom:10px;
+			}
+			.typeTitle{
+				text-align:center; font-size:20px; color:red;
+			}
+
+		</style>
+		<script>
+			//$('.bootstrap').remove();
+		</script>
+	</head>
+	<body>
+		<div class="childTitle hascancle">
+			添加学生手册
+		</div>
+
+		<div class="messageCon clearfix">
+			<div class="row typeTitle">
+				病种
+			</div>
+
+			<div class="row">
+				<div class="col-xs-3 right">
+					<span class="xinghao">*</span>方向科室
+				</div>
+				<div class="col-xs-7">
+					<select name="" class="form-control fatherdepart" disabled="disabled">
+					</select>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-xs-3 right">
+					<span class="xinghao">*</span>科室
+				</div>
+				<div class="col-xs-7">
+					<select name="" class="form-control childdepart" disabled="disabled">
+					</select>
+				</div>
+			</div>
+
+			<div class="row typeSelectRow">
+				<div class="col-xs-3 right">
+					<span class="xinghao">*</span>类型
+				</div>
+				<div class="col-xs-7">
+					<select name="" class="form-control typeSelect">
+						
+					</select>
+				</div>
+			</div>
+
+			<div class="oneType">
+				<div class="row selectrow">
+					<div class="col-xs-3 right">
+						<span class="xinghao">*</span>病人姓名
+					</div>
+					<div class="col-xs-7">
+						<input type="text" class="form-control nameInp" maxlength="10" />
+					</div>
+				</div>
+
+				<div class="row selectrow">
+					<div class="col-xs-3 right">
+						<span class="xinghao">*</span>病历号
+					</div>
+					<div class="col-xs-7">
+						<input type="text" class="form-control numberInp" maxlength="30" />
+					</div>
+				</div>
+
+				<div class="row selectrow">
+					<div class="col-xs-3 right">
+						<span class="xinghao">*</span>是否抢救
+					</div>
+					<div class="col-xs-1">
+						<input type="radio" class="yesradio" checked="checked" name='isrescue' value="1" />是
+					</div>
+					<div class="col-xs-1">
+						<input type="radio" class="noradio" name='isrescue' value="0" />否
+					</div>
+				</div>
+
+				<div class="row selectrow">
+					<div class="col-xs-3 right">
+						<span class="xinghao">*</span>病历
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-xs-3 right"></div>
+					<div class="col-xs-7">
+						<textarea class="form-control caseInp" rows="5"  maxlength="200" ></textarea>
+					</div>
+				</div>
+
+				<div class="row selectrow">
+					<div class="col-xs-3 right">
+						<span class="xinghao">*</span>主要诊断
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-xs-3 right"></div>
+					<div class="col-xs-7">
+						<textarea class="form-control mdiagnosisInp" rows="5" maxlength="200" ></textarea>
+					</div>
+				</div>
+
+				<div class="row selectrow">
+					<div class="col-xs-3 right">
+						<span class="xinghao">*</span>次要诊断
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-xs-3 right"></div>
+					<div class="col-xs-7">
+						<textarea class="form-control cdiagnosisInp" rows="5" maxlength="200" ></textarea>
+					</div>
+				</div>
+			</div>
+
+			<div class="twoType">
+				<div class="row selectrow">
+					<div class="col-xs-3 right">
+						<span class="xinghao">*</span>病人姓名
+					</div>
+					<div class="col-xs-7">
+						<input type="text" class="form-control nameInp" maxlength="10" />
+					</div>
+				</div>
+
+				<div class="row selectrow">
+					<div class="col-xs-3 right">
+						<span class="xinghao">*</span>病历号
+					</div>
+					<div class="col-xs-7">
+						<input type="text" class="form-control numberInp" maxlength="30"  />
+					</div>
+				</div>
+
+				<div class="row selectrow">
+					<div class="col-xs-3 right">
+						<span class="xinghao">*</span>病历
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-xs-3 right"></div>
+					<div class="col-xs-7">
+						<textarea class="form-control caseInp" rows="5" maxlength="200" ></textarea>
+					</div>
+				</div>
+
+				<div class="row selectrow">
+					<div class="col-xs-3 right">
+						<span class="xinghao">*</span>操作过程
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-xs-3 right"></div>
+					<div class="col-xs-7">
+						<textarea class="form-control processInp" rows="5"></textarea>
+					</div>
+				</div>
+
+				<div class="row selectrow">
+					<div class="col-xs-3 right">
+						<span class="xinghao">*</span>备注
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-xs-3 right"></div>
+					<div class="col-xs-7">
+						<textarea class="form-control beizhuInp" rows="5"></textarea>
+					</div>
+				</div>
+			</div>
+
+			<div class="threeType">
+				<div class="row selectrow">
+					<div class="col-xs-3 right">
+						<span class="xinghao">*</span>病人姓名
+					</div>
+					<div class="col-xs-7">
+						<input type="text" class="form-control nameInp" maxlength="10"/>
+					</div>
+				</div>
+
+				<div class="row selectrow">
+					<div class="col-xs-3 right">
+						<span class="xinghao">*</span>病历号
+					</div>
+					<div class="col-xs-7">
+						<input type="text" class="form-control numberInp" maxlength="30"  />
+					</div>
+				</div>
+
+				<div class="row selectrow">
+					<div class="col-xs-3 right">
+						<span class="xinghao">*</span>病历
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-xs-3 right"></div>
+					<div class="col-xs-7">
+						<textarea class="form-control caseInp" rows="5" maxlength="200" ></textarea>
+					</div>
+				</div>
+
+				<div class="row selectrow">
+					<div class="col-xs-3 right">
+						<span class="xinghao">*</span>主要诊断
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-xs-3 right"></div>
+					<div class="col-xs-7">
+						<textarea class="form-control mdiagnosisInp" rows="5" maxlength="200" ></textarea>
+					</div>
+				</div>
+
+				<div class="row selectrow">
+					<div class="col-xs-3 right">
+						<span class="xinghao">*</span>次要诊断
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-xs-3 right"></div>
+					<div class="col-xs-7">
+						<textarea class="form-control cdiagnosisInp" rows="5" maxlength="200" ></textarea>
+					</div>
+				</div>
+			</div>
+
+			<div class="fourType">
+				<div class="row selectrow">
+					<div class="col-xs-3 right">
+						时间
+					</div>
+					<div class="col-xs-7">
+						<input type="text" class="form-control htimeInp ctime" />
+					</div>
+				</div>
+
+				<div class="row selectrow">
+					<div class="col-xs-3 right">
+						题目
+					</div>
+					<div class="col-xs-7">
+						<input type="text" class="form-control subjectInp" />
+					</div>
+				</div>
+
+				<div class="row selectrow">
+					<div class="col-xs-3 right">
+						类别
+					</div>
+					<div class="col-xs-7">
+						<input type="text" class="form-control typeInp" />
+					</div>
+				</div>
+
+				<div class="row selectrow">
+					<div class="col-xs-3 right">
+						发表刊物
+					</div>
+					<div class="col-xs-7">
+						<input type="text" class="form-control publicationInp" />
+					</div>
+				</div>
+
+				<div class="row selectrow">
+					<div class="col-xs-3 right">
+						课题负责人
+					</div>
+					<div class="col-xs-7">
+						<input type="text" class="form-control personInp" />
+					</div>
+				</div>
+
+				<div class="row selectrow">
+					<div class="col-xs-3 right">
+						参与角色
+					</div>
+					<div class="col-xs-7">
+						<input type="text" class="form-control roleInp" />
+					</div>
+				</div>
+
+				<div class="row selectrow">
+					<div class="col-xs-3 right">
+						事帮等级
+					</div>
+					<div class="col-xs-7">
+						<input type="text" class="form-control levelInp" />
+					</div>
+				</div>
+
+				<div class="row selectrow">
+					<div class="col-xs-3 right">
+						概述
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-xs-3 right"></div>
+					<div class="col-xs-7">
+						<textarea class="form-control descriptionInp" rows="5"></textarea>
+					</div>
+				</div>
+
+				<div class="row selectrow">
+					<div class="col-xs-3 right">
+						原因
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-xs-3 right"></div>
+					<div class="col-xs-7">
+						<textarea class="form-control reasonInp" rows="5"></textarea>
+					</div>
+				</div>
+
+				<div class="row selectrow">
+					<div class="col-xs-3 right">
+						经验教训
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-xs-3 right"></div>
+					<div class="col-xs-7">
+						<textarea class="form-control learnedInp" rows="5"></textarea>
+					</div>
+				</div>
+
+			</div>
+
+			<div class="fiveType">
+				<div class="row selectrow" style="display:none;">
+					<div class="col-xs-3 right">
+						<span class="xinghao">*</span>是否出科
+					</div>
+					<div class="col-xs-3">
+						<input type="radio" class="yesradio" name='isrescue' value="1" />出科
+					</div>
+					<div class="col-xs-3">
+						<input type="radio" class="noradio" name='isrescue' value="0" />没有出科
+					</div>
+				</div>
+
+				<div class="row selectrow">
+					<div class="col-xs-3"></div>
+					<div class="col-xs-9">
+						<span class="xinghao">*</span>医德医风、组织纪律、服务态度及质量
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-3 right"></div>
+					<div class="col-xs-7">
+						<textarea class="form-control oneInp" rows="5"></textarea>
+					</div>
+				</div>
+
+				<div class="row selectrow">
+					<div class="col-xs-3"></div>
+					<div class="col-xs-9">
+						<span class="xinghao">*</span>理论学习、学习的病种、技术操作
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-3 right"></div>
+					<div class="col-xs-7">
+						<textarea class="form-control twoInp" rows="5"></textarea>
+					</div>
+				</div>
+
+				<div class="row selectrow">
+					<div class="col-xs-3"></div>
+					<div class="col-xs-9">
+						<span class="xinghao">*</span>管理病床数、查房
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-3 right"></div>
+					<div class="col-xs-7">
+						<textarea class="form-control threeInp" rows="5"></textarea>
+					</div>
+				</div>
+			</div>
+
+			<div class="row selectrow">
+				<div class="col-xs-3"></div>
+				<div class="col-xs-2">
+					<button class="btn1 selectBtn submitBtn" type="button">提交</button>
+				</div>
+				<div class="col-xs-2"></div>
+				<div class="col-xs-2">
+					<button class="btn1 selectBtn returnBtn" type="button">返回</button>
+				</div>
+				<div class="col-xs-3"></div>
+			</div>
+
+		</div>
+
+
+	</body>
+	<script type="text/javascript">
+		$(function() {
+			common();
+			getFatherdepart();//获取父科室
+			getChilddepart();//获取子科室
+			setDatePicker();
+
+			var type = GetQueryString('type');
+			if( type == 1 ){
+				$('.typeTitle').html('病种');
+
+				$('.twoType').remove();
+				$('.threeType').remove();
+				$('.fourType').remove();
+				$('.fiveType').remove();
+				addManual();//提交手册
+				radioSelect();//单选框点击改变checked属性
+			}else if( type == 2 ){
+				$('.typeTitle').html('临床操作');
+
+				$('.oneType').remove();
+				$('.threeType').remove();
+				$('.fourType').remove();
+				$('.fiveType').remove();
+				addManual2();//提交手册
+			}else if( type == 3 ){
+				$('.typeTitle').html('大病历书写');
+
+				$('.oneType').remove();
+				$('.twoType').remove();
+				$('.fourType').remove();
+				$('.fiveType').remove();
+				addManual3();//提交手册
+			}else if( type == 4 ){
+				$('.typeTitle').html('活动记录');
+				$('.oneType').remove();
+				$('.twoType').remove();
+				$('.threeType').remove();
+				$('.fiveType').remove();
+				addManual4();//提交手册
+			}else if( type == 5 ){
+				$('.typeTitle').html('出科小结');
+				$('.oneType').remove();
+				$('.twoType').remove();
+				$('.threeType').remove();
+				$('.fourType').remove();
+				$('.typeSelectRow').css('display', 'none');
+				addManual5();//提交手册
+			}
+		});
+
+		function radioSelect(){//单选框点击改变属性
+			$('.yesradio').click(function() {
+				if( $('.yesradio').attr('checked') == 'checked' ){
+
+				}else{
+					$('.yesradio').attr('checked','checked');
+					$('.noradio').removeAttr('checked');
+				}
+			});
+			$('.noradio').click(function() {
+				if( $('.noradio').attr('checked') == 'checked' ){
+
+				}else{
+					$('.noradio').attr('checked','checked');
+					$('.yesradio').removeAttr('checked');
+				}
+			});
+		}
+
+		function setDatePicker(){//时间日期插件设置
+			//var nowtime = new Date();
+			//var strtime = nowtime.getFullYear()+'-'+(nowtime.getMonth()+1)+'-'+nowtime.getDate()+' '+nowtime.getHours()+':'+nowtime.getMinutes()+':00';
+
+			$(".ctime").datetimepicker({
+				format: "yyyy-mm-dd",
+				autoclose: true,
+				pickerPosition: "bottom-left"
+			});
+		}
+
+		$('.childdepart').change(function() {//子科室改变的时候查询类型
+			var department_id = $('.childdepart').find('option:selected').val();
+			var type = GetQueryString('type');
+			if( type == 1 ){
+				generateTypeList(department_id);
+			}else if( type == 2 ){
+				generateTypeList2(department_id);
+			}else if( type == 3 ){
+				generateTypeList3(department_id);
+			}else{
+				generateTypeList4(department_id);
+			}
+			
+		});
+
+		function generateTypeList(department_id){//生成类型1下拉框
+			Api.getManualType({
+				json:{
+					department_id:department_id
+				},
+				fn:function (arr) {
+					console.log(arr);
+					$('.typeSelect').empty();
+					var typeLen = arr.length;
+					for ( var i = 0; i < typeLen; i++ ) {
+						$('.typeSelect').append(
+							'<option value="'+arr[i]['id']+'">'+arr[i]['title']+'</option>'
+						);
+					}
+				}
+			});
+		}
+
+		function generateTypeList2(department_id){//生成类型2下拉框
+			Api.getManualType2({
+				json:{
+					department_id:department_id
+				},
+				fn:function (arr) {
+					console.log(arr);
+					$('.typeSelect').empty();
+					var typeLen = arr.length;
+					for ( var i = 0; i < typeLen; i++ ) {
+						$('.typeSelect').append(
+							'<option value="'+arr[i]['id']+'">'+arr[i]['title']+'</option>'
+						);
+					}
+				}
+			});
+		}
+
+		function generateTypeList3(department_id){//生成类型3下拉框
+			Api.getManualType3({
+				json:{
+					department_id:department_id
+				},
+				fn:function (arr) {
+					console.log(arr);
+					$('.typeSelect').empty();
+					var typeLen = arr.length;
+					for ( var i = 0; i < typeLen; i++ ) {
+						$('.typeSelect').append(
+							'<option value="'+arr[i]['id']+'">'+arr[i]['title']+'</option>'
+						);
+					}
+				}
+			});
+		}
+
+		function generateTypeList4(department_id){//生成类型4下拉框
+			Api.getManualType4({
+				json:{
+					department_id:department_id
+				},
+				fn:function (arr) {
+					console.log(arr);
+					$('.typeSelect').empty();
+					var typeLen = arr.length;
+					for ( var i = 0; i < typeLen; i++ ) {
+						$('.typeSelect').append(
+							'<option value="'+arr[i]['id']+'">'+arr[i]['title']+'</option>'
+						);
+					}
+				}
+			});
+		}
+
+		function addManual(){//提交类型1手册
+			$('.submitBtn').click(function() {
+				$('.submitBtn').attr('disabled', 'disabled');//防止重复按
+				setTimeout(function(){
+					$('.submitBtn').removeAttr('disabled');
+				},3000);
+
+				var isNull = 0;//判断表单是否空
+				var inpNum = $('input').length;
+				for( var i = 0; i < inpNum; i++ ){
+					if( $('input').eq(i).val().trim() == '' ){
+						isNull = 1;
+					}
+				}
+
+				var textareaNum = $('textarea').length;
+				for( var i = 0; i < textareaNum; i++ ){
+					if( $('textarea').eq(i).val().trim() == '' ){
+						isNull = 1;
+					}
+				}
+				
+				if( isNull == 1 ){
+					uselayer(3,'您还有表单未填写！');
+					return false;
+				}
+
+				layer.alert('您确定要提交吗？', {
+					btn: ['确定','取消']},function(){
+						var eid = $('.typeSelect').find('option:selected').val();
+						var stuid = getCookie('id');
+						var department_id = $('.childdepart').find('option:selected').val();
+						var name = $('.nameInp').val();
+						var number = $('.numberInp').val();
+						var isrescue;
+						if( $('.yesradio').attr('checked') == 'checked' ){
+							isrescue = 1;
+						}else{
+							isrescue = 0;
+						}
+						var Case = $('.caseInp').val();
+						var mdiagnosis = $('.mdiagnosisInp').val();
+						var cdiagnosis = $('.cdiagnosisInp').val();
+						layer.close();
+						Api.addManual({
+							json:{
+								eid:eid,
+								stuid:stuid,
+								department_id:department_id,
+								name:name,
+								number:number,
+								isrescue:isrescue,
+								case:Case,
+								mdiagnosis:mdiagnosis,
+								cdiagnosis:cdiagnosis
+							},
+							fn:function (arr) {
+								uselayer(3,arr['msg'],function () {
+									if(arr['status'] == 1){
+										$('.returnBtn').click();
+									}
+								});
+							}
+						});
+					}
+				);
+
+				
+			});
+		}
+
+		function addManual2(){//提交类型2手册
+			$('.submitBtn').click(function() {
+				$('.submitBtn').attr('disabled', 'disabled');//防止重复按
+				setTimeout(function(){
+					$('.submitBtn').removeAttr('disabled');
+				},3000);
+
+				var isNull = 0;//判断表单是否空
+				var inpNum = $('input').length;
+				for( var i = 0; i < inpNum; i++ ){
+					if( $('input').eq(i).val().trim() == '' ){
+						isNull = 1;
+					}
+				}
+
+				var textareaNum = $('textarea').length;
+				for( var i = 0; i < textareaNum; i++ ){
+					if( $('textarea').eq(i).val().trim() == '' ){
+						isNull = 1;
+					}
+				}
+				
+				if( isNull == 1 ){
+					uselayer(3,'您还有表单未填写！');
+					return false;
+				}
+
+				layer.alert('您确定要提交吗？', {
+					btn: ['确定','取消']},function(){
+						var eid = $('.typeSelect').find('option:selected').val();
+						var stuid = getCookie('id');
+						var department_id = $('.childdepart').find('option:selected').val();
+						var name = $('.nameInp').val();
+						var number = $('.numberInp').val();
+						var Case = $('.caseInp').val();
+						var process = $('.processInp').val();
+						var remarks = $('.beizhuInp').val();
+						layer.close();
+						Api.addManual2({
+							json:{
+								eid:eid,
+								stuid:stuid,
+								department_id:department_id,
+								name:name,
+								number:number,
+								case:Case,
+								process:process,
+								remarks:remarks
+							},
+							fn:function (arr) {
+								uselayer(3,arr['msg'],function () {
+									if(arr['status'] == 1){
+										$('.returnBtn').click();
+									}
+								});
+							}
+						});
+					}
+				);
+
+				
+			});
+		}
+
+		function addManual3(){//提交类型3手册
+			$('.submitBtn').click(function() {
+				$('.submitBtn').attr('disabled', 'disabled');//防止重复按
+				setTimeout(function(){
+					$('.submitBtn').removeAttr('disabled');
+				},3000);
+
+				var isNull = 0;//判断表单是否空
+				var inpNum = $('input').length;
+				for( var i = 0; i < inpNum; i++ ){
+					if( $('input').eq(i).val().trim() == '' ){
+						isNull = 1;
+					}
+				}
+
+				var textareaNum = $('textarea').length;
+				for( var i = 0; i < textareaNum; i++ ){
+					if( $('textarea').eq(i).val().trim() == '' ){
+						isNull = 1;
+					}
+				}
+				
+				if( isNull == 1 ){
+					uselayer(3,'您还有表单未填写！');
+					return false;
+				}
+
+				layer.alert('您确定要提交吗？', {
+					btn: ['确定','取消']},function(){
+						var eid = $('.typeSelect').find('option:selected').val();
+						var stuid = getCookie('id');
+						var department_id = $('.childdepart').find('option:selected').val();
+						var name = $('.nameInp').val();
+						var number = $('.numberInp').val();
+						var Case = $('.caseInp').val();
+						var mdiagnosis = $('.mdiagnosisInp').val();
+						var cdiagnosis = $('.cdiagnosisInp').val();
+						layer.close();
+						Api.addManual3({
+							json:{
+								eid:eid,
+								stuid:stuid,
+								department_id:department_id,
+								name:name,
+								number:number,
+								case:Case,
+								mdiagnosis:mdiagnosis,
+								cdiagnosis:cdiagnosis
+							},
+							fn:function (arr) {
+								uselayer(3,arr['msg'],function () {
+									if(arr['status'] == 1){
+										$('.returnBtn').click();
+									}
+								});
+							}
+						});
+					}
+				);
+
+				
+			});
+		}
+
+		function addManual4(){//提交类型4手册
+			$('.submitBtn').click(function() {
+				$('.submitBtn').attr('disabled', 'disabled');//防止重复按
+				setTimeout(function(){
+					$('.submitBtn').removeAttr('disabled');
+				},3000);
+
+				layer.alert('您确定要提交吗？', {
+					btn: ['确定','取消']},function(){
+						var eid = $('.typeSelect').find('option:selected').val();
+						var stuid = getCookie('id');
+						var htime = $('.htimeInp').val();
+						var type = $('.typeInp').val();
+						var subject = $('.subjectInp').val();
+						var publication = $('.publicationInp').val();
+						var person = $('.personInp').val();
+						var role = $('.roleInp').val();
+						var level = $('.levelInp').val();
+						var description = $('.descriptionInp').val();
+						var reason = $('.reasonInp').val();
+						var learned = $('.learnedInp').val();
+						var department_id = $('.childdepart').find('option:selected').val();
+						layer.close();
+						Api.addManual4({
+							json:{
+								eid:eid,
+								stuid:stuid,
+								htime:htime,
+								subject:subject,
+								person:person,
+								role:role,
+								description:description,
+								publication:publication,
+								type:type,
+								level:level,
+								reason:reason,
+								department_id:department_id,
+								learned:learned
+							},
+							fn:function (arr) {
+								uselayer(3,arr['msg'],function () {
+									if(arr['status'] == 1){
+										$('.returnBtn').click();
+									}
+								});
+							}
+						});
+					}
+				);
+
+				
+			});
+		}
+
+		function addManual5(){//提交类型5手册
+			$('.submitBtn').click(function() {
+				$('.submitBtn').attr('disabled', 'disabled');//防止重复按
+				setTimeout(function(){
+					$('.submitBtn').removeAttr('disabled');
+				},3000);
+
+				var isNull = 0;//判断表单是否空
+				var inpNum = $('input').length;
+				for( var i = 0; i < inpNum; i++ ){
+					if( $('input').eq(i).val().trim() == '' ){
+						isNull = 1;
+					}
+				}
+
+				var textareaNum = $('textarea').length;
+				for( var i = 0; i < textareaNum; i++ ){
+					if( $('textarea').eq(i).val().trim() == '' ){
+						isNull = 1;
+					}
+				}
+				
+				if( isNull == 1 ){
+					layer.alert('您还有表单未填写！');
+					return false;
+				}
+
+				layer.alert('您确定要提交吗？', {
+					btn: ['确定','取消']},function(){
+						var stuid = getCookie('id');
+						var department_id = $('.childdepart').find('option:selected').val();
+						var status = 0;
+						var one = $('.oneInp').val();
+						var two = $('.twoInp').val();
+						var three = $('.threeInp').val();
+						layer.close();
+						Api.addManual5({
+							json:{
+								stuid:stuid,
+								department_id:department_id,
+								status:status,
+								one:one,
+								two:two,
+								three:three
+							},
+							fn:function (arr) {
+								uselayer(3,arr['msg'],function () {
+									if(arr['status'] == 1){
+										$('.returnBtn').click();
+									}
+								});
+							}
+						});
+					}
+				);
+
+				
+			});
+		}
+
+		$('.returnBtn').click(function() {
+			var type = GetQueryString('type');
+			var faId = $('.fatherdepart').val();
+			var chId = $('.childdepart').val();
+			window.location.href = 'manual-look.html?type='+type+'&faId='+faId+'&chId='+chId;
+		});
+
+		function getFatherdepart(){//获取父科室
+			Api.fatherdepart({
+				fn:function (arr) {
+					$(".fatherdepart").empty();
+					//$(".fatherdepart").append('<option value="0">全部</option>');
+					for(var i = 0; i < arr.length; i++){
+						$(".fatherdepart").append('<option value="'+arr[i]['id']+'">'+arr[i]['name']+'</option>');
+					}
+					childPartFirst();//父科室加载完后加载子科室
+				}
+			});
+		}
+
+		function getChilddepart(){//获取子科室
+			$(".fatherdepart").change(function() {
+				var fatherId = $(".fatherdepart").val();
+				$(".childdepart").empty(); $('.childdepart').val('');
+
+				Api.childdepart({
+					json:{
+						pid:fatherId
+					},
+					fn:function (arr) {
+						//$(".childdepart").append('<option value="0">全部</option>');
+						for(var i = 0; i < arr.length; i++){
+							$(".childdepart").append('<option value="'+arr[i]['id']+'">'+arr[i]['name']+'</option>');
+						}
+						$('.childdepart').change();
+					}
+				});
+			});
+		}
+
+		function childPartFirst(){//父科室加载完后加载子科室
+			var fatherId = GetQueryString('faId');
+			//var fatherId = $(".fatherdepart").find('option:first').val();
+			$('.fatherdepart').find('option[value='+fatherId+']').attr('selected', 'selected');
+			$(".childdepart").empty(); $('.childdepart').val('');
+			Api.childdepart({
+				json:{
+
+					pid:fatherId
+				},
+				fn:function (arr) {
+					//$(".childdepart").append('<option value="0">全部</option>');
+					for(var i = 0; i < arr.length; i++){
+						$(".childdepart").append('<option value="'+arr[i]['id']+'">'+arr[i]['name']+'</option>');
+					}
+					var childId = GetQueryString('chId');
+					$('.childdepart').find('option[value='+childId+']').attr('selected', 'selected');
+					$('.childdepart').change();
+				}
+			});
+		}
+	</script>
+</html>

@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<script type="text/javascript" src="../js/layout.js" ></script>
+		<meta charset="UTF-8">
+		<title>住院医师轮转系统</title>
+	    <style>
+	         .img-circle{height:46px;}
+	         .person-info{margin:20px 0;}
+	         .dropdown.profile-element{margin-left: 20px;}
+	         .person-info span{
+	            color: #fff;
+	            margin-left: 5px;
+	        }
+	         .nav-header{height: 50px;}
+	         .nav-header span{
+	            font-size:20px;
+	            line-height: 20px;
+	            color:#fff;
+	            font-weight: bold;
+	            font-family: "微软雅黑";
+	         }
+	         .navbar-static-side {background: #2b3a40;}
+	         .nav > li.active {
+	            border-left: 4px solid #19aa8d;
+	            background: #1d2a2f;
+	        }
+	        .navbar-default .nav > li > a:hover,
+	        .navbar-default .nav > li > a:focus {
+	          background-color: #1d2a2f;
+	          color: white;
+	        }
+	    </style>		
+		<link rel="stylesheet" type="text/css" href="../css/appstyle.min.css"/>
+		<link rel="stylesheet" type="text/css" href="../css/font-awesome.min.css"/>
+	
+		<script src="../js/new/jquery.metisMenu.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../js/new/jquery.slimscroll.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../js/new/hplus.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../js/new/contabs.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../js/new/pace.min.js" type="text/javascript" charset="utf-8"></script>
+	
+	
+	</head>
+	<body  class="fixed-sidebar full-height-layout gray-bg">
+
+
+	    <div id="wrapper">
+	        <!--左侧导航开始-->
+			<nav class="navbar-default navbar-static-side" role="navigation">
+				<div class="nav-header" style="background:#16beb0;">
+					<div class="profile-element">
+						<span>住院医师轮转系统</span>
+	
+					</div>
+					<div class="logo-element">stms
+					</div>
+				</div>
+				<div class="person-info" style="display:block;">
+					<div class="profile-element">
+						<div class="dropdown profile-element">
+							<span><img alt="image" class="img-circle" src="../img/avatar-man.jpg"></span>
+							<span class="name-circle"></span>
+						</div>
+					</div>
+					<div class="logo-element">
+					</div>
+				</div>
+				<div class="sidebar-collapse">
+					<ul class="nav" id="side-menu">
+						<!-- <li>
+							<a href="#"><i class="fa fa-list-alt"></i> <span class="nav-label">任务管理</span><span class="fa arrow"></span></a>
+							<ul class="nav nav-second-level">
+								<li>
+									<a class="J_menuItem" href="http://localhost/admin/check/checkList">质控管理</a>
+								</li>
+							</ul>
+						</li> -->
+
+					</ul>
+				</div>
+			</nav>
+	        <!--左侧导航结束-->
+	
+	
+	        <!--右侧部分开始-->
+	        <div id="page-wrapper" class="gray-bg dashbard-1">
+	
+	            <div class="row content-tabs">
+	                <button class="roll-nav roll-left J_tabLeft"><i class="fa fa-backward"></i>
+	                </button>
+	                <nav class="page-tabs J_menuTabs">
+	                    <div class="page-tabs-content">
+	                        <!--<a href="javascript:;" class="active J_menuTab" data-id="new-show.html">新闻公告</a>-->
+	                    </div>
+	                </nav>
+	                <button class="roll-nav roll-right J_tabRight" style="right:61px;"><i class="fa fa-forward"></i>
+	                </button>
+	                
+	
+	                <button class="roll-nav roll-right J_tabClose" style="display:none;">
+	                    <i class="fa fa-envelope"></i>
+	                    <i class="fa fa-bell"></i>
+	                    <i class="fa fa-gear"></i>
+	                </button>
+	                                    <a href="#" class="roll-nav roll-right J_tabExit logout"><i class="fa fa fa-sign-out"></i> 退出</a>
+	                            </div>
+	            <div class="row J_mainContent" id="content-main">
+	
+	                <iframe class="J_iframe" name="iframe0" width="100%" height="100%" src="" frameborder="0" data-id="index_v1.html" seamless></iframe>
+	
+	            </div>
+	            <div class="footer">
+	                <div class="pull-right">
+	                   <a href='http://sz-sulead.com' target="_blank">
+	                        <span>©2017&nbsp;Sulead&nbsp;</span>
+	                   </a> 
+	                </div>
+	            </div>
+	        </div>
+	        <!--右侧部分结束-->
+	    </div>
+
+	</body>
+	
+	<script>
+		window.onload = function  () {
+			common();
+			$('.img-circle').attr('src',getCookie('a'));
+			$('.name-circle').html(codetostr(getCookie('n')));
+			
+
+			$(".logout").click(function() {//登出功能
+					layer.alert('您确定要退出系统吗？', {
+						btn: ['确定','取消']
+					}, function(){//跳转到登录页面
+						removeCookie('token');
+						window.location.href = "login.html";
+					});
+				});
+
+				// $(".changePassword").click(function() {//修改密码
+				// 	$('.rightCon iframe').attr('src', 'change-pwd.html');
+			// });
+
+			var menu = {
+				'消息中心':
+					{
+						content: [
+								{
+									name:'消息查看',
+									url:'message-show',
+									role:'1,2'
+								},
+								{
+									name:'新闻公告',
+									url:'new-show',
+									role:''
+								},
+								{
+									name:'新闻发布',
+									url:'news-push',
+									role:'3'
+								}
+						],
+						role:''
+					},
+				'信息管理':
+					{
+						content: [
+								{
+									name:'教师管理',
+									url:'teacher-set',
+									role:'3'
+								},
+								{
+									name:'科室管理',
+									url:'depart-set',
+									role:'3'
+								}
+						],
+						role:3
+					},
+				"手册管理":{
+						content: [
+								{
+									name:'手册查看',
+									url:'manual-see',
+									role:''
+								},
+								{
+									name:'手册填写',
+									url:'manual-look',
+									role:'3'
+								}
+						],
+						role:1
+					},
+				'轮转表管理':{
+						content:[
+							{
+								name:'考勤统计',
+								url:'attendance-manage',
+								role:'1'
+							},
+							{
+								name:'轮转管理',
+								url:'circle-manage',
+								role:'2,3'
+							},
+							{
+								name:'考勤管理',
+								url:'attendance-manage',
+								role:'2,3'
+							},
+							{
+								name:'排轮转表',
+								url:'arrange-circle',
+								role:'3'
+							},
+							{
+								name:'轮转列表',
+								url:'circle-list',
+								role:'3'
+							}
+						],	
+						role:''
+					},
+				'课程管理':{
+						content:[
+							{
+								name:'课程查看',
+								url:'lesson-view',
+								role:'1,2'
+							},
+							{
+								name:'活动录入',
+								url:'lesson-activity',
+								role:'1'
+							},
+							{
+								name:'活动管理',
+								url:'lesson-manage',
+								role:'2'
+							},
+							{
+								name:'大纲外课程设置',
+								url:'outer-lesson-set',
+								role:'3'
+							},
+							{
+								name:'大纲内课程设置',
+								url:'inner-lesson-new',
+								role:'3'
+							}
+						],	
+						role:''
+					},
+				'评价管理':{
+						content:[
+							{
+								name:'学员评价',
+								url:'evaluate-look',
+								role:'3',
+								type:'1'
+							},
+							{
+								name:'教师评价',
+								url:'evaluate-look',
+								role:'3',
+								type:'2'
+							}
+						],
+						role:'3'
+					},
+				'师生互评':{
+						content:[
+							{
+								name:'评价查看',
+								url:'evaluate-look',
+								role:'3',
+								type:'1'
+							},
+							{
+								name:'教师评价',
+								url:'evaluate-replay-list',
+								role:'1',
+								type:"student"
+							},
+							{
+								name:'学生评价',
+								url:'evaluate-replay-list',
+								role:'2',
+								type:"teacher"
+							}
+						],
+						role:'1,2'
+					},
+				'考试管理':{
+						content:[
+							{
+								name:'在线考试',
+								url:'exam-online',
+								role:'1'	
+							},
+							{
+								name:'成绩查询',
+								url:'score-manage',
+								role:'1'	
+							},
+							{
+								name:'考试管理',
+								url:'exam-manage',
+								role:'2,3'	
+							},
+							{
+								name:'在线批卷',
+								url:'exam-checkquestion',
+								role:'2'	
+							},
+							{
+								name:'成绩管理',
+								url:'score-manage',
+								role:'2,3'	
+							},
+							{
+								name:'题库管理',
+								url:'exam-question',
+								role:'3'	
+							},
+							{
+								name:'考试监管',
+								url:'exam-confirm',
+								role:'2'	
+							}
+						],	
+						role:''		
+					},
+				'资源中心':{
+						content:[
+							{
+								name:'资源搜索',
+								url:'resource-page',
+								role:'1,2,3'	
+							}
+						],	
+						role:''		
+					},
+				'论坛交流':{
+						content:[
+							{
+								name:'学院论坛',
+								url:'fourm/fourm',
+								role:''
+							}
+						],
+						role:''		
+					}
+			};
+			// var menu = {
+			// 	'消息中心':[
+			// 		{
+			// 			name:'新闻公告',
+			// 			url:'new-show',
+			// 			role:''
+			// 		},
+			// 		{
+			// 			name:'新闻发布',
+			// 			url:'news-push'
+			// 		}
+			// 	],
+			// 	'信息管理':[
+			// 		{
+			// 			name:'教师管理',
+			// 			url:'teacher-set'
+			// 		},
+			// 		{
+			// 			name:'科室管理',
+			// 			url:'depart-set'
+			// 		}
+			// 	],
+			// 	'轮转表管理':[
+			// 		{
+			// 			name:'轮转管理',
+			// 			url:'circle-manage'
+			// 		},
+			// 		{
+			// 			name:'考勤管理',
+			// 			url:'attendance-manage'
+			// 		},
+			// 		{
+			// 			name:'排轮转表',
+			// 			url:'arrange-circle'
+			// 		},
+			// 		{
+			// 			name:'轮转列表',
+			// 			url:'circle-list'
+			// 		}
+			// 	],	
+			// 	'课程管理':[
+			// 		{
+			// 			name:'大纲外课程设置',
+			// 			url:'outer-lesson-set'
+			// 		},
+			// 		{
+			// 			name:'大纲内课程设置',
+			// 			url:'inner-lesson-new'
+			// 		}
+			// 	],	
+			// 	'评价管理':[
+			// 		{
+			// 			name:'学员评价',
+			// 			url:'evaluate-look',
+			// 			type:1
+			// 		},
+			// 		{
+			// 			name:'教师评价',
+			// 			url:'evaluate-look',
+			// 			type:2
+			// 		}
+			// 	],	
+			// 	'考试管理':[
+			// 		{
+			// 			name:'考试管理',
+			// 			url:'exam-manage'
+			// 		},
+			// 		{
+			// 			name:'成绩管理',
+			// 			url:'score-manage'
+			// 		},
+			// 		{
+			// 			name:'题库管理',
+			// 			url:'exam-question'
+			// 		}
+			// 	],	
+			// 	'资源中心':[
+			// 		{
+			// 			name:'资源搜索',
+			// 			url:'resource-page'
+			// 		}
+			// 	],	
+			// 	'论坛交流':[
+			// 		{
+			// 			name:'学院论坛',
+			// 			url:'fourm/fourm'
+			// 		}
+			// 	]	
+			// };
+			var _m = '';
+			for (var name in menu) {
+				var _str = '';
+				for (var i = 0 ; i < menu[name].content.length; i++) {
+					_str +=
+						'<li role= "'+ menu[name].content[i].role +'" class="roleopt" style="display:none"><a class="J_menuItem" href="'+menu[name].content[i].url+'.html'+(menu[name].content[i].type?'?type='+menu[name].content[i].type:'')+'">'+menu[name].content[i].name+'</a></li>';					
+				}
+				_m+=
+					'<li role= "'+ menu[name].role +'"  class="roleopt"  style="display:none">'
+						+'<a href="#">'
+							+'<i class="fa fa-list-alt"></i> '
+							+'<span class="nav-label">'+name+'</span>'
+							+'<span class="fa arrow"></span>'
+						+'</a>'
+						+'<ul class="nav nav-second-level">'
+						+_str
+						+'</ul>'
+					+'</li>';				
+				
+			}
+			$('#side-menu').html(_m)
+			loadmenu();
+			contabs();	
+			
+
+			$('.J_menuItem').click(function () {
+				var str = $(this).attr('href');
+				changepage(str.substring(0,str.lastIndexOf('.')));
+			});
+			
+			var _has = false;
+			var _href = window.location.href;
+			if (_href.indexOf('#')!=-1) {
+				var _url = _href.substring(_href.indexOf('#')+1,_href.length);
+				$('.J_menuItem').each(function () {
+					var str = $(this).attr('href');
+					if (_url==str.substring(0,str.lastIndexOf('.'))) {
+						$(this).parent().parent().parent().find('a:first').click();
+						$(this).parent().parent().parent().addClass('active');
+						$(this).click();
+						_has = true;
+						return false;
+					}
+				});
+			} 
+			if (!_has) {
+				$('.J_menuItem').eq(0).click();
+				$('#side-menu li:first a').eq(0).click();
+				$('#side-menu li:first').addClass('active');
+			}
+
+			setCookie('usernumber',getCookie('usernumber'),7);
+			var oRole = getCookie("r");
+			setJurisdiction('.roleopt',oRole);
+		};
+		
+		function setJurisdiction(str,role) {
+				$(str).each(function () {
+					if ($(this).attr('role')) {
+						var _arr = $(this).attr('role').split(',');
+						for (var i = 0 ; i < _arr.length; i++) {
+							if (_arr[i]==role) {
+								$(this).css('display','block');
+							}								
+						}
+					} else {
+						$(this).css('display','block');
+					}
+				});									
+		};
+		
+		
+		
+	</script>
+	
+	
+	
+</html>

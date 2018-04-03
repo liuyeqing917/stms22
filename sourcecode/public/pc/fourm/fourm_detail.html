@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html ng-app="manage">
+	<head>
+		<script type="text/javascript" src="js/ng-layout.js" ></script>
+		<script src="js/ueditor/ueditor.config.js"></script>
+		<script src="js/ueditor/ueditor.all.min.js"></script>
+		<meta charset="UTF-8">
+		<title>高州市人民医院 - 住院医师轮转系统 - 帖子详情</title>
+		
+		<style>
+		body { background: #dceffe;}
+.page {
+    position:relative;
+    left: 0; top: 0; margin: 0 auto;
+}		
+		
+		
+		
+		
+		
+.details_show {
+    width: 94%; 
+    overflow: hidden;
+    margin: 20px auto 0;
+    padding-bottom: 20px;
+    background: #fff;
+    border: 1px solid #E5E5E5;border-bottom: none;
+}	
+.details_show ul {
+    width: 100%;
+    overflow: hidden;
+}	
+.details_show ul li {
+    overflow: hidden;
+    border-bottom: 1px solid #E1E4E6;
+    background: -#59d2f0;
+}	
+.details_left {
+    width: 20%;
+    overflow: hidden;
+    text-align: center;
+    color: #2d64b3;
+    float: left;
+    position: relative;
+}
+.details_left div {
+    width: 97px;
+    height: 97px;
+    
+    margin: 30px auto 5px auto;
+    
+}
+.details_left .louzhu {
+	position: absolute; right: 0; top: 0; width: 36px; height: 36px; background: url(../../img/louzhu.png) no-repeat right top;
+	margin: 0; border: none;
+}
+
+.details_left div img {
+    width: 95px;
+    height: 95px;
+    display: block;
+}
+.details_left h3 {
+    height: 50px;
+    line-height: 50px;
+    font-size: 18px;
+}
+
+.details_con {
+    float: left;
+    width: 80%;
+    overflow: hidden;
+    background: #fff;
+}	
+.details_con h2 {
+    text-align: center;
+    padding:20px 40px;
+    padding-bottom: 0;
+    font-size: 26px;
+    color: #000;
+}	
+.details_con .details_con_con {
+    padding: 20px;
+   
+    min-height: 130px;
+}	
+.details_con h3 {
+    text-align: right;
+    padding-right: 48px;
+    font-weight: normal;
+    height: 54px;
+    line-height: 54px;
+    font-size: 14px;
+    color: #999999;
+}	
+	
+.details_line {
+    display: block;
+    width: 320px;
+    height: 2px;
+    background: #59D2F0;
+}	
+	
+	
+	.container { padding-bottom: 80px;}
+	.edit-reply { height: 430px; border-radius: 6px; padding: 30px; position: relative; background: #fff;}
+	#reply { height: 250px;  margin: 0 auto; }
+	.reply-btn {
+	    display: block;
+	    width: 80px;
+	    position: absolute;
+	    bottom: 28px;
+	    left: 50%;
+	    margin-left: -80px;
+	}	
+	
+	.cancel-reply { margin-left: 40px; display: none;}
+	
+	
+	.floor-reply { width: 90%; padding: 0 20px; margin: 0 auto 20px; border: 1px solid #f0f1f2;   background: #f7f8fa;}
+	
+	.floor-reply-list {padding: 20px 0 0; padding-left: 52px; position: relative; font-size: 16px; }
+	.floor-reply-avatar { width: 32px; height: 32px; position: absolute; left: 0; top: 20px;}
+	
+	.floor-reply-toreply { padding: 5px 0; }
+	.floor-reply-toreply span {float: right; font-size:12px ; color: #999; margin: 0 4px; }
+	.badge-info { background-color: #3a87ad; color: #fff!important; margin-left:10px ; cursor: pointer;}	
+	
+	.reply_name { color: #2d64b3; float: left; }
+	
+	.floor-reply-line { border-bottom: 1px dashed #ccc }	
+	.floor-reply-more { padding: 10px 52px; height:50px; padding-right: 0;}
+	.floor-reply-more a { line-height: 30px; font-size: 14px; }
+	.floor-reply-more span { float: right;}
+	.badge-important { background-color: #b94a48; cursor: pointer; color: #fff!important; }				
+	
+	.toreply { color: #2d64b3; cursor: pointer; margin-left: 10px;}
+	.todelete { cursor: pointer;}
+	
+	.initreply { width: 94%; min-height: 500px;  margin: 0 auto 60px; background: #fff;border: 1px solid #E5E5E5;border-top: none;}
+	
+	.initreply-title { text-indent: 2em; font-weight: bold; color: #000;}
+		
+		</style>
+		<script>
+			var oId = findurl('id');
+			
+			var app = angular.module('manage',['ngCookies','ngSanitize']);
+			app.controller('getmanage',function ($scope,$http,$cookies,$sanitize,$sce) {
+				
+				
+				common();
+				$scope.trustHtml =function (data) {
+					return $sce.trustAsHtml(data);
+				};
+				$scope.sethead = function (img,sex) {
+					if (img) {
+						return Api.url+'/'+img;
+					}
+					return sex==0?Api.url+'/img/avatar-woman.jpg':Api.url+'/img/avatar-man.jpg';
+				};
+				
+				
+				ng.fourm.getFourmDetail($http,$cookies,{
+					json:{id:oId},
+					fn:function (res) {
+						if (res.code==1) {
+							$scope.detail = res.data;
+						} else {
+							uselayer(1,res.message,function () {
+								history.go(-1);
+							});
+						}
+					}
+				});
+				
+				$scope.page = findurltype('page')?findurltype('page'):1;
+				$scope.perpage = Api.perpage;
+				
+				getfloors();
+				
+				function getfloors() {
+					ng.fourm.getFloorList($http,$cookies,{
+						json:{
+							fourmid:oId,
+							page:$scope.page,
+							pageNo:Api.perpage
+						},
+						fn:function (res) {
+							if (res.code==1) {
+								$scope.floors = res.data.data;
+								flipover(res.data.total,Api.perpage,getfloors,$scope);
+							} else {
+								uselayer(1,res.message);
+							}
+						}
+					});					
+				};
+				
+				
+				//初始化发帖框
+				ng.initedit($scope,$http,$cookies);
+				
+				
+				//初始化回帖框
+				$scope.ue = UE.getEditor('reply', {
+					toolbars: [
+						[
+							"undo","|",
+							"redo","|",
+							"link","|",
+							"unlink","|",
+							"bold","|",
+							"italic","|",
+							"underline","|",
+							"forecolor","|",
+							"fontfamily","|",
+							"emotion"
+						]
+					],
+					enableContextMenu:false,//右键菜单
+					autoHeightEnabled: false,//是否自动长高,默认true
+					wordCount: true, //开启字数统计 
+					elementPathEnabled : false,//是否启用元素路径，默认是显示
+					maximumWords: 1000, //允许的最大字符数 
+					//pasteplain: true, //是否默认为纯文本粘贴。false为不使用纯文本粘贴，true为使用纯文本粘贴 
+					enableAutoSave: false, //自动保存
+					emotionLocalization:false,//是否开启表情本地化
+					zIndex : 1
+					//initialContent:'欢迎使用ueditor!',初始化编辑器的内容
+					//focus:false, //初始化时，是否让编辑器获得焦点true或false
+				});						
+										
+				var applyType = 'floor';
+				var applyId = oId;
+				
+				$scope.addreply = function (type) {
+					
+					if (!$scope.ue.hasContents()) {
+						uselayer(3,'回复内容不能为空');
+						$scope.ue.focus()//聚焦
+						return false;
+					}	
+					
+					if (applyType=='floor') {
+						ng.fourm.replyFourm($http,$cookies,{
+							json:{id:applyId,message:$scope.ue.getContent()},
+							fn:function (res) {
+								uselayer(3,res.message,function () {
+									window.location.reload();
+								});
+							}
+						});						
+					} else if (applyType=='apply') {
+						ng.fourm.replyFloor($http,$cookies,{
+							json:{id:applyId,message:$scope.ue.getContent()},
+							fn:function (res) {
+								uselayer(3,res.message,function () {
+									window.location.reload();
+								});
+							}
+						});							
+					}
+					
+
+				};
+					
+				$scope.applyfloor = function (id,name) {
+					$('.cancel-reply').css('display','block');
+					applyType = 'apply';			
+					applyId = id;
+					if (name) {
+						setTimeout(function () {
+							$scope.ue.setContent('回复<span style="color: #2d64b3;">'+name+'</span>：', false);
+//							$scope.ue.focus();
+						},100);						
+					}
+					$scope.showapply = layer.open({
+						zIndex:1,
+						type: 1,
+						title: false,
+						closeBtn: 0,
+						area: '700px',
+						skin: 'layui-layer-nobg', //没有背景色
+						shadeClose: true,
+						content: $('#edit-reply'),
+						end:function () {
+							$('.cancel-reply').css('display','none');
+							applyType = 'floor';
+							applyId = oId;
+							$('#edit-reply').css('display','block');								
+							$scope.ue.setContent('', false);								
+						}
+					});											
+				};
+				$scope.cancelreply = function () {
+					layer.close($scope.showapply);
+				};
+				
+				$scope.reedit = function () {
+					$scope.toaddfourm();
+					$scope.fourmTitle =$scope.detail.title;
+					$scope.fourmTypeId = $scope.detail.typeid;
+					$scope.fourmId = $scope.detail.id;
+					setTimeout(function () {
+						$scope.fourm.setContent($scope.detail.content, false);
+					},100);
+				};
+				
+				//删除帖子
+				$scope.deletefourm = function (id) {
+					uselayer(2,"删除之后无法恢复，确认删除？",function () {
+						ng.fourm.deleteFourm($http,$cookies,{
+							json:{id:id},
+							fn:function (res) {
+								uselayer(3,res.message,function () {
+									history.go(-1);
+								});
+							}
+						});
+					});					
+				};		
+				//删除楼层
+				$scope.deleteFloor = function (id) {
+					uselayer(2,"确定删除该楼层和下面所有回复？",function () {
+						ng.fourm.deleteFloor($http,$cookies,{
+							json:{id:id},
+							fn:function (res) {
+								uselayer(3,res.message,function () {
+									window.location.reload();
+								});
+							}
+						});
+					});					
+				};
+				
+				//删除楼层回复消息
+				$scope.deleteMessage = function (id) {
+					uselayer(2,"确定删除该回复？",function () {
+						ng.fourm.deleteMessage($http,$cookies,{
+							json:{id:id},
+							fn:function (res) {
+								uselayer(3,res.message,function () {
+									alert(1);
+								});
+							}
+						});
+					});					
+				};				
+				
+				
+				
+				$scope.isself = function (userid,floorid) {
+					
+					if ($cookies.get('r')==3) {
+						return true;
+					}
+					if (userid==$cookies.get('id')) {
+						return true;
+					}
+					if (floorid==$cookies.get('id')) {
+//						return true; 
+					}
+					return false;
+				};				
+				
+			});
+			
+			
+				
+				
+				
+				
+				
+				
+			
+		</script>
+		
+		
+	</head>
+	<body ng-controller="getmanage" ng-cloak >
+		<div class="childTitle hascancle">帖子详情</div>
+					
+		<div class="details_show" id="details_show">
+			<div class="clearfix details_show_left">
+				<ul class="details_show_main" ng-show="page==1">
+					<li>
+						<div class="details_left">
+							<strong class="louzhu"></strong>
+							<div><img src="{{::sethead(detail.userhead,detail.usersex)}}"></div>
+							<h3>{{::detail.username}}</h3></div>
+						<div class="details_con">
+							<h2>{{::detail.title}}</h2>
+							<div class="details_con_con" ng-bind-html="::trustHtml(detail.content)"></div>
+							<h3>
+								<span class="btn" ng-click="reedit()" ng-show="isself(detail.userid)">重新编辑</span>
+								<span class="btn" ng-click="deletefourm(detail.id)" ng-show="isself(detail.userid)">删除该贴</span>
+								<span></span>&nbsp;&nbsp;&nbsp;<span>{{::detail.created_at}}</span>
+							</h3>
+							<span class="details_line" ng-show=""></span>
+						</div>
+					</li>
+				</ul>
+				<ul>
+					<li ng-repeat="floor in floors">
+						<div class="details_left">
+							<strong class="louzhu" ng-show="detail.userid==floor.userid"></strong>
+							<div><img src="{{::sethead(floor.userhead,floor.usersex)}}" ></div>
+							<h3>{{::floor.username}}</h3></div>
+						<div class="details_con">
+							<div class="details_con_con" ng-bind-html="::trustHtml(floor.message)"></div>
+							<h3>
+		    					<span class="todelete" ng-click="deleteFloor(floor.id)" ng-show="isself(floor.userid)">删除</span>
+								<span>{{::(page-1)*perpage+$index+1}}楼</span>&nbsp;&nbsp;&nbsp;
+								<span>{{::floor.created_at}}</span>
+								<span class="toreply" ng-click="applyfloor(floor.id)">回复</span>
+							</h3>
+						
+							<div class="floor-reply" ng-show="floor.messages.length!=0">
+								<div class="floor-reply-list" ng-repeat="reply in floor.messages" >
+									<img src="{{::sethead(reply.userhead,reply.usersex)}}" class="floor-reply-avatar" />
+									<div class="floor-reply-con" ng-bind-html="::trustHtml('<span class='+'reply_name'+'>'+reply.username+'：</span>'+reply.message)">
+										
+									</div>
+									<div class="clearfix floor-reply-toreply" >
+										<span class="toreply" ng-click="applyfloor(floor.id,reply.username)">回复</span>
+										<span class="">{{::reply.created_at}}</span>
+		    							<span class="todelete" ng-click="deleteMessage(reply.id)" ng-show="isself(reply.userid,floor.userid)">删除</span>
+									</div>
+									<div class="floor-reply-line" ng-show="$index!=floor.messages.length-1"></div>
+								</div>
+								<div class="floor-reply-more" ng-show="">
+									<a href="javascript:;">还有1条回复，点击查看</a>
+									<span class="btn btn-default btn-sm" ng-click="applyfloor(floor.id)">我也说一句</span>
+								</div>	
+							</div>								
+							<span class="details_line" ng-show=""></span>
+						</div>
+					</li>
+				</ul>
+			</div>
+		</div>			
+		
+		
+		
+		<div id="page"></div>
+	
+		<div class="initreply">
+			
+			<h4 class="initreply-title">回复本帖</h4>
+			<div class="edit-reply" id="edit-reply">
+				<script id="reply" type="text/plain"></script>
+				
+				<button class="btn btn-success reply-btn sure-reply" ng-click="addreply()">回复</button>
+				<button class="btn btn-default reply-btn cancel-reply" ng-click="cancelreply()">取消</button>
+				
+			</div>	
+			
+			
+			
+			
+		</div>			
+		
+			
+		
+
+		
+
+		<div class="initfourm" >
+			<div class="btn btn-info btn-lg to-addfourm" ng-click="toaddfourm()">我要发帖</div>
+			<div class="my-edit" id="my-edit">
+				<h3 class="my-edit-title">发表新帖</h3>
+				<div class="input-group">
+	                <span class="input-group-addon"><i class="glyphicon">标题</i></span>
+	                <input type="text" class="form-control" ng-model="fourmTitle" ng-focus="ture" placeholder="请输入标题">
+	            </div>
+				<div class="input-group">
+	                <span class="input-group-addon"><i class="glyphicon ">主题</i></span>
+	                <select class="form-control" ng-model="fourmTypeId" ng-options="x.id as x.name for x in fourmItems"></select>
+	            </div>
+				<script id="editor" type="text/plain"></script>		
+				<input type="button" value="发表" class="btn btn-success add-fourm" id="add-fourm" ng-click="addfourm($event)" />
+				<input type="button" value="取消" class="btn btn-default add-fourm cancel-fourm" ng-click="tocancelfourm()" />
+			</div>			
+		</div>
+		
+		
+	</body>
+</html>

@@ -1,0 +1,1209 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<script type="text/javascript" src="../js/layout.js" ></script>
+		<meta charset="UTF-8">
+		<title>高州市人民医院 - 住院医师轮转系统 - 轮转管理</title>
+		<link rel="stylesheet" type="text/css" href="../css/bootstrap-datetimepicker.min.css"/>
+		<link rel="stylesheet" type="text/css" href="../css/common2.css"/>
+		<script type="text/javascript" src="../js/bootstrap-datetimepicker.min.js" ></script>
+		<style type="text/css">
+			.messageCon{
+				width:100%; padding-left:35px; padding-right:35px; font-size:14px;
+				padding-top:25px;
+			}
+			.btn1{
+				display:block; background-color:#DC5C59; border-radius:5px;
+				color:white; font-weight:bold; width:90px; height:26px;
+				cursor:pointer; margin:auto;
+			}
+			.selectBtn{
+				margin-top: 4px;
+    			line-height: 26px;
+			}
+			.selectrow{
+				height:34px; line-height:34px;
+			}
+			.departmentSelectOuter{
+				display:none;
+			}
+			.radiospan{
+				cursor:pointer;
+			}
+			.table{
+				width:100%; text-align:center;
+				margin-top:10px; font-size:14px;
+			}
+			.tr{
+				width:100%; cursor:pointer;
+			}
+			.th .td{
+				margin-left:-1px; 
+				float:left; padding:5px;
+			}
+			.tr:nth-child(odd){
+				background-color:#E1F0FA;
+			}
+			.tr .td{
+				margin-left:-1px; margin-top:-1px;
+				float:left; padding:5px;
+			}
+			.th{
+				font-weight:bold; background-color:#E3E3E5;
+			}
+			.td1{
+				width:16.6%;
+			}
+			.td2{
+				width:20%;
+			}
+			.td3{
+				width:25%;
+			}
+			.tableTit{
+				font-size:14px; color:#868686;
+			}
+			.tableTit span{
+				border-bottom:3px solid #55D1A2;
+			}
+			.secondStep{
+				padding-bottom:50px;
+			}
+
+			.firstPage{
+				display:none;
+			}
+			.secondStep{
+				display:none;
+			}
+			.thirdStep{
+				display:none;
+			}
+			.xinghao{
+				color:red;
+			}
+			.fourStep{
+				display:none;
+			}
+			.fiveStep{
+				display:none;
+			}
+			.sixStep{
+				display:none;
+			}
+			.sevenStep{
+				display:none;
+			}
+			.selectrow{
+				height:34px; line-height:34px; margin-bottom:10px;
+			}
+			.fenyeCon{
+				width:700px; padding-bottom:50px; margin:auto;
+			}
+		</style>
+		<script>
+			$('.commonCss').remove();
+		</script>
+		<script type="text/javascript" src="../js/jqPaginator.js"></script>
+	</head>
+	<body>
+		<div class="childTitle">
+			轮转管理
+		</div>
+
+		<div class="messageCon clearfix selectMessageCon">
+			<div class="row selectrow">
+				<div class="col-xs-2">查询条件</div>
+				<div class="col-xs-1 pad0">
+					<input type="radio" name="tiaojian" checked="checked" ischeck="true" class="timeRadio" />
+					<span class="radiospan">时间</span>
+				</div>
+				<div class="col-xs-1 pad0">
+					<input type="radio" name="tiaojian" ischeck="false" class="departRadio" />
+					<span class="radiospan">科室</span>
+				</div>
+				<div class="timeSelectOuter">
+					<div class="col-xs-1 pad0 right">开始时间:</div>
+					<div class="col-xs-2">
+						<input type="text" class="ctime form-control startInp" />
+					</div>
+
+					<div class="col-xs-1 pad0 right">结束时间:</div>
+					<div class="col-xs-2">
+						<input type="text" class="ctime form-control endInp" />
+					</div>
+				</div>
+
+				<div class="departmentSelectOuter">
+					<div class="col-xs-1 pad0 right">主科室:</div>
+					<div class="col-xs-2">
+						<select name="" class="form-control fatherdepart">
+						</select>
+					</div>
+
+					<div class="col-xs-1 pad0 right">科室:</div>
+					<div class="col-xs-2">
+						<select name="" class="form-control childdepart">
+						</select>
+					</div>
+				</div>
+
+				<div class="col-xs-1">
+					<button class="btn1 selectBtn selectBtn2" type="button">查询</button>
+				</div>
+
+			</div>
+
+		</div>
+
+		<div class="messageCon clearfix firstPage">
+			<div class="table table1 clearfix">
+				<div class="th clearfix">
+					<div class="td td1">科室</div><div class="td td1">学员姓名</div><div class="td td1">状态</div><div class="td td1">实际入科时间</div><div class="td td1">实际出科时间</div><div class="td td1">教师签字</div>
+				</div>
+				<div class="tr clearfix">
+					<div class="td td1">急诊icu</div><div class="td td1">章一星</div><div class="td td1">出科</div><div class="td td1">2016年7月1日</div><div class="td td1">2016年7月1日</div><div class="td td1">张青</div>
+				</div>
+				<div class="tr clearfix">
+					<div class="td td1">急诊icu</div><div class="td td1">章一星</div><div class="td td1">出科</div><div class="td td1">2016年7月1日</div><div class="td td1">2016年7月1日</div><div class="td td1">张青</div>
+				</div>
+			</div>
+			
+			<p class="no-data" style="display:none;">该条件下暂无数据<p>
+
+			<div class="fenyeCon">
+				<ul class="pagination" id="pagination1"></ul>
+			</div>
+		</div>
+
+		<div class="messageCon clearfix secondStep">
+			<div class="tableTit"><span>病种</span></div>
+
+			<div class="table clearfix bingZhongTable">
+				<div class="th clearfix">
+					<div class="td td2">要求</div><div class="td td2">病种</div><div class="td td2">要求例数</div><div class="td td2">完成例数</div><div class="td td2">负责人签字</div>
+				</div>
+				<div class="tr clearfix">
+					<div class="td td2">掌握</div><div class="td td2">各种器脏功能不全</div><div class="td td2">3</div><div class="td td2">3</div><div class="td td2">张青</div>
+				</div>
+			</div>
+
+			<div class="tableTit"><span>临床操作技术</span></div>
+
+			<div class="table clearfix lingChuangTable">
+				<div class="th clearfix">
+					<div class="td td2">要求</div><div class="td td2">病种</div><div class="td td2">要求例数</div><div class="td td2">完成例数</div><div class="td td2">负责人签字</div>
+				</div>
+				<div class="tr clearfix">
+					<div class="td td2">掌握</div><div class="td td2">各种器脏功能不全</div><div class="td td2">3</div><div class="td td2">3</div><div class="td td2">张青</div>
+				</div>
+			</div>
+
+			<div class="tableTit"><span>大病历书写</span></div>
+
+			<div class="table clearfix daBingLiTable">
+				<div class="th clearfix">
+					<div class="td td2">要求</div><div class="td td2">病种</div><div class="td td2">要求例数</div><div class="td td2">完成例数</div><div class="td td2">负责人签字</div>
+				</div>
+				<div class="tr clearfix">
+					<div class="td td2">掌握</div><div class="td td2">各种器脏功能不全</div><div class="td td2">3</div><div class="td td2">3</div><div class="td td2">张青</div>
+				</div>
+			</div>
+
+			<div class="tableTit"><span>活动记录</span></div>
+
+			<div class="table clearfix huoDongTable">
+				<div class="th clearfix">
+					<div class="td td2">要求</div><div class="td td2">病种</div><div class="td td2">要求例数</div><div class="td td2">完成例数</div><div class="td td2">负责人签字</div>
+				</div>
+				<div class="tr clearfix">
+					<div class="td td2">掌握</div><div class="td td2">各种器脏功能不全</div><div class="td td2">3</div><div class="td td2">3</div><div class="td td2">张青</div>
+				</div>
+			</div>
+
+			<div class="chuKeTable">
+				<div class="tableTit"><span>出科小结</span></div>
+
+				<div class="row selectrow">
+					<div class="col-xs-3"></div>
+					<div class="col-xs-9">
+						<span class="xinghao">*</span>医德医风、组织纪律、服务态度及质量
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-3 right"></div>
+					<div class="col-xs-7">
+						<textarea class="form-control oneInp" rows="5" disabled="disabled"></textarea>
+					</div>
+				</div>
+
+				<div class="row selectrow">
+					<div class="col-xs-3"></div>
+					<div class="col-xs-9">
+						<span class="xinghao">*</span>理论学习、学习的病种、技术操作
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-3 right"></div>
+					<div class="col-xs-7">
+						<textarea class="form-control twoInp" rows="5" disabled='disabled'></textarea>
+					</div>
+				</div>
+
+				<div class="row selectrow">
+					<div class="col-xs-3"></div>
+					<div class="col-xs-9">
+						<span class="xinghao">*</span>管理病床数、查房
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-3 right"></div>
+					<div class="col-xs-7">
+						<textarea class="form-control threeInp" rows="5" disabled='disabled'></textarea>
+					</div>
+				</div>
+				
+			</div>
+			<div class="row selectrow chuKeRow">
+				<div class="col-xs-3"></div>
+				<div class="col-xs-6 center red chuKeText">
+					学生还未出科
+				</div>
+			</div>
+			<div class="row chuKeBtnRow">
+				<div class="col-xs-4"></div>
+				<div class="col-xs-4">
+					<button class="btn1 selectBtn chuKeBtn" type='button' id="">
+						确认出科
+					</button>
+				</div>
+			</div>
+			
+			<div class="row">
+				<div class="col-xs-4"></div>
+				<div class="col-xs-4">
+					<button class="btn1 selectBtn return1" type='button'>返回</button>
+				</div>
+			</div>
+		</div>
+
+		<div class="messageCon clearfix thirdStep">
+			<div class="tableTit"><span>登记列表</span></div>
+
+			<div class="table clearfix dengJiTable">
+				<div class="th clearfix">
+					<div class="td td4">序号</div><div class="td td4">病人姓名</div><div class="td td4">病例号</div><div class="td td4">主要诊断</div><div class="td td4">主管教师</div>
+				</div>
+				<div class="tr clearfix">
+					<div class="td td4"></div><div class="td td4"></div><div class="td td4"></div><div class="td td4"></div><div class="td td4"></div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-4">
+				</div>
+				<div class="col-xs-4">
+					<button class="btn1 selectBtn return2" type='button'>返回</button>
+				</div>
+			</div>
+		</div>
+
+
+
+		<div class="messageCon clearfix fourStep">
+			<div class="row selectrow">
+				<div class="col-xs-3 right">
+					<span class="xinghao">*</span>病人姓名
+				</div>
+				<div class="col-xs-7">
+					<input type="text" class="form-control nameInp" disabled='disabled'/>
+				</div>
+			</div>
+
+			<div class="row selectrow">
+				<div class="col-xs-3 right">
+					<span class="xinghao">*</span>病历号
+				</div>
+				<div class="col-xs-7">
+					<input type="text" class="form-control numberInp" disabled='disabled'/>
+				</div>
+			</div>
+
+			<div class="row selectrow">
+				<div class="col-xs-3 right">
+					<span class="xinghao">*</span>是否抢救
+				</div>
+				<div class="col-xs-1">
+					<input type="radio" class="yesradio" name='isrescue' value="1" disabled='disabled'/>是
+				</div>
+				<div class="col-xs-1">
+					<input type="radio" class="noradio" name='isrescue' value="0" disabled='disabled'/>否
+				</div>
+			</div>
+
+			<div class="row selectrow">
+				<div class="col-xs-3 right">
+					<span class="xinghao">*</span>病历
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-xs-3 right"></div>
+				<div class="col-xs-7">
+					<textarea class="form-control caseInp" rows="5" disabled
+					='disabled'></textarea>
+				</div>
+			</div>
+
+			<div class="row selectrow">
+				<div class="col-xs-3 right">
+					<span class="xinghao">*</span>主要诊断
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-xs-3 right"></div>
+				<div class="col-xs-7">
+					<textarea class="form-control mdiagnosisInp" rows="5" disabled="disabled"></textarea>
+				</div>
+			</div>
+
+			<div class="row selectrow">
+				<div class="col-xs-3 right">
+					<span class="xinghao">*</span>次要诊断
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-xs-3 right"></div>
+				<div class="col-xs-7">
+					<textarea class="form-control cdiagnosisInp" rows="5" disabled="disabled"></textarea>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-xs-4">
+				</div>
+				<div class="col-xs-4">
+					<button class="btn1 selectBtn return3" type='button'>返回</button>
+				</div>
+			</div>
+		</div>
+
+		<div class="messageCon clearfix fiveStep">
+			<div class="row selectrow">
+				<div class="col-xs-3 right">
+					<span class="xinghao">*</span>病人姓名
+				</div>
+				<div class="col-xs-7">
+					<input type="text" class="form-control nameInp" disabled="disabled"/>
+				</div>
+			</div>
+
+			<div class="row selectrow">
+				<div class="col-xs-3 right">
+					<span class="xinghao">*</span>病例号
+				</div>
+				<div class="col-xs-7">
+					<input type="text" class="form-control numberInp" disabled="disabled"/>
+				</div>
+			</div>
+
+			<div class="row selectrow">
+				<div class="col-xs-3 right">
+					<span class="xinghao">*</span>病历
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-xs-3 right"></div>
+				<div class="col-xs-7">
+					<textarea class="form-control caseInp" rows="5" disabled="disabled"></textarea>
+				</div>
+			</div>
+
+			<div class="row selectrow">
+				<div class="col-xs-3 right">
+					<span class="xinghao">*</span>操作过程
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-xs-3 right"></div>
+				<div class="col-xs-7">
+					<textarea class="form-control processInp" rows="5" disabled="disabled"></textarea>
+				</div>
+			</div>
+
+			<div class="row selectrow">
+				<div class="col-xs-3 right">
+					<span class="xinghao">*</span>备注
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-xs-3 right"></div>
+				<div class="col-xs-7">
+					<textarea class="form-control beizhuInp" rows="5" disabled="disabled"></textarea>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-xs-4">
+				</div>
+				<div class="col-xs-4">
+					<button class="btn1 selectBtn return3" type='button'>返回</button>
+				</div>
+			</div>
+		</div>
+
+		<div class="messageCon clearfix sixStep">
+			<div class="row selectrow">
+				<div class="col-xs-3 right">
+					<span class="xinghao">*</span>病人姓名
+				</div>
+				<div class="col-xs-7">
+					<input type="text" class="form-control nameInp" disabled="disabled"/>
+				</div>
+			</div>
+
+			<div class="row selectrow">
+				<div class="col-xs-3 right">
+					<span class="xinghao">*</span>病历号
+				</div>
+				<div class="col-xs-7">
+					<input type="text" class="form-control numberInp" disabled="disabled"/>
+				</div>
+			</div>
+
+			<div class="row selectrow">
+				<div class="col-xs-3 right">
+					<span class="xinghao">*</span>病历
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-xs-3 right"></div>
+				<div class="col-xs-7">
+					<textarea class="form-control caseInp" rows="5" disabled="disabled"></textarea>
+				</div>
+			</div>
+
+			<div class="row selectrow">
+				<div class="col-xs-3 right">
+					<span class="xinghao">*</span>主要诊断
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-xs-3 right"></div>
+				<div class="col-xs-7">
+					<textarea class="form-control mdiagnosisInp" rows="5" disabled="disabled"></textarea>
+				</div>
+			</div>
+
+			<div class="row selectrow">
+				<div class="col-xs-3 right">
+					<span class="xinghao">*</span>次要诊断
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-xs-3 right"></div>
+				<div class="col-xs-7">
+					<textarea class="form-control cdiagnosisInp" rows="5" disabled="disabled"></textarea>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-xs-4">
+				</div>
+				<div class="col-xs-4">
+					<button class="btn1 selectBtn return3" type='button'>返回</button>
+				</div>
+			</div>
+		</div>
+
+		<div class="messageCon clearfix sevenStep">
+			<div class="row selectrow">
+				<div class="col-xs-3 right">
+					<span class="xinghao">*</span>时间
+				</div>
+				<div class="col-xs-7">
+					<input type="text" class="form-control htimeInp ctime" disabled="disabled"/>
+				</div>
+			</div>
+
+			<div class="row selectrow">
+				<div class="col-xs-3 right">
+					<span class="xinghao">*</span>题目
+				</div>
+				<div class="col-xs-7">
+					<input type="text" class="form-control subjectInp" disabled="disabled"/>
+				</div>
+			</div>
+
+			<div class="row selectrow">
+				<div class="col-xs-3 right">
+					<span class="xinghao">*</span>类别
+				</div>
+				<div class="col-xs-7">
+					<input type="text" class="form-control typeInp" disabled="disabled"/>
+				</div>
+			</div>
+
+			<div class="row selectrow">
+				<div class="col-xs-3 right">
+					<span class="xinghao">*</span>发表刊物
+				</div>
+				<div class="col-xs-7">
+					<input type="text" class="form-control publicationInp" disabled="disabled"/>
+				</div>
+			</div>
+
+			<div class="row selectrow">
+				<div class="col-xs-3 right">
+					<span class="xinghao">*</span>课题负责人
+				</div>
+				<div class="col-xs-7">
+					<input type="text" class="form-control personInp" disabled="disabled"/>
+				</div>
+			</div>
+
+			<div class="row selectrow">
+				<div class="col-xs-3 right">
+					<span class="xinghao">*</span>参与角色
+				</div>
+				<div class="col-xs-7">
+					<input type="text" class="form-control roleInp" disabled="disabled"/>
+				</div>
+			</div>
+
+			<div class="row selectrow">
+				<div class="col-xs-3 right">
+					<span class="xinghao">*</span>事帮等级
+				</div>
+				<div class="col-xs-7">
+					<input type="text" class="form-control levelInp" disabled="disabled"/>
+				</div>
+			</div>
+
+			<div class="row selectrow">
+				<div class="col-xs-3 right">
+					<span class="xinghao">*</span>概述
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-xs-3 right"></div>
+				<div class="col-xs-7">
+					<textarea class="form-control descriptionInp" rows="5" disabled="disabled"></textarea>
+				</div>
+			</div>
+
+			<div class="row selectrow">
+				<div class="col-xs-3 right">
+					<span class="xinghao">*</span>原因
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-xs-3 right"></div>
+				<div class="col-xs-7">
+					<textarea class="form-control reasonInp" rows="5" disabled="disabled"></textarea>
+				</div>
+			</div>
+
+			<div class="row selectrow">
+				<div class="col-xs-3 right">
+					<span class="xinghao">*</span>经验教训
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-xs-3 right"></div>
+				<div class="col-xs-7">
+					<textarea class="form-control learnedInp" rows="5" disabled="disabled"></textarea>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-xs-4">
+				</div>
+				<div class="col-xs-4">
+					<button class="btn1 selectBtn return3" type='button'>返回</button>
+				</div>
+			</div>
+		</div>
+
+	</body>
+	<script type="text/javascript">
+		$(function() {
+			getFatherdepart();//获取父科室
+			getChilddepart();//获取子科室
+			setDatePicker();//设置时间输入框
+
+			$(".radiospan").click(function() {
+				$(this).prev().click();
+			});
+			$(".timeRadio").click(function() {
+				if( $(this).attr('ischeck') == 'false' ){
+					$(this).attr('ischeck','true');
+					$('.departRadio').attr('ischeck', 'false');
+
+					$(".timeSelectOuter").css('display', 'block');
+					$(".departmentSelectOuter").css('display', 'none');
+
+				}
+			});
+
+			$(".departRadio").click(function() {
+				if( $(this).attr('ischeck') == 'false' ){
+					$(this).attr('ischeck','true');
+					$('.timeRadio').attr('ischeck', 'false');
+
+					$(".timeSelectOuter").css('display', 'none');
+					$(".departmentSelectOuter").css('display', 'block');
+				}
+			});
+			studentCycleList();//查询学生的轮转情况
+
+		});
+
+
+		function getFatherdepart(){//获取父科室
+			Api.fatherdepart({
+				fn:function (arr) {
+					console.log(arr);
+					$(".fatherdepart").empty();
+					//$(".fatherdepart").append('<option value="0">全部</option>');
+					for(var i = 0; i < arr.length; i++){
+						$(".fatherdepart").append('<option value="'+arr[i]['id']+'">'+arr[i]['name']+'</option>');
+					}
+					childPartFirst();//父科室加载完后加载子科室
+				}
+			});
+		}
+
+		function getChilddepart(){//获取子科室
+			$(".fatherdepart").change(function() {
+				var fatherId = $(".fatherdepart").val();
+				/*if( fatherId == 0 ){
+					$(".childdepart").append('<option value="0">全部</option>');
+					return false;
+				}*/
+				$(".childdepart").empty(); $('.childdepart').val('');
+				Api.childdepart({
+					json:{
+						pid:fatherId
+					},
+					fn:function (arr) {
+						//$(".childdepart").append('<option value="0">全部</option>');
+						for(var i = 0; i < arr.length; i++){
+							$(".childdepart").append('<option value="'+arr[i]['id']+'">'+arr[i]['name']+'</option>');
+						}
+					}
+				});
+			});
+
+		}
+
+		function childPartFirst(){//父科室加载完后加载子科室
+			//$(".childdepart").append('<option value="0">全部</option>');
+			var fatherId = $(".fatherdepart").find('option:first').val();
+			$(".childdepart").empty(); $('.childdepart').val('');
+			Api.childdepart({
+				json:{
+					pid:fatherId
+				},
+				fn:function (arr) {
+					//$(".childdepart").append('<option value="0">全部</option>');
+					for(var i = 0; i < arr.length; i++){
+						$(".childdepart").append('<option value="'+arr[i]['id']+'">'+arr[i]['name']+'</option>');
+					}
+				}
+			});
+		}
+
+		function setDatePicker(){//时间日期插件设置
+
+			$(".ctime").datetimepicker({
+				minView:'2',
+				format: "yyyy-mm-dd",
+				autoclose: true,
+				pickerPosition: "bottom-left"
+			});
+		}
+
+		function studentCycleList(){//查询学生出入科情况
+			$('.selectBtn2').click(function() {
+				$('.selectBtn2').attr('disabled', 'disabled');
+				setTimeout(function(){
+					$('.selectBtn2').removeAttr('disabled');
+				},3000);//防止重复点击
+
+				$('.firstPage').css('display', 'block');
+				$('.table1').find('.tr').remove();
+
+				getList(1);//后台获取数据
+			});
+		}
+
+		function getList(page){
+			if( $('.timeSelectOuter').css('display') ==  'block' ){//如果是按时间查询的
+				if( $('.startInp').val().trim() == '' ){
+					layer.alert('请填写开始时间！',{
+				btn: ['确定','取消']});
+				}else if( $('.endInp').val().trim() == '' ){
+					layer.alert('请填写结束时间！',{
+				btn: ['确定','取消']});
+				}else{
+					var btime = $('.startInp').val();
+					btime = datetotime(btime);
+					var etime = $('.endInp').val();
+					etime = datetotime(etime);
+					Api.ftsdcycle({
+						json:{
+							page:page,
+							pagecount:10,
+							btime:btime,
+							etime:etime
+						},
+						fn:function (arr) {
+							console.log(arr);
+
+							generateTable1(arr);
+							var allcount = arr['arr']['allcount'];
+							fenye(allcount,page);//生成分页
+						}
+					});
+				}
+			}else{//如果是按科室查询的
+				var department_id = $('.childdepart').val();
+				Api.fksdcycle({
+					json:{
+						page:page,
+						pagecount:10,
+						department_id:department_id
+					},
+					fn:function (arr) {
+						console.log(arr);
+
+						generateTable1(arr);
+						var allcount = arr['arr']['allcount'];
+						fenye(allcount,page);//生成分页
+					}
+				});
+			}
+		}
+
+		function fenye(allcount,page){//分页的方法
+			var totalPages =  Math.ceil(allcount/10);
+			$.jqPaginator('#pagination1', {//分页
+		        totalPages:totalPages,
+	            visiblePages: 10,
+	            currentPage: page,
+	            first: '<li class="first"><a href="javascript:void(0);">首页</a></li>',
+	            prev: '<li class="prev"><a href="javascript:void(0);"><i class="arrow arrow2"></i>上一页</a></li>',
+	            next: '<li class="next"><a href="javascript:void(0);">下一页<i class="arrow arrow3"></i></a></li>',
+	            last: '<li class="last"><a href="javascript:void(0);">末页</a></li>',
+	            page: '<li class="page"><a href="javascript:void(0);">{{page}}</a></li>',
+		        onPageChange: function (num, type) {
+		        	if(type == 'change'){
+		        		getList(num);
+		        	}
+		            
+		        }
+		    });
+		}
+
+		function generateTable1(arr){//生成学生轮转情况表
+			var data = arr['arr']['data'];
+			var lenTemp = data.length;
+			
+			if(lenTemp == 0){
+				$('.no-data').css('display', 'block');
+				$('.pagination').css('display', 'none');
+			}else{
+				$('.no-data').css('display', 'none');
+				$('.pagination').css('display', 'block');
+			}
+			$('.table1').find('.tr').remove();
+			for( var i = 0; i < lenTemp; i++ ){
+				var starttime = timetodate(data[i]['plan_starttime'],1);
+				var endtime = timetodate(data[i]['plan_endtime'],1);
+				$('.table1').append(
+					'<div class="tr tr1 clearfix" department_id="'+data[i]['department_id']+'" teacher_name="'+data[i]['teacher_name']+'" stuid="'+data[i]['stuid']+'" order="'+i+'">'+
+						'<div class="td td1">'+data[i]['kname']+'</div>'+
+						'<div class="td td1">'+data[i]['name']+'</div>'+
+						'<div class="td td1">'+data[i]['zt']+'</div>'+
+						'<div class="td td1">'+starttime+'</div>'+
+						'<div class="td td1">'+endtime+'</div>'+
+						'<div class="td td1">'+data[i]['teacher_name']+'</div>'+
+					'</div>'
+				);
+			}
+			childDepartClick();//点击子科室查询对应的病种，临床操作技术，活动记录，出科小结
+		}
+
+		function childDepartClick(){//点击子科室查询对应的病种，临床操作技术，活动记录，出科小结
+			$('.tr1').click(function() {
+				$('.chuKeBtnRow').css('display', 'block');
+				$('.chuKeBtn').css('display', 'block');
+				var order = $(this).attr('order');
+				$('.chuKeBtn').attr('order',order);
+				$('.selectMessageCon').css('display', 'none');
+				$('.firstPage').css('display', 'none');
+				var department_id = $(this).attr('department_id');
+				var teacher_name = $(this).attr('teacher_name');
+				var stuid = $(this).attr('stuid');
+				Api.xcycle({
+					json:{
+						stuid:stuid,
+						department_id:department_id,
+						teacher_name:teacher_name
+					},
+					fn:function (arr) {
+						var brr1 = arr['brr1'];
+						$('.bingZhongTable').find('.tr').remove();
+						for( var i = 0; i < brr1.length; i++ ){
+							$('.bingZhongTable').append(
+								'<div class="tr clearfix tr2" tb="g_stu_case" eid="'+brr1[i]['eid']+'" stuid="'+brr1[i]['stuid']+'">'+
+									'<div class="td td2">'+brr1[i]['cd']+'</div>'+
+									'<div class="td td2">'+brr1[i]['title']+'</div>'+
+									'<div class="td td2">'+brr1[i]['num']+'</div>'+
+									'<div class="td td2">'+brr1[i]['rnum']+'</div>'+
+									'<div class="td td2">'+brr1[i]['teacher_name']+'</div>'+
+								'</div>'
+							);
+						}
+
+						var brr2 = arr['brr2'];
+						$('.lingChuangTable').find('.tr').remove();
+						for( var i = 0; i < brr2.length; i++ ){
+							$('.lingChuangTable').append(
+								'<div class="tr clearfix tr2" tb="g_stu_clinical" eid="'+brr2[i]['eid']+'" stuid="'+brr2[i]['stuid']+'">'+
+									'<div class="td td2">'+brr2[i]['cd']+'</div>'+
+									'<div class="td td2">'+brr2[i]['title']+'</div>'+
+									'<div class="td td2">'+brr2[i]['num']+'</div>'+
+									'<div class="td td2">'+brr2[i]['rnum']+'</div>'+
+									'<div class="td td2">'+brr2[i]['teacher_name']+'</div>'+
+								'</div>'
+							);
+						}
+
+						var brr3 = arr['brr3'];
+						$('.daBingLiTable').find('.tr').remove();
+						for( var i = 0; i < brr3.length; i++ ){
+							$('.daBingLiTable').append(
+								'<div class="tr clearfix tr2" tb="g_stu_disease" eid="'+brr3[i]['eid']+'" stuid="'+brr3[i]['stuid']+'">'+
+									'<div class="td td2">'+brr3[i]['cd']+'</div>'+
+									'<div class="td td2">'+brr3[i]['title']+'</div>'+
+									'<div class="td td2">'+brr3[i]['num']+'</div>'+
+									'<div class="td td2">'+brr3[i]['rnum']+'</div>'+
+									'<div class="td td2">'+brr3[i]['teacher_name']+'</div>'+
+								'</div>'
+							);
+						}
+
+						var brr4 = arr['brr4'];
+						$('.huoDongTable').find('.tr').remove();
+						for( var i = 0; i < brr4.length; i++ ){
+							$('.huoDongTable').append(
+								'<div class="tr clearfix tr2" tb="g_stu_activity" eid="'+brr4[i]['eid']+'" stuid="'+brr4[i]['stuid']+'">'+
+									'<div class="td td2">'+brr4[i]['cd']+'</div>'+
+									'<div class="td td2">'+brr4[i]['title']+'</div>'+
+									'<div class="td td2">'+brr4[i]['num']+'</div>'+
+									'<div class="td td2">'+brr4[i]['rnum']+'</div>'+
+									'<div class="td td2">'+brr4[i]['teacher_name']+'</div>'+
+								'</div>'
+							);
+						}
+
+						var brr5 = arr['brr5'];
+						$('.chuKeTable').empty();
+						if( getCookie('r') == 3 ){
+							//$('.chuKeRow').css('display', 'none');
+							$('.chuKeBtnRow').css('display', 'none');
+						}else{
+							$('.chuKeBtnRow').css('display', 'block');
+						}
+						
+
+						if( brr5.length < 1 ){
+							$('.chuKeTable').css('display', 'none');
+							$('.chuKeBtnRow').css('display', 'none');
+							$('.chuKeText').html('学生还未出科！');
+						}else {
+							$('.chuKeTable').css('display', 'block');
+							$('.chuKeBtn').attr('id', brr5[0]['id']);
+							if( brr5[0]['status'] == 1 ){
+								$('.chuKeText').html('学生已出科！');
+								$('.chuKeBtnRow').css('display', 'none');
+							}else if( getCookie('r') == 2 ){
+								$('.chuKeBtnRow').css('display', 'block');
+							}
+							$('.chuKeTable').append(
+								'<div class="tableTit"><span>出科小结</span></div>'+
+								'<div class="row selectrow">'+
+									'<div class="col-xs-3"></div>'+
+									'<div class="col-xs-9">'+
+										'<span class="xinghao">*</span>'+'医德医风、组织纪律、服务态度及质量'+
+									'</div>'+
+								'</div>'+
+								'<div class="row">'+
+									'<div class="col-xs-3 right"></div>'+
+									'<div class="col-xs-7">'+
+										'<textarea class="form-control oneInp" rows="5" disabled="disabled">'+brr5[0]['one']+'</textarea>'+
+									'</div>'+
+								'</div>'+
+
+								'<div class="row selectrow">'+
+									'<div class="col-xs-3"></div>'+
+									'<div class="col-xs-9">'+
+										'<span class="xinghao">*</span>'+'理论学习、学习的病种、技术操作'+
+									'</div>'+
+								'</div>'+
+								'<div class="row">'+
+									'<div class="col-xs-3 right"></div>'+
+									'<div class="col-xs-7">'+
+										'<textarea class="form-control twoInp" rows="5" disabled="disabled">'+brr5[0]['two']+'</textarea>'+
+									'</div>'+
+								'</div>'+
+
+								'<div class="row selectrow">'+
+									'<div class="col-xs-3"></div>'+
+									'<div class="col-xs-9">'+
+										'<span class="xinghao">*</span>管理病床数、查房'+
+									'</div>'+
+								'</div>'+
+								'<div class="row">'+
+									'<div class="col-xs-3 right"></div>'+
+									'<div class="col-xs-7">'+
+										'<textarea class="form-control threeInp" rows="5" disabled="disabled">'+brr5[0]['three']+'</textarea>'+
+									'</div>'+
+								'</div>'
+							);
+						}
+						
+
+						$('.secondStep').css('display', 'block');
+						showDengJiList();//注册tr2的点击事件显示登记列表
+					}
+					
+				});
+
+			});
+		}
+
+		$('.return1').click(function() {
+			$('.firstPage').css('display', 'block');
+			$('.secondStep').css('display', 'none');
+			$('.selectMessageCon').css('display', 'block');
+		});
+
+		$('.return2').click(function() {
+			$('.secondStep').css('display', 'block');
+			$('.thirdStep').css('display', 'none');
+			$('.firstPage').css('display', 'none');
+		});
+
+		function showDengJiList(){//显示登记
+			$('.tr2').click(function() {
+				var thisTr2 = $(this);
+				var tb = $(this).attr('tb');
+				var eid = $(this).attr('eid');
+				var stuid = $(this).attr('stuid')
+				
+				Api.showDengJi({
+					json:{
+						tb:tb,
+						eid:eid,
+						stuid:stuid
+					},
+					fn:function (arr) {
+						$('.secondStep').css('display', 'none');
+						$('.thirdStep').css('display', 'block');
+
+						$('.dengJiTable').empty();
+						if( thisTr2.attr('tb') == 'g_stu_case' ){
+							$('.dengJiTable').append(
+							'<div class="th clearfix"><div class="td td4">病人姓名</div><div class="td td4">病例号</div><div class="td td4">是否抢救</div></div>'
+							);
+							for( var i = 0; i < arr.length; i++ ){
+								var isrescue = '是';
+								if( arr[i]['name'] == 0 ){
+									isrescue = '否';
+								}
+								$('.dengJiTable').append(
+									'<div class="tr clearfix tr3" id="'+arr[i]['id']+'" type="1">'+
+										'<div class="td td4">'+arr[i]['name']+'</div><div class="td td4">'+arr[i]['number']+'</div><div class="td td4">'+isrescue+'</div>'+
+									'</div>'
+								);
+							}
+							$('.td4').css('width', '33.3%');
+						}else if( thisTr2.attr('tb') == 'g_stu_clinical'){
+							$('.dengJiTable').append(
+							'<div class="th clearfix"><div class="td td4">病人姓名</div><div class="td td4">病例号</div></div>'
+							);
+							for( var i = 0; i < arr.length; i++ ){
+								$('.dengJiTable').append(
+									'<div class="tr clearfix tr3" id="'+arr[i]['id']+'" type="2">'+
+										'<div class="td td4">'+arr[i]['name']+'</div><div class="td td4">'+arr[i]['number']+'</div>'+
+									'</div>'
+								);
+							}
+							$('.td4').css('width', '50%');
+						}else if(thisTr2.attr('tb') == 'g_stu_disease'){
+							$('.dengJiTable').append(
+							'<div class="th clearfix"><div class="td td4">病人姓名</div><div class="td td4">病例号</div></div>'
+							);
+							for( var i = 0; i < arr.length; i++ ){
+								$('.dengJiTable').append(
+									'<div class="tr clearfix tr3" id="'+arr[i]['id']+'" type="3">'+
+										'<div class="td td4">'+arr[i]['name']+'</div><div class="td td4">'+arr[i]['number']+'</div>'+
+									'</div>'
+								);
+							}
+							$('.td4').css('width', '50%');
+						}else if( thisTr2.attr('tb') == 'g_stu_activity'){
+							$('.dengJiTable').append(
+							'<div class="th clearfix"><div class="td td4">题目</div><div class="td td4">开始时间</div><div class="td td4">参与角色</div><div class="td td4">事帮等级</div></div>'
+							);
+							for( var i = 0; i < arr.length; i++ ){
+								$('.dengJiTable').append(
+									'<div class="tr clearfix tr3" id="'+arr[i]['id']+'" type="4">'+
+										'<div class="td td4">'+arr[i]['subject']+'</div><div class="td td4">'+arr[i]['htime']+'</div>'+
+										'<div class="td td4">'+arr[i]['role']+'</div>'+
+										'<div class="td td4">'+arr[i]['level']+'</div>'+
+									'</div>'
+								);
+							}
+							$('.td4').css('width', '25%');
+						}
+						tr3Click();
+
+					}
+				});
+			});
+		}
+			
+		$('.chuKeBtn').click(function() {
+			var status = 1;
+			var id = $(this).attr('id');
+			layer.alert('确定出科吗！',{
+				btn: ['确定','取消']},
+				function(){
+					layer.close();
+					Api.confirmcycle({
+						json:{
+							id:id,
+							status:status
+						},
+						fn:function (arr) {
+							uselayer(3,arr['msg']);
+							if( arr['status'] == 1 ){
+								$('.chuKeText').html('学生已出科！');
+								var order = $('.chuKeBtn').attr('order');
+								$('.tr1[order='+order+']').find('.td1').eq(2).html('出科');
+								$('.chuKeBtn').css('display', 'none');
+								$('.return1').click();//回到轮转管理一开始界面
+							}
+						}
+					});
+				}
+			);
+			
+		});
+		function tr3Click(){
+			$('.tr3').click(function() {
+				var id = $(this).attr('id');
+				var type = $(this).attr('type');
+
+				$('.thirdStep').css('display', 'none');
+				if( type == 1 ){
+					$('.fourStep').css('display', 'block');
+	
+					Api.showStucase({
+						json:{
+							id:id
+						},
+						fn:function (arr) {
+							if( arr[0]['isrescue'] == 1 ){
+								$('.yesradio').attr('checked', 'checked');
+							}else{
+								$('.noradio').attr('checked', 'checked');
+							}
+							$('.nameInp').val(arr[0]['name']);
+							$('.numberInp').val(arr[0]['number']);
+							$('.caseInp').val(arr[0]['case']);
+							$('.mdiagnosisInp').val(arr[0]['mdiagnosis']);
+							$('.cdiagnosisInp').val(arr[0]['cdiagnosis']);
+						}
+					});
+
+				}else if( type == 2 ){
+					$('.fiveStep').css('display', 'block');
+
+					Api.showStuclinical({
+						json:{
+							id:id
+						},
+						fn:function (arr) {
+							$('.nameInp').val(arr[0]['name']);
+							$('.numberInp').val(arr[0]['number']);
+							$('.caseInp').val(arr[0]['case']);
+							$('.processInp').val(arr[0]['process']);
+							$('.beizhuInp').val(arr[0]['remarks']);
+						}
+					});
+
+				}else if( type == 3 ){
+					$('.sixStep').css('display', 'block');
+
+					Api.showStudisease({
+						json:{
+							id:id
+						},
+						fn:function (arr) {
+							$('.nameInp').val(arr[0]['name']);
+							$('.numberInp').val(arr[0]['number']);
+							$('.caseInp').val(arr[0]['case']);
+							$('.mdiagnosisInp').val(arr[0]['mdiagnosis']);
+							$('.cdiagnosisInp').val(arr[0]['cdiagnosis']);
+						}
+					});
+
+				}else if( type == 4 ){
+					$('.sevenStep').css('display', 'block');
+
+					Api.showStuactivity({
+						json:{
+							id:id
+						},
+						fn:function (arr) {
+							$('.htimeInp').val(arr[0]['htime']);
+							$('.subjectInp').val(arr[0]['subject']);
+							$('.typeInp').val(arr[0]['type']);
+							$('.publicationInp').val(arr[0]['publication']);
+							$('.personInp').val(arr[0]['person']);
+							$('.roleInp').val(arr[0]['role']);
+							$('.levelInp').val(arr[0]['level']);
+							$('.descriptionInp').val(arr[0]['description']);
+							$('.reasonInp').val(arr[0]['reason']);
+							$('.learnedInp').val(arr[0]['learned']);
+						}
+					});
+
+				}
+			});
+		}
+
+		$('.return3').click(function() {
+			$('.thirdStep').css('display', 'block');
+			$('.fourStep').css('display', 'none');
+			$('.fiveStep').css('display', 'none');
+			$('.sixStep').css('display', 'none');
+			$('.sevenStep').css('display', 'none');
+		});
+	</script>
+</html>

@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<script type="text/javascript" src="../js/layout.js" ></script>
+		<meta charset="UTF-8">
+		<title>高州市人民医院 - 住院医师轮转系统 - 手册填写</title>
+		<link rel="stylesheet" type="text/css" href="../css/bootstrap-datetimepicker.min.css"/>
+		<script type="text/javascript" src="../js/bootstrap-datetimepicker.min.js" ></script>
+		<style type="text/css">
+			.messageCon{
+				width:100%; padding-left:35px; padding-right:35px; font-size:14px;
+				padding-top:25px;
+			}
+			.btn1{
+				display:block; background-color:#DC5C59; border-radius:5px;
+				color:white; font-weight:bold; height:26px;
+				cursor:pointer; margin:auto;
+			}
+			.selectBtn{
+				margin-top: 4px; width:90px;
+    			line-height: 26px;
+			}
+			.addBtn{
+				margin-top: 4px; width:90px;
+    			line-height: 26px;
+			}
+			.caozuoBtn{/*删除 修改 查看的按钮*/
+				width:40px; margin-bottom:5px; margin-right:10px; float:left;
+			}
+			.selectrow{
+				height:34px; line-height:34px; margin-top:10px; margin-bottom:20px;
+			}
+			.lessonRow{
+				margin-left:5%; margin-right:5%; width:90%; border-bottom:1px solid #ccc;
+				margin-bottom:20px;
+			}
+			.lessonRow span{
+				display:block; float:left;
+			}
+
+			.lessonType{
+				border-bottom:2px solid #55D1A2;
+			}
+			.numSpan{
+				background-color:#3498DB; color:white; width:20px; text-align:center;
+				margin-right:5px;
+			}
+			.typeOuter{
+				margin-bottom:20px;
+			}
+
+			.table{
+				width:100%; text-align:center;
+				margin-top:10px; font-size:14px;
+			}
+			.tr{
+				width:100%;
+			}
+			.th .td{
+				margin-left:-1px; 
+				float:left; padding:5px;
+			}
+			.tr:nth-child(odd){
+				background-color:#E1F0FA;
+			}
+			.tr .td{
+				margin-left:-1px; margin-top:-1px;
+				float:left; padding:5px;
+			}
+			.th{
+				font-weight:bold; background-color:#E3E3E5;
+			}
+			.td1{
+				width:25%;
+			}
+			.td2{
+				width:33.3%;
+			}
+			.td3{
+				width:50%;
+			}
+
+		</style>
+		<script>
+			//$('.bootstrap').remove();
+		</script>
+	</head>
+	<body>
+		<div class="childTitle">
+			手册填写
+		</div>
+
+		<div class="messageCon clearfix">
+			<div class="row selectrow">
+
+				<div class="col-xs-1 pad0 right">主科室:</div>
+				<div class="col-xs-3">
+					<select name="" class="form-control fatherdepart">
+					</select>
+				</div>
+
+				<div class="col-xs-1 pad0 right">科室:</div>
+				<div class="col-xs-3">
+					<select name="" class="form-control childdepart">
+					</select>
+				</div>
+
+				<div class="col-xs-1 pad0 right">类型</div>
+				<div class="col-xs-3">
+					<select name="" class="form-control typeSelect">
+						<option value="1">病种</option>
+						<option value="2">临床操作</option>
+						<option value="3">大病历书写</option>
+						<option value="4">活动记录</option>
+						<option value="5">出科小结</option>
+					</select>
+				</div>
+
+				
+
+			</div>
+
+			<div class="row selectrow">
+				<div class="col-xs-2"></div>
+				<div class="col-xs-2">
+					<button class="btn1 addBtn" type="button">添加手册</button>
+				</div>
+				<div class="col-xs-4"></div>
+				<div class="col-xs-2">
+					<button class="btn1 selectBtn" type="button">手册查询</button>
+				</div>
+				<div class="col-xs-2"></div>
+			</div>
+
+			<div class="typeOuter">
+				<!--<div class="row"><span class="lessonType">病种</span></div>
+		
+				<div class="table table1 clearfix">
+					<div class="th clearfix">
+						<div class="td td1">病人姓名</div><div class="td td1">病历号</div><div class="td td1">是否抢救</div><div class="td td1">操作</div>
+					</div>
+					<div class="tr clearfix">
+						<div class="td td1">换行</div><div class="td td1">234</div><div class="td td1">是</div>
+						<div class="td td1">
+							<button class="btn1 editBtn caozuoBtn" type="button">编辑</button>
+							<button class="btn1 deleteBtn caozuoBtn" type="button">删除</button>
+							<button class="btn1 lookBtn caozuoBtn" type="button">查看</button>
+						</div>
+					</div>
+					<div class="tr clearfix">
+						<div class="td td1">换行</div><div class="td td1">234</div><div class="td td1">是</div>
+						<div class="td td1">
+							<button class="btn1 editBtn caozuoBtn" type="button">编辑</button>
+							<button class="btn1 deleteBtn caozuoBtn" type="button">删除</button>
+							<button class="btn1 lookBtn caozuoBtn" type="button">查看</button>
+						</div>
+					</div>
+				</div>-->
+
+			</div>
+
+		</div>
+
+
+	</body>
+	<script type="text/javascript">
+		$(function() {
+			getFatherdepart();//获取父科室
+			getChilddepart();//获取子科室
+			firstLessonList();//页面加载完后生成课程列表
+			
+			$('.typeSelect').change(function () {
+				$('.selectBtn').click();
+			});
+			
+		});
+
+
+		function getFatherdepart(){//获取父科室
+			Api.fatherdepart({
+				fn:function (arr) {
+					$(".fatherdepart").empty();
+					//$(".fatherdepart").append('<option value="0">全部</option>');
+					for(var i = 0; i < arr.length; i++){
+						$(".fatherdepart").append('<option value="'+arr[i]['id']+'">'+arr[i]['name']+'</option>');
+					}
+					childPartFirst();//父科室加载完后加载子科室
+				}
+			});
+		}
+
+		function getChilddepart(){//获取子科室
+			$(".fatherdepart").change(function() {
+				var fatherId = $(".fatherdepart").val();
+				/*if( fatherId == 0 ){
+					$(".childdepart").append('<option value="0">全部</option>');
+					return false;
+				}*/
+				$(".childdepart").empty(); $('.childdepart').val('');
+				Api.childdepart({
+					json:{
+						pid:fatherId
+					},
+					fn:function (arr) {
+						//$(".childdepart").append('<option value="0">全部</option>');
+						for(var i = 0; i < arr.length; i++){
+							$(".childdepart").append('<option value="'+arr[i]['id']+'">'+arr[i]['name']+'</option>');
+						}
+						$('.childdepart').change();
+					}
+				});
+			});
+		}
+
+		function childPartFirst(){//父科室加载完后加载子科室
+			//$(".childdepart").append('<option value="0">全部</option>');
+			var fatherId = $(".fatherdepart").find('option:first').val();
+
+			var faId = GetQueryString('faId');
+			var chId = GetQueryString('chId');
+			if( faId == null ){
+				
+			}else{
+				fatherId = faId;
+				$('.fatherdepart').find('option[value='+fatherId+']').attr('selected', 'selected');
+			}
+			$(".childdepart").empty(); $('.childdepart').val('');
+			Api.childdepart({
+				json:{
+
+					pid:fatherId
+				},
+				fn:function (arr) {
+					//$(".childdepart").append('<option value="0">全部</option>');
+					for(var i = 0; i < arr.length; i++){
+						$(".childdepart").append('<option value="'+arr[i]['id']+'">'+arr[i]['name']+'</option>');
+					}
+					if( chId == null ){
+				
+					}else{
+						$('.childdepart').find('option[value='+chId+']').attr('selected', 'selected');
+					}
+					$('.childdepart').change();
+					firstLessonList();//页面加载完后生成课程列表
+				}
+			});
+		}
+
+
+			
+
+		$('.addBtn').click(function() {
+			var type = $('.typeSelect').find('option:selected').val();//类型
+			var faId = $('.fatherdepart').find('option:selected').val();//父科室
+			var chId = $('.childdepart').val();//子科室
+			var department_id = $('.childdepart').find('option:selected').val();
+			iscanadd(type,department_id,faId,chId);
+		});
+		function iscanadd(type,department_id,faId,chId) {
+			Api['getManualType'+type]({
+				json:{department_id:department_id},
+				fn:function (res) {
+					console.log(res);
+					if(res.status==0) {
+						uselayer(1,res.msg);
+					} else {
+						window.location.href = 'add-manual.html?type='+type+'&faId='+faId+'&chId='+chId;
+					}					
+				}
+			});			
+		};
+		
+
+		$('.selectBtn').click(function() {//生成课程列表
+			$('.selectBtn').attr('disabled', 'disabled');
+			setTimeout(function(){
+				$('.selectBtn').removeAttr('disabled')
+			},3000);
+
+			var department_id = $('.childdepart').find('option:selected').val();
+			var typeId = $('.typeSelect').find('option:selected').val();
+			if( typeId == '1' ){
+				generateLessonList1 (department_id);
+			}else if( typeId == '2' ){
+				generateLessonList2 (department_id);
+			}else if( typeId == '3' ){
+				generateLessonList3 (department_id);
+			}else if( typeId == '4' ){
+				generateLessonList4 (department_id);
+			}else if( typeId == '5' ){
+				generateLessonList5 (department_id);
+			}
+		});
+
+		function generateLessonList1 (department_id){//点击按钮生成第一种类型课程列表
+			Api.bingZhongList({
+				json:{
+					department_id:department_id
+				},
+				fn:function (arr) {
+					console.log(arr);
+					$('.typeOuter').remove();
+					if (arr.length==0) {
+						$('.messageCon').append('<div class="typeOuter"><p class="no-data">暂无数据</p></div>');
+						return 	false;
+					}
+					
+					var arrLen = arr.length;
+					for( var i = 0; i < arrLen; i++ ){
+						$('.messageCon').append(
+							'<div class="typeOuter">'+
+							'<div class="row"><span class="lessonType">'+arr[i]['type']+'</span></div>'+
+							'<div class="table table1 clearfix">'+
+								'<div class="th clearfix">'+
+									'<div class="td td1">病人姓名</div><div class="td td1">病历号</div><div class="td td1">是否抢救</div><div class="td td1"></div>'+
+								'</div>'+
+							'</div>'+
+							'</div>'
+
+						);
+						var childLen = arr[i]['children'].length;
+						for( var j = 0; j < childLen; j++){
+							var isrescue = '否';
+							if( arr[i]['children'][j]['isrescue'] == '1' ){
+								isrescue = '是';
+							}
+							$('.table1:last').append(
+								'<div class="tr clearfix" id="'+arr[i]['children'][j]['id']+'" faType="1" department_id="'+arr[i]['children'][j]['department_id']+'" pid="'+arr[i]['pid']+'" eid="'+arr[i]['eid']+'">'+
+									'<div class="td td1">'+arr[i]['children'][j]['name']+'</div><div class="td td1">'+arr[i]['children'][j]['number']+'</div><div class="td td1">'+isrescue+'</div>'+
+									'<div class="td td1">'+
+										'<button class="btn1 editBtn caozuoBtn" type="button">编辑</button>'+
+										'<button class="btn1 deleteBtn caozuoBtn" type="button">删除</button>'+
+										'<button class="btn1 lookBtn caozuoBtn" type="button">查看</button>'+
+									'</div>'+
+								'</div>'
+							);
+						}
+						if( arr[i]['status'] == 1 ){
+							$('.table1:last').find('.editBtn').css('display', 'none');
+							$('.table1:last').find('.deleteBtn').css('display', 'none');
+						}
+					}
+
+					editAndDelete();//注册按钮的删除和编辑事件
+				}
+			});
+
+		}
+
+		function generateLessonList2 (department_id){//点击按钮生成第2种类型课程列表
+			Api.lingChuangList({
+				json:{
+					department_id:department_id
+				},
+				fn:function (arr) {
+					console.log(arr);
+					$('.typeOuter').remove();
+					if (arr.length==0) {
+						$('.messageCon').append('<div class="typeOuter"><p class="no-data">暂无数据</p></div>');
+						return 	false;
+					}					
+					var arrLen = arr.length;
+					for( var i = 0; i < arrLen; i++ ){
+						$('.messageCon').append(
+							'<div class="typeOuter">'+
+							'<div class="row"><span class="lessonType">'+arr[i]['type']+'</span></div>'+
+							'<div class="table table1 clearfix">'+
+								'<div class="th clearfix">'+
+									'<div class="td td2">病人姓名</div><div class="td td2">病历号</div><div class="td td2"></div>'+
+								'</div>'+
+							'</div>'+
+							'</div>'
+
+						);
+						var childLen = arr[i]['children'].length;
+						for( var j = 0; j < childLen; j++){
+							$('.table1:last').append(
+								'<div class="tr clearfix" id="'+arr[i]['children'][j]['id']+'" faType="2" department_id="'+arr[i]['children'][j]['department_id']+'" pid="'+arr[i]['pid']+'" eid="'+arr[i]['eid']+'">'+
+									'<div class="td td2">'+arr[i]['children'][j]['name']+'</div><div class="td td2">'+arr[i]['children'][j]['number']+'</div>'+
+									'<div class="td td2">'+
+										'<button class="btn1 editBtn caozuoBtn" type="button">编辑</button>'+
+										'<button class="btn1 deleteBtn caozuoBtn" type="button">删除</button>'+
+										'<button class="btn1 lookBtn caozuoBtn" type="button">查看</button>'+
+									'</div>'+
+								'</div>'
+							);
+						}
+						if( arr[i]['status'] == 1 ){
+							$('.table1:last').find('.editBtn').css('display', 'none');
+							$('.table1:last').find('.deleteBtn').css('display', 'none');
+						}
+					}
+
+					editAndDelete();//注册按钮的删除和编辑事件
+				}
+			});
+
+		}
+
+		function generateLessonList3 (department_id){//点击按钮生成第3种类型课程列表
+			Api.daBingLiList({
+				json:{
+					department_id:department_id
+				},
+				fn:function (arr) {
+					console.log(arr);
+					$('.typeOuter').remove();
+					if (arr.length==0) {
+						$('.messageCon').append('<div class="typeOuter"><p class="no-data">暂无数据</p></div>');
+						return 	false;
+					}						
+					var arrLen = arr.length;
+					for( var i = 0; i < arrLen; i++ ){
+						$('.messageCon').append(
+							'<div class="typeOuter">'+
+							'<div class="row"><span class="lessonType">'+arr[i]['type']+'</span></div>'+
+							'<div class="table table1 clearfix">'+
+								'<div class="th clearfix">'+
+									'<div class="td td2">病人姓名</div><div class="td td2">病历号</div><div class="td td2"></div>'+
+								'</div>'+
+							'</div>'+
+							'</div>'
+
+						);
+						var childLen = arr[i]['children'].length;
+						for( var j = 0; j < childLen; j++){
+							$('.table1:last').append(
+								'<div class="tr clearfix" id="'+arr[i]['children'][j]['id']+'" faType="3" department_id="'+arr[i]['children'][j]['department_id']+'" pid="'+arr[i]['pid']+'" eid="'+arr[i]['eid']+'">'+
+									'<div class="td td2">'+arr[i]['children'][j]['name']+'</div><div class="td td2">'+arr[i]['children'][j]['number']+'</div>'+
+									'<div class="td td2">'+
+										'<button class="btn1 editBtn caozuoBtn" type="button">编辑</button>'+
+										'<button class="btn1 deleteBtn caozuoBtn" type="button">删除</button>'+
+										'<button class="btn1 lookBtn caozuoBtn" type="button">查看</button>'+
+									'</div>'+
+								'</div>'
+							);
+						}
+						if( arr[i]['status'] == 1 ){
+							$('.table1:last').find('.editBtn').css('display', 'none');
+							$('.table1:last').find('.deleteBtn').css('display', 'none');
+						}
+					}
+
+					editAndDelete();//注册按钮的删除和编辑事件
+				}
+			});
+
+		}
+
+		function generateLessonList4 (department_id){//点击按钮生成第4种类型课程列表
+			Api.activityList({
+				json:{
+					department_id:department_id
+				},
+				fn:function (arr) {
+					console.log(arr);
+					$('.typeOuter').remove();
+					if (arr.length==0) {
+						$('.messageCon').append('<div class="typeOuter"><p class="no-data">暂无数据</p></div>');
+						return 	false;
+					}						
+					var arrLen = arr.length;
+					for( var i = 0; i < arrLen; i++ ){
+						$('.messageCon').append(
+							'<div class="typeOuter">'+
+							'<div class="row"><span class="lessonType">'+arr[i]['type']+'</span></div>'+
+							'<div class="table table1 clearfix">'+
+								'<div class="th clearfix">'+
+									'<div class="td td1">题目</div><div class="td td1">类别</div><div class="td td1">时间</div><div class="td td1"></div>'+
+								'</div>'+
+							'</div>'+
+							'</div>'
+
+						);
+						var childLen = arr[i]['children'].length;
+						for( var j = 0; j < childLen; j++){
+							$('.table1:last').append(
+								'<div class="tr clearfix" id="'+arr[i]['children'][j]['id']+'" faType="4" department_id="'+arr[i]['children'][j]['department_id']+'" pid="'+arr[i]['pid']+'" eid="'+arr[i]['eid']+'">'+
+									'<div class="td td1">'+arr[i]['children'][j]['subject']+'</div><div class="td td1">'+arr[i]['children'][j]['type']+'</div><div class="td td1">'+arr[i]['children'][j]['htime']+'</div>'+
+									'<div class="td td1">'+
+										'<button class="btn1 editBtn caozuoBtn" type="button">编辑</button>'+
+										'<button class="btn1 deleteBtn caozuoBtn" type="button">删除</button>'+
+										'<button class="btn1 lookBtn caozuoBtn" type="button">查看</button>'+
+									'</div>'+
+								'</div>'
+							);
+						}
+						if( arr[i]['status'] == 1 ){
+							$('.table1:last').find('.editBtn').css('display', 'none');
+							$('.table1:last').find('.deleteBtn').css('display', 'none');
+						}
+					}
+
+					editAndDelete();//注册按钮的删除和编辑事件
+				}
+			});
+
+		}
+
+		function generateLessonList5 (department_id){//点击按钮生成第5种类型课程列表
+			Api.summaryList({
+				json:{
+					department_id:department_id
+				},
+				fn:function (res) {
+					$('.typeOuter').remove();
+					if (res.status!=1) {
+						$('.messageCon').append('<div class="typeOuter"><p class="no-data">'+res.msg+'</p></div>');
+						return 	false;						
+					} 
+					var arr = res.data;
+					
+					$('.messageCon').append(
+						'<div class="typeOuter">'+
+						'<div class="table table1 clearfix">'+
+							'<div class="th clearfix">'+
+								'<div class="td td3">出科小结</div><div class="td td1"></div><div class="td td1"></div>'+
+							'</div>'+
+						'</div>'+
+						'</div>'
+
+					);
+					var childLen = res.data.length;
+					for( var j = 0; j < childLen; j++){
+						$('.table1:last').append(
+							'<div class="tr clearfix" id="'+res.data[j]['id']+'" faType="5" department_id="'+res.data[j]['department_id']+'" pid="'+res.data[j]['pid']+'" eid="0">'+
+								'<div class="td td3">出科小结</div>'+
+								'<div class="td td1"></div>'+
+								'<div class="td td1">'+
+									'<button class="btn1 editBtn caozuoBtn" type="button">编辑</button>'+
+									'<button class="btn1 deleteBtn caozuoBtn" type="button">删除</button>'+
+									'<button class="btn1 lookBtn caozuoBtn" type="button">查看</button>'+
+								'</div>'+
+							'</div>'
+						);
+					}
+					if( arr['status'] == 1 ){
+						$('.table1:last').find('.editBtn').css('display', 'none');
+						$('.table1:last').find('.deleteBtn').css('display', 'none');
+					}
+					editAndDelete();//注册按钮的删除和编辑事件
+				}
+			});
+
+		}
+
+		//页面加载完成后生成课程列表
+		function firstLessonList(){
+			var department_id = $('.childdepart').val();
+			var type = GetQueryString('type');
+			if( type == 2 ){
+				$('.typeSelect').find('option[value=2]').attr('selected', 'selected');
+				generateLessonList2(department_id);
+			}else if ( type == 3 ){
+				$('.typeSelect').find('option[value=3]').attr('selected', 'selected');
+				generateLessonList3(department_id);
+			}else if ( type == 4 ){
+				$('.typeSelect').find('option[value=4]').attr('selected', 'selected');
+				generateLessonList4(department_id);
+			}else if ( type == 5 ){
+				$('.typeSelect').find('option[value=5]').attr('selected', 'selected');
+				generateLessonList5(department_id);
+			}else {
+				generateLessonList1(department_id);
+			}
+			
+		}
+
+		function editAndDelete(){//注册编辑和删除按钮的事件
+			$('.editBtn').click(function() {//编辑按钮
+				var lessonRow = $(this).parents('.tr');
+				var faType = lessonRow.attr('faType');
+				var id = $(this).parents('.tr').attr('id');
+				var eid = $(this).parents('.tr').attr('eid');
+				var pid = $(this).parents('.tr').attr('pid');
+				var department_id = $(this).parents('.tr').attr('department_id');
+
+				if( faType == 4 ){//等于4的情况
+					window.location.href = 'manual-edit.html?id='+id+'&eid='+eid+'&pid='+pid+'&faType='+faType+'&department_id='+department_id;
+				}else if( faType == 3 ){
+					window.location.href = 'manual-edit.html?id='+id+'&eid='+eid+'&pid='+pid+'&faType='+faType+'&department_id='+department_id;
+				}else if( faType == 2 ){
+					window.location.href = 'manual-edit.html?id='+id+'&eid='+eid+'&pid='+pid+'&faType='+faType+'&department_id='+department_id;
+				}else if( faType == 1 ){
+					window.location.href = 'manual-edit.html?id='+id+'&eid='+eid+'&pid='+pid+'&faType='+faType+'&department_id='+department_id;
+				}else if( faType == 5 ){
+					window.location.href = 'manual-edit.html?id='+id+'&pid='+pid+'&faType='+faType+'&department_id='+department_id;
+				}
+
+				
+			});
+
+			$('.lookBtn').click(function() {//查看按钮
+				var lessonRow = $(this).parents('.tr');
+				var faType = lessonRow.attr('faType');
+				var id = $(this).parents('.tr').attr('id');
+				var eid = $(this).parents('.tr').attr('eid');
+				var pid = $(this).parents('.tr').attr('pid');
+				var department_id = $(this).parents('.tr').attr('department_id');
+
+				if( faType == 4 ){//等于4的情况
+					window.location.href = 'manual-detail.html?id='+id+'&eid='+eid+'&pid='+pid+'&faType='+faType+'&department_id='+department_id;
+				}else if( faType == 3 ){
+					window.location.href = 'manual-detail.html?id='+id+'&eid='+eid+'&pid='+pid+'&faType='+faType+'&department_id='+department_id;
+				}else if( faType == 2 ){
+					window.location.href = 'manual-detail.html?id='+id+'&eid='+eid+'&pid='+pid+'&faType='+faType+'&department_id='+department_id;
+				}else if( faType == 1 ){
+					window.location.href = 'manual-detail.html?id='+id+'&eid='+eid+'&pid='+pid+'&faType='+faType+'&department_id='+department_id;
+				}else if( faType == 5 ){
+					window.location.href = 'manual-detail.html?id='+id+'&pid='+pid+'&faType='+faType+'&department_id='+department_id;
+				}
+
+			});
+
+			$('.deleteBtn').click(function() {//删除按钮
+				var lessonRow = $(this).parents('.tr');
+				layer.alert('您确定要删除这条记录吗？',{btn:['确定','取消']},
+					function(){
+						layer.close();
+						var childId = lessonRow.attr('id');
+
+						if( lessonRow.attr('faType') == 1 ){
+							Api.deleteManual({
+								json:{
+								 	id:childId
+								 },
+								fn:function (arr) {
+									uselayer(3,arr['msg']);
+									if( arr['status'] == '1' ){
+										lessonRow.remove();
+									}
+								}
+							});
+						}else if( lessonRow.attr('faType') == 2 ){
+							Api.deleteManual2({
+								json:{
+								 	id:childId
+								 },
+								fn:function (arr) {
+									uselayer(3,arr['msg']);
+									if( arr['status'] == '1' ){
+										lessonRow.remove();
+									}
+								}
+							});
+						}else if( lessonRow.attr('faType') == 3 ){
+							Api.deleteManual3({
+								json:{
+								 	id:childId
+								 },
+								fn:function (arr) {
+									uselayer(3,arr['msg']);
+									if( arr['status'] == '1' ){
+										lessonRow.remove();
+									}
+								}
+							});
+						}else if( lessonRow.attr('faType') == 4 ){
+							Api.deleteManual4({
+								json:{
+								 	id:childId
+								 },
+								fn:function (arr) {
+									uselayer(3,arr['msg']);
+									if( arr['status'] == '1' ){
+										lessonRow.remove();
+									}
+								}
+							});
+						}else if( lessonRow.attr('faType') == 5 ){
+							Api.deleteManual5({
+								json:{
+								 	id:childId
+								 },
+								fn:function (arr) {
+									uselayer(3,arr['msg']);
+									if( arr['status'] == '1' ){
+										lessonRow.remove();
+									}
+								}
+							});
+						}
+
+
+					}
+				);
+			});
+		}
+	</script>
+</html>

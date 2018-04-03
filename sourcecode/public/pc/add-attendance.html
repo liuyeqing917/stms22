@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<script type="text/javascript" src="../js/layout.js" ></script>
+		<meta charset="UTF-8">
+		<title>高州市人民医院 - 住院医师轮转系统 - 考勤统计</title>
+		<link rel="stylesheet" type="text/css" href="../css/bootstrap-datetimepicker.min.css"/>
+		<script type="text/javascript" src="../js/bootstrap-datetimepicker.min.js" ></script>
+		<style type="text/css">
+			.messageCon{
+				width:100%; padding-left:35px; padding-right:35px; font-size:14px;
+				padding-top:25px;
+			}
+			.btn1 {
+			    display: block;
+			    background-color: #DC5C59; border-radius: 5px;
+			    color: white; font-weight: bold;
+			    width: 90px; height: 26px; line-height:26px;
+			    cursor: pointer; margin: auto;
+			}
+			.row{
+				margin-bottom:20px; line-height:34px;
+			}
+
+		</style>
+		<script>
+			//$('.bootstrap').remove();
+		</script>
+	</head>
+	<body>
+		<div class="childTitle hascancle">
+			考勤统计
+		</div>
+
+		<div class="messageCon clearfix">
+			<div class="row">
+				<div class="col-xs-4 right">姓名</div>
+				<div class="col-xs-6">
+					<input type="text" class="form-control nameInp" disabled="disabled" />
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-4 right">科室</div>
+				<div class="col-xs-6">
+					<input type="text" class="form-control departmentInp" disabled="disabled" />
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-4 right">出勤天数</div>
+				<div class="col-xs-2">
+					<input type="text" class="form-control attendanceInp" />
+				</div>
+
+				<div class="col-xs-2 right">迟到天数</div>
+				<div class="col-xs-2">
+					<input type="text" class="form-control lateInp" />
+				</div>
+			</div>
+			
+			<div class="row">
+				<div class="col-xs-4 right">早退天数</div>
+				<div class="col-xs-2">
+					<input type="text" class="form-control earlyInp" />
+				</div>
+
+				<div class="col-xs-2 right">请假天数</div>
+				<div class="col-xs-2">
+					<input type="text" class="form-control leaveInp" />
+				</div>
+			</div>
+			
+			<div class="row">
+				<div class="col-xs-3">
+				</div>
+				<div class="col-xs-3">
+					<button class="btn1 submit" type="button">
+						确认
+					</button>
+				</div>
+				<div class="col-xs-3">
+					<button class="btn1 return1" type="button">
+						返回
+					</button>
+				</div>
+			</div>
+		</div>
+
+
+
+	</body>
+	<script type="text/javascript">
+		function showInfo(){//显示姓名和科室
+			var name = decodeURIComponent(GetQueryString('name'));
+			var departmentname = decodeURIComponent(GetQueryString('departmentname'));
+			$('.nameInp').val(name);
+			$('.departmentInp').val(departmentname);
+		}
+
+		$('input').change(function() {
+			this.value = this.value.replace(/[^\d]/g, '');
+		});
+
+		$(function() {
+			common();
+			showInfo();//显示姓名和科室
+		});
+
+		$('.return1').click(function() {
+			var faId = GetQueryString('faId');
+			var chId = GetQueryString('chId');
+			var starttime = GetQueryString('starttime');
+			var endtime = GetQueryString('endtime');
+			window.location.href = 'attendance-manage.html?faId='+faId+'&chId='+chId+'&starttime='+starttime+'&endtime='+endtime;
+		});
+
+		$('.submit').click(function() {
+			layer.alert('您确定要提交吗？',
+				{btn:['确定','取消']},
+				function(){
+					layer.close();
+					var early = $('.earlyInp').val();//早退的天数
+					var attendance = $('.attendanceInp').val();//出勤的天数
+					var late = $('.lateInp').val();//迟到的天数
+					var leave = $('.leaveInp').val();//请假的天数
+					var stuid = GetQueryString('stuid');
+					var department_id = GetQueryString('department_id');
+					var id = getCookie('id');
+
+					Api.addAttendance({//老师填写考勤管理
+						json:{
+							early:early,
+							stuid:stuid,
+							department_id:department_id,
+							attendance:attendance,
+							late:late,
+							leave:leave,
+							teacherid:id
+						},
+						fn:function (arr) {
+							uselayer(3,arr['msg'],function () {
+								window.location.href = 'attendance-manage.html';
+							});
+						}
+					});
+				}
+			);
+				
+
+		});
+	</script>
+</html>

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<script type="text/javascript" src="../js/layout.js" ></script>
+		<meta charset="UTF-8">
+		<title>高州市人民医院 - 住院医师轮转系统 - 课程查看</title>
+		<link rel="stylesheet" href="../css/lesson-set.css" />
+		<style>
+			.w120 { width: 120px;}
+			.w200 { width: 200px;}
+			.outline-out { display: block;}
+			
+			.outline-out-list li div a.write { background: green;}
+
+
+		</style>
+		
+		<script>
+			window.onload = function () {
+				'use strict';
+				common();
+				var oList = $('.outline-out-list')[0];
+				oList.showpage = false;
+				oList.page=1;				
+				var oId = findurl('id');
+				
+				getlist();
+				
+				function getlist() {
+					Api.electiveCoursedata({
+						json:{
+							eid:oId,
+							type:getCookie('r'),
+							stuid:0,
+							page:oList.page,
+							pagecount:Api.perpage
+						},
+						fn:function (json) {
+							writelist(json,getlist);
+						}
+					});					
+				};				
+								
+				function writelist(json,fn) {
+					console.log(json);
+					var arr = json.data;
+
+					flipover(json.allcount,Api.perpage,fn,oList);
+					
+					for (var i = 0 ; i < arr.length; i++) {
+						var _str = '<a href="lesson-input.html?from=view&stuid='+arr[i].stuid+'&id='+arr[i].eid+'&actid='+arr[i].id+'" class="view">查看</a>';
+						if (arr[i].comment==''&&arr[i].tid==getCookie('id')) {
+							_str = '<a href="lesson-input.html?from=comment&stuid='+arr[i].stuid+'&id='+arr[i].eid+'&actid='+arr[i].id+'" class="write">评价</a>';
+						}
+						var str = 
+							'<li class="clearfix">'
+								+'<div class="w120 bl">'+arr[i].studentname+'</div>'
+								+'<div class="w100">'+arr[i].stu_nu+'</div>'
+								+'<div class="w200">'+arr[i].content+'</div>'
+								+'<div class="w200">'+arr[i].comment+'</div>'
+								+'<div class="w100">'+_str+'</div>'						
+							+'</li>';			
+						$('.outline-out-list').append(str);
+					}						
+				};
+								
+				
+				
+				
+			};			
+		</script>
+		
+	</head>
+	<body>
+		<div class="childTitle hascancle">课程查看</div>
+
+
+		
+		<div class="outline-out">
+			<div class="outline-out-top clearfix">
+				<div class="w120">姓名</div>
+				<div class="w100">学号</div>
+				<div class="w200">活动内容</div>
+				<div class="w200">教师评价</div>
+				<div class="w100">操作</div>				
+			</div>
+			<ul class="outline-out-list"></ul>
+			<div class="clearfix page" id="page"></div>			
+		</div>
+		
+		
+		
+	</body>
+</html>

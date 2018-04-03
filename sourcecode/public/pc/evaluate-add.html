@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<script type="text/javascript" src="../js/layout.js" ></script>
+		<meta charset="UTF-8">
+		<title>高州市人民医院 - 住院医师轮转系统 - 添加评价</title>
+		<style>
+			.addlesson { width: 900px; margin: 50px auto; }
+			.addlesson ul li { height: 34px; line-height: 34px; font-size: 14px; margin-top: 30px;}
+			.addlesson ul li span {  float: left; width: 80px;}
+			.addlesson ul li span em { color: red;}
+			.addlesson ul li div {  float: left; width: 220px;}
+			.adddepart-btn { width: 300px; margin: 100px auto 0;}
+			.adddepart-btn .btn-default {background: #dc5c59; color: #fff; margin:0 20px;}
+			.addteacher-btn { width:300px; margin: 20px auto 0;}
+			.addteacher-btn .btn-default {background: lightblue; color: #fff; margin:0 20px;}
+			.lineh30{
+				line-height: 30px;
+			}
+
+			body{background-color:#F5F5F5 }
+
+			.evaluate-block{
+				width: 770px;
+				margin: 10px 20px;
+				display: block;
+				background-color: #E1F0FA;
+				padding: 5px;
+				border-radius: 5px;
+				color: #A8A297;
+			}
+
+			.block-content{
+				width: 800px;margin:0 20px;
+			}
+
+			.delete{ display: none;}
+			.none{
+				display: none;
+			}
+			.block{
+				display: block;
+			}
+
+
+			
+		</style>
+		<link rel="stylesheet" type="text/css" href="../css/bootstrap-datetimepicker.min.css"/>
+		<script type="text/javascript" src="../js/bootstrap-datetimepicker.min.js" ></script>
+		<script>
+			window.onload = function () {
+
+				common();
+
+				var mid = findurl('mid');
+				var blockhtml ='<div class="evaluate-block"><div class="row">' +
+						'<div class="col-sm-2 fontS12 lineh30">请输入模块类型:</div> ' +
+						'<div class="col-sm-4"><input type="text" class="form-control typeinput"/> </div></div> ' +
+						'<div class="evaluatediv"><div class="row marT20 evaluatesmalldiv"><div class="col-sm-1 fontS12 lineh30 right pad0">1:</div>' +
+						'<div class="col-sm-2 fontS12 lineh30">请输入评价内容:</div> ' +
+						'<div class="col-sm-5"> <input type="text" class="form-control evaluate-contents"/> </div>' +
+						'<div class="col-sm-1 right fontS12 lineh30">分值:</div> <div class="col-sm-2"> <input type="text" class="form-control scores" maxlength="2"/> </div> </div> </div>' +
+						'<div class="row marT10"> <div class="col-sm-2 "></div> <div class="col-sm-4"> ' +
+						'<button type="button" class="btn btn-info  btn-xs glyphicon glyphicon-plus OaddevaluateBtn"></button> ' +
+						'<button type="button" class="btn btn-info  btn-xs glyphicon glyphicon-minus OdeleteevaluateBtn"></button></div> </div></div>';
+
+
+				var iffirst =0;
+				Api.getEvaluateQuestions({
+					json:{
+						depid:0
+					},
+					fn:function (arr) {
+						console.log(arr)
+
+						if(arr.base.length!=0){
+
+							for(var i = 0;i<arr.base.length;i++){
+									iffirst=0;
+								if(i==0){
+									$('.typeinput').val(arr.base[i].base);
+								}else{
+								var zzblockhtml ='<div class="evaluate-block"><div class="row">' +
+											'<div class="col-sm-2 fontS12 lineh30">请输入模块类型:</div> ' +
+											'<div class="col-sm-4"><input type="text" class="form-control typeinput" value="'+arr.base[i].base+'"/> </div></div> ' +
+											'<div class="evaluatediv"><div class="row marT20 evaluatesmalldiv"><div class="col-sm-1 fontS12 lineh30 right pad0">1:</div>' +
+											'<div class="col-sm-2 fontS12 lineh30">请输入评价内容:</div> ' +
+											'<div class="col-sm-5"> <input type="text" class="form-control evaluate-contents"/> </div>' +
+											'<div class="col-sm-1 right fontS12 lineh30">分值:</div> <div class="col-sm-2"> <input type="text" class="form-control scores" maxlength="2"/> </div> </div> </div>' +
+											'<div class="row marT10"> <div class="col-sm-2 "></div> <div class="col-sm-4"> ' +
+											'<button type="button" class="btn btn-info  btn-xs glyphicon glyphicon-plus OaddevaluateBtn"></button> ' +
+											'<button type="button" class="btn btn-info  btn-xs glyphicon glyphicon-minus OdeleteevaluateBtn"></button></div> </div></div>';
+
+									$('.block-content').append(zzblockhtml);
+								}
+
+								for(var j = 0;j<arr.info.length;j++){
+
+										if(arr.base[i].id==arr.info[j].tid) {
+
+											if(iffirst==0){
+
+												$('.evaluate-block').eq(i).find('.evaluate-contents').val(arr.info[j].content);
+												$('.evaluate-block').eq(i).find('.scores').val(arr.info[j].score);
+												iffirst=Number(iffirst)+Number(1);
+											}else{
+												var zzindex = Number(iffirst)+Number(1);
+												contentHtml = '<div class="row marT20 evaluatesmalldiv"><div class="col-sm-1 fontS12 lineh30 right pad0">' +
+														zzindex+
+														':</div> <div class="col-sm-2 fontS12 lineh30">请输入评价内容:</div><div class="col-sm-5"> ' +
+														'<input type="text" class="form-control evaluate-contents" value="'+arr.info[j].content+'"/> </div> <div class="col-sm-1 right fontS12 lineh30">分值:</div> ' +
+														'<div class="col-sm-2"> <input type="text" class="form-control scores" maxlength="2" value="'+arr.info[j].score+'"/> </div> </div>';
+
+												$('.evaluate-block').eq(i).children('.evaluatediv').append(contentHtml);
+											}
+
+										}
+
+									}
+
+							}
+
+						}
+
+					}
+
+				});
+
+
+
+				var index = 2;
+
+				var contentHtml="";
+
+
+				$('.addevaluateBtn').click(function () {
+
+					index = $(this).parents('.row').siblings('.evaluatediv').children('.evaluatesmalldiv').length+1;
+					contentHtml = '<div class="row marT20 evaluatesmalldiv"><div class="col-sm-1 fontS12 lineh30 right pad0">' +
+							index +
+							'</div> <div class="col-sm-2 fontS12 lineh30">请输入评价内容:</div><div class="col-sm-5"> ' +
+							'<input type="text" class="form-control evaluate-contents"/> </div> <div class="col-sm-1 right fontS12 lineh30">分值:</div> ' +
+							'<div class="col-sm-2"> <input type="text" class="form-control scores" maxlength="2"/> </div> </div>';
+
+					$(this).parents('.row').siblings('.evaluatediv').append(contentHtml);
+
+
+				});
+
+				$("body").on('click','.OaddevaluateBtn',function(){
+
+					index = $(this).parents('.row').siblings('.evaluatediv').children('.evaluatesmalldiv').length+1;
+					contentHtml = '<div class="row marT20 evaluatesmalldiv"><div class="col-sm-1 fontS12 lineh30 right pad0">' +
+							index +
+							'</div> <div class="col-sm-2 fontS12 lineh30">请输入评价内容:</div><div class="col-sm-5"> ' +
+							'<input type="text" class="form-control evaluate-contents"/> </div> <div class="col-sm-1 right fontS12 lineh30">分值:</div> ' +
+							'<div class="col-sm-2"> <input type="text" class="form-control scores" maxlength="2"/> </div> </div>';
+
+
+
+
+					$(this).parents('.row').siblings('.evaluatediv').append(contentHtml);
+
+				});
+
+				$('.deleteevaluateBtn').click(function () {
+
+					if($(this).parents('.row').siblings('.evaluatediv').children('.evaluatesmalldiv').length>1){
+						$(this).parents('.row').siblings('.evaluatediv').children('.evaluatesmalldiv:last-child').remove();
+					}else{
+						uselayer(3,"评价的个数不能少于1",function () {
+
+						});
+					}
+
+				});
+
+
+				$("body").on('click','.OdeleteevaluateBtn',function(){
+
+					if($(this).parents('.row').siblings('.evaluatediv').children('.evaluatesmalldiv').length>1){
+						$(this).parents('.row').siblings('.evaluatediv').children('.evaluatesmalldiv:last-child').remove();
+					}else{
+						uselayer(3,"评价的个数不能少于1",function () {
+
+						});
+					}
+
+
+				});
+
+
+				$('.addBlockBtn').click(function () {
+
+					$('.block-content').append(blockhtml);
+
+
+				});
+
+				$('.scores').change(function () {
+
+					this.value = this.value.replace(/[^\d]/g, '');
+
+				});
+
+				$("body").on('change','.scores',function(){
+
+					this.value = this.value.replace(/[^\d]/g, '');
+
+
+				});
+
+
+				$('.deleteBlockBtn').click(function () {
+
+					if($('.evaluate-block').length>1){
+						$('.block-content').children('.evaluate-block:last-child').remove();
+					}else{
+						uselayer(3,"模块的个数不能少于1",function () {
+
+						});
+					}
+
+				});
+
+				
+
+				//提交之后为空验证
+				$('.addbtn').click(function () {
+
+					var postData ={};
+					var scoreArray = [];
+					var contentArray = [];
+					var typeInputVal= '';
+					for(var i=0;i<$('.typeinput').length;i++){
+						if($.trim($('.typeinput').eq(i).val())==''){
+							uselayer(3,"模块类型不能为空",function () {
+							});
+							return false;
+						}
+						 scoreArray = [];
+						 contentArray = [];
+						typeInputVal = $('.typeinput').eq(i).val();
+						var changeaa =$('.typeinput').eq(i).parents('.evaluate-block').find('.evaluatesmalldiv');
+
+						for(var j=0;j<changeaa.length;j++){
+
+							if($.trim(changeaa.eq(j).find('.evaluate-contents').val())==''){
+								uselayer(3,"评价内容不能为空",function () {
+								});
+								return false;
+							}
+
+							contentArray.push(changeaa.eq(j).find('.evaluate-contents').val());
+
+							if($.trim(changeaa.eq(j).find('.scores').val())==''){
+								uselayer(3,"评价参考分值不能为空",function () {
+								});
+								return false;
+							}
+							scoreArray.push(changeaa.eq(j).find('.scores').val());
+
+						}
+
+						postData[typeInputVal]={
+							content:contentArray,
+							score:scoreArray
+						};
+					}
+
+					postData['token']=getCookie("token");
+					postData['mid']=mid;
+
+					Api.addEvaluate({
+						isrepeat:$(this),
+						istoken:1,
+						json:postData,
+						fn:function (json) {
+
+							console.log(json);
+							if (json.status==1) {
+								uselayer(3,json.msg,function () {
+										history.go(-1);
+								});
+
+
+							}else{
+								uselayer(3,json.msg,function () {
+
+								});
+							}
+
+						}
+					});
+
+
+				});
+
+			};
+
+
+
+
+		</script>
+		
+	</head>
+	<body>
+		<div class="childTitle hascancle">评价内容</div>
+
+		<div class="container addlesson">
+			<form class="departform">
+				<div class="block-content">
+					<div class="evaluate-block">
+						<div class="row marT10 ">
+							<div class="col-sm-2 fontS12 lineh30">请输入模块类型:</div>
+							<div class="col-sm-4">
+								<input type="text" class="form-control typeinput"/>
+							</div>
+						</div>
+						<div class="evaluatediv">
+							<div class="row marT20 evaluatesmalldiv">
+								<div class="col-sm-1 fontS12 lineh30 right pad0">
+									1:
+								</div>
+								<div class="col-sm-2 fontS12 lineh30">请输入评价内容:</div>
+								<div class="col-sm-5">
+									<input type="text" class="form-control evaluate-contents"/>
+								</div>
+								<div class="col-sm-1 right fontS12 lineh30">分值:</div>
+								<div class="col-sm-2">
+									<input type="text" class="form-control scores" maxlength="2"/>
+								</div>
+							</div>
+						</div>
+						<div class="row marT10">
+							<div class="col-sm-2 "></div>
+							<div class="col-sm-4">
+								<button type="button" class="btn btn-info  btn-xs glyphicon glyphicon-plus addevaluateBtn"></button>
+								<button type="button" class="btn btn-info  btn-xs glyphicon glyphicon-minus deleteevaluateBtn"></button>
+							</div>
+
+						</div>
+					</div>
+				</div>
+
+				<div class="row marT10">
+					<div class="col-sm-1 "></div>
+					<div class="col-sm-4">
+						<button type="button" class="btn btn-primary glyphicon glyphicon-plus addBlockBtn"></button>
+						<button type="button" class="btn btn-primary glyphicon glyphicon-minus deleteBlockBtn"></button>
+					</div>
+
+				</div>
+			</form>
+
+			<div class="adddepart-btn">
+				<input type="button" class="btn btn-default addbtn" value="确定" />
+				<input type="button" class="btn btn-default cancle" value="返回" />
+			</div>
+		</div>
+
+		
+
+		
+	</body>
+</html>

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<script type="text/javascript" src="../js/layout.js" ></script>
+		<meta charset="UTF-8">
+		<title>高州市人民医院 - 住院医师轮转系统 - 活动管理</title>
+		<link rel="stylesheet" href="../css/lesson-set.css" />
+		<style>
+			.w120 { width: 120px;}
+			.w200 { width: 200px;}
+			.w300 { width: 300px;}
+			.outline-out { display: block;}
+			
+			.outline-out-list li div a.write { background: green;}
+
+
+		</style>
+		
+		<script>
+			window.onload = function () {
+				'use strict';
+				common();		
+				var oList = $('.outline-out-list')[0];
+				oList.showpage = false;
+				oList.page=1;
+				
+				getlist();					
+				
+				function getlist() {
+					Api.electiveSearchWpjact({
+						json:{
+							tid:getCookie('id'),
+							page:oList.page,
+							pagecount:Api.perpage
+						},
+						fn:function (json) {
+							writelist(json,getlist);
+						}
+					});						
+				};
+				
+				
+				function writelist(json) {
+					console.log(json);
+					var arr = json.data;
+
+					flipover(json.allcount,Api.perpage,fn,oList);
+					
+					for (var i = 0 ; i < arr.length; i++) {
+						var str = 
+							'<li class="clearfix">'
+								+'<div class="w120 bl">'+arr[i].name+'</div>'
+								+'<div class="w200">'+arr[i].stu_nu+'</div>'
+								+'<div class="w300">'+arr[i].content+'</div>'
+								+'<div class="w100"><a href="lesson-input.html?from=comment&stuid='+arr[i].stuid+'&id='+arr[i].eid+'&actid='+arr[i].id+'" class="write">评价</a></div>'						
+							+'</li>';			
+						$('.outline-out-list').append(str);
+						
+					}					
+				};				
+			};			
+		</script>
+		
+	</head>
+	<body>
+		<div class="childTitle">活动管理</div>	
+		<div class="outline-out">
+			<div class="outline-out-top clearfix">
+				<div class="w120">姓名</div>
+				<div class="w200">学号</div>
+				<div class="w300">活动内容</div>
+				<div class="w100">操作</div>				
+			</div>
+			<ul class="outline-out-list"></ul>
+			<div class="clearfix page" id="page"></div>			
+		</div>
+		
+		
+		
+	</body>
+</html>

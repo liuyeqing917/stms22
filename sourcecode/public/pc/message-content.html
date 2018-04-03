@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<script type="text/javascript" src="../js/layout.js" ></script>
+		<meta charset="UTF-8">
+		<title>高州市人民医院 - 住院医师轮转系统 - 消息内容</title>
+		<style type="text/css">
+
+			.messageTit{
+				width:100%; padding-left:60px; padding-right:100px;
+				padding-top:30px; text-align:center; font-size:20px; font-weight:bold;
+			}
+			.messageCon{
+				width:100%; padding-left:60px; padding-right:100px;
+				padding-top:30px; font-size:16px; text-indent:2em;
+			}
+
+		</style>
+		<script>
+			$('.bootstrap').remove();
+		</script>
+	</head>
+	<body>
+		<div class="childTitle hascancle">
+			消息内容
+		</div>
+
+		<div class="messageTit">
+			
+		</div>
+		<div class="messageCon break">
+			
+		</div>
+	</body>
+	<script type="text/javascript">
+		function getMessage (){
+			var id = GetQueryString("id");
+			Api.messageContent({
+				json:{
+					token:getCookie("token"),
+					id:id
+				},
+				fn:function (arr) {
+					$(".messageTit").html(arr[0]['title']);
+					$(".messageCon").html(arr[0]['content']);
+				}
+			});
+		}
+
+		$(function() {
+			common();
+			getMessage();
+		});
+	</script>
+</html>

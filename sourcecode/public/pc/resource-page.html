@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<script type="text/javascript" src="../js/layout.js" ></script>
+		<link rel="stylesheet" type="text/css" href="../css/bootstrap-datetimepicker.min.css"/>
+		<script type="text/javascript" src="../js/bootstrap-datetimepicker.min.js" ></script>
+		<meta charset="UTF-8">
+		<title>高州市人民医院 - 住院医师轮转系统 - 资源搜索</title>
+		<style type="text/css">
+			html,body{
+				height:100%;
+			}
+			.layui-layer-close { display:inline-block!important;}
+			.resource_list {  margin: 17px;  height: 520px; overflow: auto; background: #fff;}
+			.resource_link {margin: 10px; height: 150px; float: left; display: table; position: relative;}
+			.resource_link div { display: table-cell; vertical-align: middle; }
+			.resource_link div p { width: 141px; white-space: normal; word-break: break-all;}
+			
+			.resource_delete,.resource_edit { position: absolute; right: 0; top: 0; width: 40px; line-height: 40px; border-radius: 4px;}
+			.resource_delete:hover,.resource_edit:hover { background: #fff;}
+			.resource_edit { right: 40px; }
+			
+			.resource_add { font-size: 40px;}
+			
+			.resource_toadd { width: 600px; padding:20px; border-radius:0 0 6px 6px; overflow: hidden; background: #fff; display: none;}
+			.resource_toadd .input-group { margin: 20px 0;}
+			.resource_sure { display: block; margin: 0 auto;}
+			
+		</style>
+		<script>
+			window.onload = function () {
+				common();
+				
+				Api.favoriteGetList({
+					fn:function (res) {
+						console.log(res);
+						if (res.code!=1) {
+							uselayer(1,res.message);
+							return false;
+						}
+						
+						for (var i = 0 ; i < res.data.length; i++) {
+							var str = 
+								'<a href="'+res.data[i].url+'" target="_blank" class="btn btn-default btn-lg resource_link">'
+									+'<i class="glyphicon glyphicon-pencil resource_edit" _id="'+res.data[i].id+'" _name="'+res.data[i].name+'" _url="'+res.data[i].url+'" ></i>'
+									+'<i class="glyphicon glyphicon-trash resource_delete" _id="'+res.data[i].id+'"></i>'
+									+'<div><p>'+res.data[i].name+'</p></div>'
+								+'</a>';							
+							$('.resource_add:last').before(str);
+							
+							
+						}
+						
+					}
+				});
+				
+				$('.resource_list').click(function (event) {
+					console.log(event);
+					
+					if ($(event.target).hasClass('resource_edit')) {
+						showopen('edit',$(event.target).attr('_id'),$(event.target).attr('_name'),$(event.target).attr('_url'));
+						return false;
+					}
+					if ($(event.target).hasClass('resource_delete')) {
+						uselayer(2,'确定要删除吗？',function () {
+							Api.favoriteDelete({
+								json:{id:$(event.target).attr('_id')},
+								fn:function (res) {
+									uselayer(3,res.message);
+									if (res.code==1) {
+										$(event.target.parentNode).remove();
+									}
+								}
+							});
+						});
+						return false;
+					}
+				});
+				
+				$('.resource_add').click(function () {
+					showopen('add',0);		
+				});
+				
+				function showopen(type,id,name,url) {
+					if (type=='add') {
+						var _title = '新增资源';
+						$('.resource_name').val('');
+						$('.resource_url').val('');	
+					} else if (type=='edit') {
+						var _title = '修改资源';
+						$('.resource_name').val(name);
+						$('.resource_url').val(url);						
+					}
+					$('.resource_sure').attr('_id',id);
+					
+					$('.resource_toadd')[0].open = layer.open({
+						type: 1,
+						title: [_title, 'text-align:center'],
+						area: '600px',
+						skin: 'layui-layer-nobg', //没有背景色
+						shadeClose: true,
+						content: $('.resource_toadd')
+					});					
+				};
+				
+				$('.resource_sure').click(function () {
+					if ($.trim($('.resource_name').val())=='') {
+						uselayer(3,'资源标题不能为空');
+						$('.resource_name').focus();
+						return false;
+					}
+					var _url= $.trim($('.resource_url').val());
+					if (_url=='') {
+						uselayer(3,'资源地址不能为空');
+						$('.resource_url').focus();
+						return false;
+					}
+					
+					var reg=/^([hH][tT]{2}[pP]:\/\/|[hH][tT]{2}[pP][sS]:\/\/)(([A-Za-z0-9-~]+)\.)+([A-Za-z0-9-~\/])+\S+$/;
+					if(!reg.test(_url)){
+						uselayer(3,'网址不正确，以http://或者https://开头！');
+						$('.resource_url').focus();
+						return false;						
+					}
+					
+					var json = {name:$.trim($('.resource_name').val()),url:_url};
+					if ($(this).attr('_id')!=0) {
+						json.id = $(this).attr('_id');
+					} 
+					
+					Api.favoriteEdit({
+						json:json,
+						fn:function (res){
+							console.log(res);
+							uselayer(3,res.message);
+							if (res.code!=1) {
+								return false;
+							}							
+							if (json.id) {
+								$('.resource_edit[_id="'+json.id+'"]').attr({'_name':json.name,'_url':json.url});
+								$('.resource_edit[_id="'+json.id+'"]').parent().find('div p').html(json.name);
+							} else {
+								var str = 
+									'<a href="'+res.data.url+'" target="_blank" class="btn btn-default btn-lg resource_link">'
+										+'<i class="glyphicon glyphicon-pencil resource_edit" _id="'+res.data.id+'" _name="'+res.data.name+'" _url="'+res.data.url+'" ></i>'
+										+'<i class="glyphicon glyphicon-trash resource_delete" _id="'+res.data.id+'"></i>'
+										+'<div><p>'+res.data.name+'</p></div>'
+									+'</a>';							
+								$('.resource_add:last').before(str);
+							}
+							layer.close($('.resource_toadd')[0].open);
+						}
+					})
+					
+					
+				});
+				
+			};
+			
+			
+		</script>
+	</head>
+	<body>
+		
+		<div class="childTitle">资源列表</div>		
+		
+		<div class="resource_list clearfix">
+			<a href="http://ziyuan.iiyi.com/" target="_blank" class="btn btn-default btn-lg resource_link"><div><p>爱爱医资源网</p></div></a>			
+			<div class="btn btn-default btn-lg resource_link resource_add"><div><p><i class="glyphicon glyphicon-plus"></i></p></div></div>
+		</div>
+		
+		<div class="resource_toadd">
+			<div class="input-group">
+                <span class="input-group-addon"><i class="glyphicon">标题</i></span>
+                <input type="text" class="form-control resource_name" placeholder="请输入标题" maxlength="20">
+            </div>
+			<div class="input-group">
+                <span class="input-group-addon"><i class="glyphicon ">地址</i></span>
+                <input type="text" class="form-control resource_url" value="" placeholder="请输入完整的网址，以http://或者https://开头">
+            </div>			
+			<button class="btn btn-success resource_sure">确定</button>
+			
+		</div>
+		
+		
+		
+	</body>
+
+</html>

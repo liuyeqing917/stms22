@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<script type="text/javascript" src="../js/layout.js" ></script>
+		<meta charset="UTF-8">
+		<title>高州市人民医院 - 住院医师轮转系统 - 显示学生手册</title>
+		<link rel="stylesheet" type="text/css" href="../css/bootstrap-datetimepicker.min.css"/>
+		<script type="text/javascript" src="../js/bootstrap-datetimepicker.min.js" ></script>
+		<style type="text/css">
+			.messageCon{
+				width:100%; padding-left:35px; padding-right:35px; font-size:14px;
+				padding-top:25px;
+			}
+			.topTitle{
+				width:100%; height:30px; margin-top:20px; margin-bottom:20px; 
+				font-size:20px; line-height:30px; text-align:center;
+				font-weight:bold;
+			}
+			.topTitle>span{
+				border-bottom:2px solid #55D1A2;
+			}
+			.lessonRow{
+				margin-left:5%; margin-right:5%; width:90%; border-bottom:1px solid #ccc;
+				margin-bottom:20px;
+			}
+			.lessonRow span{
+				display:block; float:left;
+			}
+
+			.lessonType{
+				border-bottom:2px solid #55D1A2;
+			}
+			.typeOuter{
+				margin-bottom:20px; margin-left:20px; margin-right:20px;
+			}
+
+			.table{
+				width:100%; text-align:center;
+				margin-top:10px; font-size:14px;
+			}
+			.tr{
+				width:100%;
+			}
+			.th .td{
+				margin-left:-1px; 
+				float:left; padding:5px;
+			}
+			.tr:nth-child(odd){
+				background-color:#E1F0FA;
+			}
+			.tr .td{
+				margin-left:-1px; margin-top:-1px;
+				float:left; padding:5px;
+			}
+			.th{
+				font-weight:bold; background-color:#E3E3E5;
+			}
+			.td1{
+				width:25%;
+			}
+			.td2{
+				width:33.3%;
+			}
+			.td3{
+				width:50%;
+			}
+
+		</style>
+		<script>
+			//$('.bootstrap').remove();
+		</script>
+	</head>
+	<body>
+		<div class="childTitle">
+			显示学生手册
+		</div>
+
+		<div class="messageCon clearfix">
+			<div class="topTitle">
+				<span>培训轮转科室和时间</span>
+			</div>
+		</div>
+
+		<div class="tableOuter">
+			<div class="typeOuter">
+				<div class="row"><span class="lessonType">急诊科</span></div>
+				<div class="table table1 clearfix">
+					<div class="th clearfix">
+						<div class="td td1">科室</div><div class="td td1">计划开始时间</div><div class="td td1">计划结束时间</div><div class="td td1">负责人签字</div>
+					</div>
+					<div class="tr clearfix">
+						<div class="td td1">急诊流水</div>
+						<div class="td td1">3</div>
+						<div class="td td1">3</div>
+						<div class="td td1">章一星</div>
+					</div>
+					<div class="tr clearfix">
+						<div class="td td1">急诊流水</div>
+						<div class="td td1">3</div>
+						<div class="td td1">3</div>
+						<div class="td td1">章一星</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</body>
+	<script type="text/javascript">
+		$(function() {
+			showList();//展示列表
+		});
+
+		function showList(){//展示列表
+			Api.stulookcycle({
+				json:{
+					
+				},
+				fn:function (arr) {
+					$('.tableOuter').empty();
+					for( var i = 0; i < arr.length; i++ ){
+						$('.tableOuter').append(
+							'<div class="typeOuter">'+
+								'<div class="row"><span class="lessonType">'+arr[i]['name']+'</span></div>'+
+								'<div class="table table1 clearfix">'+
+									'<div class="th clearfix">'+
+										'<div class="td td1">科室</div><div class="td td1">计划开始时间</div><div class="td td1">计划结束时间</div><div class="td td1">负责人签字</div>'+
+									'</div>'+
+								'</div>'+
+							'</div>'
+						);
+						
+						if( arr[i]['child'] ){
+							var child = arr[i]['child'];
+							for( var j = 0; j < child.length; j++ ){
+								var startTime = timetodate(child[j]['plan_starttime'],1);
+								var endTime = timetodate(child[j]['plan_endtime'],1);
+								$('.table1:last').append(
+									'<div class="tr clearfix">'+
+										'<div class="td td1">'+child[j]['name']+'</div>'+
+										'<div class="td td1">'+startTime+'</div>'+
+										'<div class="td td1">'+endTime+'</div>'+
+										'<div class="td td1">'+child[j]['teacher_name']+'</div>'+
+									'</div>'
+								);
+							}
+						}
+						
+					}
+				}
+			});
+		}
+	</script>
+</html>

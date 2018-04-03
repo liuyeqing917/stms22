@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<script type="text/javascript" src="../js/layout.js" ></script>
+		<meta charset="UTF-8">
+		<title>高州市人民医院 - 住院医师轮转系统 - 添加课程</title>
+		<style>
+			.addlesson { width: 300px; margin: 50px auto; }
+			.addlesson ul li { height: 34px; line-height: 34px; font-size: 14px; margin-top: 30px;}
+			.addlesson ul li span {  float: left; width: 80px;}
+			.addlesson ul li span em { color: red;}
+			.addlesson ul li div {  float: left; width: 220px;}
+			.addlesson-btn { width: 300px; margin: 50px auto 0;}
+			.addlesson-btn .btn-default {background: #dc5c59; color: #fff; margin:0 20px;}
+			.delete{ display: none;}
+			
+		</style>
+		<link rel="stylesheet" type="text/css" href="../css/bootstrap-datetimepicker.min.css"/>
+		<script type="text/javascript" src="../js/bootstrap-datetimepicker.min.js" ></script>
+		<script>
+			window.onload = function () {
+				common();
+				var nowtime = new Date();
+				var strtime = nowtime.getFullYear()+'-'+(nowtime.getMonth()+1)+'-'+nowtime.getDate()+' '+nowtime.getHours()+':'+nowtime.getMinutes()+':00';				
+				$(".ctime").datetimepicker({
+					startDate:strtime,
+					format: "yyyy-mm-dd hh:ii",
+					autoclose: true,
+					pickerPosition: "bottom-left",
+					minView:'0'
+				});				
+				
+				var jsonMsg = {};
+				
+				var oFrom = findurl('from');
+				var oId = findurl('id');				
+				if (oFrom=='edit') {
+					$('.addbtn').val('修改');
+					$('.childTitle').val('修改课程');
+					
+					$('.delete').css('display','inline-block');
+					Api.electiveOnecourse({
+						json:{
+							id:oId
+						},
+						fn:function (arr) {
+							var json = arr[0];
+							jsonMsg = json;
+							$('.cname').val(json.cname);
+							$('.ctime').val(timetodate(json.ctime));
+							$('.venue').val(json.venue);
+						}
+					});
+				}
+				
+				
+				togetfatherdepart(function (arr) {
+					writesel('','.sel-fatherdepart',arr,1,function () {
+						if (oFrom=='edit') {
+							$('.sel-fatherdepart').val(jsonMsg.pid);
+						}
+						togetchilddepart($('.sel-fatherdepart').val(),function (arr) {						
+							writesel('','.sel-childdepart',arr,1,function () {
+								if (oFrom=='edit') {
+									$('.sel-childdepart').val(jsonMsg.department_id);
+								}									
+								togetteacher(0,$('.sel-childdepart').val(),function (arr) {
+									writesel('','.sel-teacher',arr,0,function () {
+										if (oFrom=='edit') {
+											$('.sel-teacher').val(jsonMsg.tid);
+										}										
+									});
+								});
+								
+							});
+						});
+					});
+				});
+				
+				
+				$('.addbtn').click(function () {
+					if ($.trim($('.cname').val())=='') {
+						layer.alert('题目不能为空');
+						return false;
+					}
+					if ($.trim($('.ctime').val())=='') {
+						layer.alert('上课时间不能为空');
+						return false;
+					}
+					if ($.trim($('.venue').val())=='') {
+						layer.alert('地点不能为空');
+						return false;
+					}
+					if ($.trim($('.sel-teacher').val())=='') {
+						layer.alert('请选择教师');
+						return false;
+					}
+					var json = {
+							cname:$.trim($('.cname').val()),
+							ctime:datetotime($.trim($('.ctime').val())),
+							tid:$.trim($('.sel-teacher').val()),
+							department_id:$.trim($('.sel-childdepart').val()),
+							venue:$.trim($('.venue').val())
+						};
+					
+					if (oFrom=='edit') {
+						json.id = oId;
+						Api.electiveModifycourse({
+							isrepeat:$(this),
+							json:json,
+							fn:function (json) {
+								console.log(json);
+								uselayer(3,json.msg,function () {
+									if (json.status==1) {
+										history.go(-1);		
+									}
+								});							
+							}
+						});						
+					} else {
+						Api.electiveAddcourse({
+							isrepeat:$(this),
+							json:json,
+							fn:function (json) {
+								uselayer(3,json.msg,function () {
+									if (json.status==1) {
+										history.go(-1);		
+									}
+								});							
+							}
+						});						
+					}
+
+				});
+				
+				$('.delete').click(function () {
+					uselayer(2,'确定要删除该课程吗？',function () {
+						Api.electiveDeletecourse({
+							json:{id:oId},
+							fn:function (json) {
+								uselayer(3,json.msg,function () {
+									history.go(-1);		
+								});
+							}
+						});
+					});
+					
+				});
+
+				
+				
+			};
+			
+			
+		</script>
+		
+	</head>
+	<body>
+		<div class="childTitle hascancle">添加课程</div>
+		<div class="addlesson">
+			<ul>
+				<li>
+					<span><em>* </em>题目</span>
+					<div>
+						<!--<input type="text" class="cname form-control" />-->
+						<select class="cname form-control">
+							<option value="小讲课">小讲课</option>
+							<option value="教学查房">教学查房</option>
+							<option value="案例分析">案例分析</option>
+						</select>
+					</div>
+				</li>
+				<li>
+					<span><em>* </em>上课时间</span>
+					<div>	
+						<input type="text" class="ctime form-control" />
+					</div>	
+				</li>
+				<li>
+					<span><em>* </em>方向科室</span>
+					<div>
+						<select class="sel-fatherdepart form-control"></select>
+					</div>						
+				</li>
+				<li>
+					<span><em>* </em>科室</span>
+					<div>
+						<select class="sel-childdepart form-control"></select>
+					</div>						
+				</li>
+				<li>
+					<span><em>* </em>授课教师</span>
+					<div>
+						<select class="sel-teacher form-control"></select>
+					</div>						
+				</li>
+				<li>
+					<span><em>* </em>上课地点</span>
+					<div>
+						<input type="text" class="venue form-control" />
+					</div>						
+				</li>
+			</ul>
+			
+							
+			<div class="addlesson-btn">
+				<input type="button" class="btn btn-default addbtn" value="提交" />
+				<input type="button" class="btn btn-default delete" value="删除" />
+				<input type="button" class="btn btn-default cancle" value="返回" />
+			</div>
+			
+		</div>	
+		
+		
+		
+	</body>
+</html>

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>住院医师轮转系统 - 登录</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+		<link rel="stylesheet" type="text/css" href="../css/animate.min.css"/>
+		<link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css"/>
+		<link rel="stylesheet" type="text/css" href="../css/reset.css"/>
+		
+		<style>
+			body{background:url('../img/boxed-bg.jpg') repeat;}
+			
+			.login { width: 300px; position: absolute; margin: -216px -150px; left: 50%; top: 50%; background: #fff; padding: 20px; border-top: 3px solid #1dc5a3;}
+			.logo{margin:10px 0 30px;font-family: cursive; font-size: 26px;color: #16beb0;text-align: center; font-weight: bold;  }
+			.login label { color: #999;font-size: 14px;}
+			.txt {color: #b7bbc2;font-size: 12px;font-weight: 100;}
+			.skin-btn { margin: 15px 0;}
+			
+		</style>
+		<script src="../js/vue.js"></script>
+		<script src="../js/base.js"></script>
+		<script>
+			// 注册一个全局自定义指令 `v-focus`
+			Vue.directive('focus', {
+				// 当被绑定的元素插入到 DOM 中时……
+				inserted: function (el) {
+					// 聚焦元素
+					el.focus();
+				}
+			});
+			window.onload = function () {
+				var app = new Vue({
+					el: '#login',
+					data: {
+						username:getCookie('usernumber'),
+						password:'',
+						code:''
+		            }				
+					
+				});				
+			}
+		</script>		
+	</head>
+	<body>
+		
+		<div class="login animated fadeInDown" id="login">
+			<div class="logo">住院医师轮转系统</div>
+			<div class="loginForm">
+				<label>用户名</label>
+				<div class="form-group">
+					<input type="text" class="input-control" v-focus v-model="username" placeholder="用户名">
+				</div>
+				<label>密码</label>
+				<div class="form-group">
+					<input type="password" class="input-control" v-model="password" placeholder="密码">
+				</div>
+				<label>验证码</label>
+				<div class="form-group clearfix">
+					<input style="width: 50%;" type="text" class="input-control Fleft code" id="" v-model="code" placeholder="验证码">
+					<div style="width: 50%; border: none;" class="input-control Fleft"><img class="img-code" src="../../code" /></div>
+				</div>
+
+				<div class="clearfix">
+					<a style="float:right" href="register.html" class="register">
+						<small class="txt">立即注册</small>
+					</a>
+				</div>
+				<button type="button" class="btn btn-default block full-width m-b skin-btn">登 录</button>
+			</div>
+		
+	</body>
+	
+</html>

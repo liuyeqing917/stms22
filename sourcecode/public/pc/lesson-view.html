@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<script type="text/javascript" src="../js/layout.js" ></script>
+		<meta charset="UTF-8">
+		<title>高州市人民医院 - 住院医师轮转系统 - 课程查看</title>
+		<link rel="stylesheet" href="../css/lesson-set.css" />
+		<style>
+			.outline-out { display: block;}			
+		</style>
+		
+		<script>
+			window.onload = function () {
+				'use strict';
+				common();
+				var oList = $('.outline-out-list')[0];
+					
+				
+				
+				togetfatherdepart(function (arr) {
+					writesel('全部','.sel-fatherdepart',arr,1,function () {
+						togetchilddepart($('.sel-fatherdepart').val(),function (arr) {
+							writesel('全部科室','.sel-childdepart',arr,1,function () {
+								oList.showpage = false;
+								oList.page=1;								
+								getlist();
+							});
+						});
+					});
+				});					
+				
+							
+				
+				
+				function getlist() {					
+					var json = {
+							stuid:0,
+							type:0,							
+							fatherdepartment_id:$('.sel-fatherdepart').val(),
+							childdepartment_id:$('.sel-childdepart').val(),
+							page:oList.page,
+							pagecount:Api.perpage			
+					}
+					if (getCookie('r')==1) {
+						json.stuid = getCookie('id');
+					} 
+					
+					Api.electiveSearchall({
+						json:json,
+						fn:function (json) {
+							writelist(json,getlist);
+						}
+					});						
+				};
+				
+				
+				function writelist(json,fn) {
+					console.log(json);
+					var arr = json.data;
+
+					flipover(json.allcount,Api.perpage,fn,oList);
+					
+					for (var i = 0 ; i < arr.length; i++) {
+						var _str = '<a href="javascript:;">查看</a>';
+						if (arr[i].ctime<arr[0].nowtime) {
+							if (getCookie('r')==1) {
+								_str = '<a href="lesson-input.html?from=view&id='+arr[i].id+'" class="view">查看</a>';
+							} else {
+								_str = '<a href="lesson-student.html?from=view&id='+arr[i].id+'" class="view">查看</a>';
+							}							
+						}
+						if (arr[i].activitystatus==0&&getCookie('r')==1&&arr[i].ctime<arr[0].nowtime) {
+							_str = '<a href="lesson-input.html?from=add&id='+arr[i].id+'" class="write">填写</a>';
+						} 
+						var str = 
+							'<li class="clearfix">'
+								+'<div class="w210 bl">'+timetodate(arr[i].ctime)+'</div>'
+								+'<div class="w100">'+arr[i].cname+'</div>'
+								+'<div class="w110">'+arr[i].departname+'</div>'
+								+'<div class="w100">'+arr[i].venue+'</div>'
+								+'<div class="w110">'+arr[i].teachername+'</div>'
+								+'<div class="w90">'+_str+'</div>'						
+							+'</li>';			
+						$('.outline-out-list').append(str);
+						
+					}						
+				};				
+			};			
+		</script>
+		
+	</head>
+	<body>
+		<div class="childTitle">课程查看</div>
+		
+		<div class="topsel clearfix">
+			<div class="sel-depart">
+				<span>方向科室</span>
+				<select class="form-control sel-fatherdepart"></select>
+			</div>
+			<div class="sel-depart">
+				<span>科室</span>
+				<select class="form-control sel-childdepart"></select>
+			</div>
+		</div>
+
+		
+		<div class="outline-out">
+			<div class="outline-out-top clearfix">
+				<div class="w210">时间</div>
+				<div class="w100">题目</div>
+				<div class="w110">科室</div>
+				<div class="w100">授课地点</div>
+				<div class="w110">授课人</div>
+				<div class="w90">操作</div>				
+			</div>
+			<ul class="outline-out-list"></ul>
+			<div class="clearfix page" id="page"></div>			
+		</div>
+		
+		
+		
+	</body>
+</html>

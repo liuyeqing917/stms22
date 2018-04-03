@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<script type="text/javascript" src="../js/layout.js" ></script>
+		<meta charset="UTF-8">
+		<title>高州市人民医院 - 住院医师轮转系统 - 大纲内课程设置</title>
+		<link rel="stylesheet" type="text/css" href="../css/bootstrap-datetimepicker.min.css"/>
+		<script type="text/javascript" src="../js/bootstrap-datetimepicker.min.js" ></script>
+		<style type="text/css">
+
+			.messageCon{
+				width:100%; padding-left:35px; padding-right:35px; font-size:14px;
+				padding-top:25px;
+			}
+			.btn1{
+				display:block; background-color:#DC5C59; border-radius:5px;
+				color:white; font-weight:bold; height:26px;
+				cursor:pointer; margin:auto;
+			}
+			.selectBtn{
+				margin-top: 4px; width:90px;
+    			line-height: 26px;
+			}
+			.editBtn{/*编辑按钮*/
+				width:40px; margin-bottom:5px;
+			}
+			.deleteBtn{/*删除按钮*/
+				width:40px; margin-bottom:5px;
+			}
+			.lookBtn{
+				width:40px; margin-bottom:5px;
+			}
+			.selectrow{
+				height:34px; line-height:34px; margin-top:10px; margin-bottom:20px;
+			}
+			.lessonRow{
+				margin-left:5%; margin-right:5%; width:90%; border-bottom:1px solid #ccc;
+				margin-bottom:20px;
+			}
+			.lessonRow span{
+				display:block; float:left;
+			}
+
+			.lessonType{
+				border-bottom:2px solid #55D1A2;
+			}
+			.numSpan{
+				background-color:#3498DB; color:white; width:34px; text-align:center;
+				margin-right:5px;
+			}
+			.typeOuter{
+				margin-bottom:20px;
+			}
+
+		</style>
+		<script>
+			//$('.bootstrap').remove();
+		</script>
+	</head>
+	<body>
+		<div class="childTitle hascancle">
+			大纲内课程设置
+		</div>
+
+		<div class="messageCon clearfix">
+			<div class="row selectrow">
+
+				<div class="col-xs-1 pad0 right">主科室:</div>
+				<div class="col-xs-3">
+					<select name="" class="form-control fatherdepart">
+						
+					</select>
+				</div>
+
+				<div class="col-xs-1 pad0 right">科室:</div>
+				<div class="col-xs-3">
+					<select name="" class="form-control childdepart">
+						
+					</select>
+				</div>
+
+				<div class="col-xs-2">
+					<button class="btn1 selectBtn" type="button">添加课程</button>
+				</div>
+
+			</div>
+			<div class="messageCon-con">
+
+			</div>
+			<!--<div class="typeOuter">
+				<div class="row"><span class="lessonType">病种</span></div>
+				<div class="row lessonRow">
+					<div class="col-xs-9">
+						急性气管支气管炎
+					</div>
+					<div class="col-xs-1 pad0">
+						<span class='numSpan'>2</span><span>份</span>
+					</div>
+					<div class="col-xs-1">
+						<button class="btn1 editBtn" type="button">编辑</button>
+					</div>
+					<div class="col-xs-1">
+						<button class="btn1 deleteBtn" type="button">删除</button>
+					</div>
+				</div>
+
+				<div class="row lessonRow">
+					<div class="col-xs-9">
+						急性气管支气管炎
+					</div>
+					<div class="col-xs-1 pad0">
+						<span class='numSpan'>2</span><span>份</span>
+					</div>
+					<div class="col-xs-1">
+						<button class="btn1 editBtn" type="button">编辑</button>
+					</div>
+					<div class="col-xs-1">
+						<button class="btn1 deleteBtn" type="button">删除</button>
+					</div>
+				</div>
+			</div>
+
+			<div class="typeOuter">
+				<div class="row"><span class="lessonType">病种</span></div>
+				<div class="row lessonRow">
+					<div class="col-xs-9">
+						急性气管支气管炎
+					</div>
+					<div class="col-xs-1 pad0">
+						<span class='numSpan'>2</span><span>份</span>
+					</div>
+					<div class="col-xs-1">
+						<button class="btn1 editBtn" type="button">编辑</button>
+					</div>
+					<div class="col-xs-1">
+						<button class="btn1 deleteBtn" type="button">删除</button>
+					</div>
+				</div>
+
+				<div class="row lessonRow">
+					<div class="col-xs-9">
+						急性气管支气管炎
+					</div>
+					<div class="col-xs-1 pad0">
+						<span class='numSpan'>2</span><span>份</span>
+					</div>
+					<div class="col-xs-1">
+						<button class="btn1 editBtn" type="button">编辑</button>
+					</div>
+					<div class="col-xs-1">
+						<button class="btn1 deleteBtn" type="button">删除</button>
+					</div>
+				</div>
+			</div>-->
+
+		</div>
+
+
+	</body>
+	<script type="text/javascript">
+	window.onload = function () {
+		'use strict';	
+		common();		
+		var oMid = findurl('mid');
+		Api.fatherdepart({
+			fn:function (arr) {
+				console.log(arr);
+				writesel('','.fatherdepart',arr,1,function () {
+					Api.childdepart({
+						json:{
+							pid:$(".fatherdepart").val()
+						},
+						fn:function (arr) {
+							writesel('','.childdepart',arr,1,function () {					
+								generateLessonList($('.childdepart').val());
+							});
+						}
+					});					
+				});
+			}
+		});		
+
+		$('.selectBtn').click(function() {
+			var faId = $('.fatherdepart').val();
+			var chId = $('.childdepart').val();
+			var chLen = $('.childdepart').children().length;
+			if( chLen > 0 ){
+				window.location.href = 'add-inner-lesson.html?mid='+oMid+'&faId='+faId+'&chId='+chId;
+			}else{
+				layer.alert('对不起，该科室没有子科室，无法添加课程！');
+			}
+			
+		});
+
+		function generateLessonList (department_id){//生成课程列表
+			Api.getCourseList({
+				json:{
+					mid:oMid,
+					department_id:$('.childdepart').val()
+				},
+				fn:function (arr) {
+					$('.messageCon-con').html('');
+					for (var name in arr.types) {
+						var str = 
+							'<div class="typeOuter" type="'+name+'">'
+								+'<div class=""><span class="lessonType">'+arr.types[name]
+								+'</span></div>'
+							+'</div>';						
+						$('.messageCon-con').append(str);
+					}
+					var courseLen = arr['arr'].length;
+					for( var i = 0; i < courseLen; i++ ){
+						$('.typeOuter[type='+arr['arr'][i]['type']+']').append(
+							'<div class="row lessonRow" ctype="'+arr['arr'][i]['ctype']+'" department_id="'+arr['arr'][i]['department_id']+'" num="'+arr['arr'][i]['num']+'" pid="'+arr['arr'][i]['pid']+'" title="'+arr['arr'][i]['title']+'" type="'+arr['arr'][i]['type']+'" id="'+arr['arr'][i]['id']+'">'+
+								'<div class="col-xs-8">'+
+									arr['arr'][i]['title']+
+								'</div>'+
+								'<div class="col-xs-1 pad0">'+
+									'<span class="numSpan">'+arr['arr'][i]['num']+'</span><span>份</span>'+
+								'</div>'+
+								'<div class="col-xs-1">'+
+									'<button class="btn1 editBtn" type="button">编辑</button>'+
+								'</div>'+
+								'<div class="col-xs-1">'+
+									'<button class="btn1 deleteBtn" type="button">删除</button>'+
+								'</div>'+
+								'<div class="col-xs-1">'+
+									'<button class="btn1 lookBtn" type="button">查看</button>'+
+								'</div>'+
+							'</div>'
+						);
+					}
+					
+					editAndDelete();//注册按钮的删除和编辑事件
+				}
+			});			
+
+		}
+
+
+		function editAndDelete(){//注册编辑和删除按钮的事件
+			$('.editBtn').click(function() {//编辑按钮
+				var ctype = $(this).parents('.row').attr('ctype');
+				var department_id = $(this).parents('.row').attr('department_id');
+				var num = $(this).parents('.row').attr('num');
+				var pid = $(this).parents('.row').attr('pid');
+				var title = $(this).parents('.row').attr('title');
+				var type = $(this).parents('.row').attr('type');
+				var id = $(this).parents('.row').attr('id');
+				window.location.href = 'edit-inner-lesson.html?ctype='+ctype+'&department_id='+department_id+'&num='+num+'&pid='+pid+'&title='+title+'&type='+type+'&id='+id;
+			});
+
+			$('.lookBtn').click(function() {//查看按钮
+				var ctype = $(this).parents('.row').attr('ctype');
+				var department_id = $(this).parents('.row').attr('department_id');
+				var num = $(this).parents('.row').attr('num');
+				var pid = $(this).parents('.row').attr('pid');
+				var title = $(this).parents('.row').attr('title');
+				var type = $(this).parents('.row').attr('type');
+				var id = $(this).parents('.row').attr('id');
+				window.location.href = 'look-inner-lesson.html?ctype='+ctype+'&department_id='+department_id+'&num='+num+'&pid='+pid+'&title='+title+'&type='+type+'&id='+id;
+			});
+
+			$('.deleteBtn').click(function() {//删除按钮
+				var lessonRow = $(this).parents('.row');
+				uselayer(2,'您确定要删除这条课程吗？',function () {
+					var courseId = lessonRow.attr('id');
+					layer.close();
+					Api.deleteCourse({
+						json:{
+						 	id:courseId
+						 },
+						fn:function (arr) {
+							uselayer(3,arr['msg']);
+							if( arr['status'] == '1' ){
+								lessonRow.remove();
+							}
+						}
+					});					
+				});
+			});
+		}
+	}
+	</script>
+</html>
