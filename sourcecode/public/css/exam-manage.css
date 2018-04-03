@@ -1,12 +1,12 @@
 
-.exam { width: 800px; margin: 0 auto; padding-bottom: 50px;}
+.exam {  margin: 0 auto; padding-bottom: 50px;}
 
 .exam-left { float: left; width: 180px; padding-right:20px ; text-align: right;}
 .exam-right { float: left; width: 600px;}
 
 .choose-type label { margin-right: 20px;}
-.exam-column { margin-top: 20px;}
-.choose-depart .exam-right { padding-top: 20px; min-height: 200px;}
+.exam-column { margin-top: 7px;}
+.choose-depart .exam-right {  min-height: 200px;}
 .choose-depart .exam-right div { padding: 10px 0; border-bottom: 1px solid #ccc;}
 .choose-depart ul { padding: 0 20px; padding-top:10px ;}
 .choose-depart ul li { float: left; padding: 5px 20px 5px 0;}
@@ -24,7 +24,7 @@
 
 
 
-.exam-addbtn { display: block; width: 200px; background: #DC5C59; height: 34px; color: #fff; border-radius: 4px; margin: 50px auto 0;}
+/* .exam-addbtn { display: block; width: 200px; background: #DC5C59; height: 34px; color: #fff; border-radius: 4px; margin: 50px auto 0;} */
 
 
 

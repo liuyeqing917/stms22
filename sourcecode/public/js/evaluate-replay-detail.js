@@ -25,7 +25,7 @@ window.onload = function () {
 				$('.question-content').children().remove();
 				for(var i=0 ;i<zzarr.base.length;i++){
 
-					$('.question-content').append('<div class=" type-model "style="border: none">'+zzarr.base[i].base+'</div>');
+					// $('.question-content').append('<div class=" type-model "style="border: none">'+zzarr.base[i].base+'</div>');
 
 					var nametext = '姓名:'+zzarr.info[0].name;
 					$('.username').text(nametext);
@@ -33,7 +33,7 @@ window.onload = function () {
 
 						if(zzarr.base[i].id==zzarr.info[j].tid){
 							score = Number(score)+  Number(zzarr.info[j].score) ;
-							$('.question-content').append('<div class="type-model clearfix "><span class="smalltitle">'+zzarr.info[j].content+'</span> <span class="rightinput"> '+zzarr.info[j].scores+'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp; '+zzarr.info[j].score+'</span> </div>');
+							$('.question-content').append('<tr class="type-model clearfix "><td>'+zzarr.info[j].content+'</td> <td> '+zzarr.info[j].scores+'</td><td>'+zzarr.info[j].score+'</td> </tr>');
 						}
 
 					}

@@ -9,8 +9,7 @@
 		<link rel="stylesheet" type="text/css" href="../css/common2.css"/>
 		<style type="text/css">
 			.conOuter{
-				width: 100%; padding-left: 35px; padding-right: 35px;
-				font-size: 14px; padding-top: 25px;
+				padding: 17px; font-size: 14px; background: #fff; margin:17px;
 			}
 			.btn1{
 				display:block; background-color:#DC5C59; border-radius:5px;
@@ -23,7 +22,7 @@
 			.selectBtn{
 				margin-top: 4px; line-height: 26px;
 			}
-			.table{
+			.tableaa{
 				width:100%; text-align:center;
 				margin-top:30px; font-size:14px; display:none;
 			}
@@ -42,7 +41,7 @@
 				float:left; padding:5px;
 			}
 			.th{
-				font-weight:bold; background-color:#E3E3E5;
+				font-weight:bold; 
 			}
 			.td1{
 				width:16.6%;
@@ -75,7 +74,8 @@
 			    padding: 0;
 			}
 			.right {
-			    text-align: right;
+				text-align: left!important;
+				margin-left:20px;
 			}
 			label {
 			    font-weight: normal;
@@ -88,6 +88,10 @@
 			    resize: none;
 			    border: none;
 			    text-decoration: none;
+			}
+			.radio input[type=radio]{
+				position: relative!important;
+				margin-left: 0px!important;
 			}
 		</style>
 		<script>
@@ -102,10 +106,9 @@
 
 		<div class="conOuter">
 			<div class="row selectRow">
-				<div class="col-xs-3 pad0 right">
+				<div class="col-xs-1 pad0 right">
 					类型选择:
 				</div>
-
 				<div class="col-xs-2 chukeCol">
 					<input type="radio" name="examType" value="1" id="chukeRadio" ischeck='1' class="examTypeRadio" checked="checked" />
 					<label for="chukeRadio">出科考试</label>
@@ -120,11 +123,10 @@
 					<input type="radio" name="examType" value="3" id="publicRadio"  ischeck='0' class="examTypeRadio"/>
 					<label for="publicRadio">公共考试</label>
 				</div>
-
 			</div>
 
 			<div class="row selectRow departmentSelectOuter">
-				<div class="col-xs-3 pad0 right">主科室:</div>
+				<div class="col-xs-1 pad0 right">主科室:</div>
 				<div class="col-xs-2">
 					<select name="" class="form-control fatherdepart">
 					</select>
@@ -138,42 +140,115 @@
 			</div>
 
 			<div class="row selectRow timeSelectOuter">
-				<div class="col-xs-3 pad0 right">选择时间:</div>
+				<div class="col-xs-1 pad0 right">选择时间:</div>
 				<div class="col-xs-2">
 					<input type="text" class="ctime form-control startInp" />
 				</div>
 
-				<div class="col-xs-1 center">至</div>
+				<div class="col-xs-1 pad0 right">至</div>
 				<div class="col-xs-2">
 					<input type="text" class="ctime form-control endInp" />
 				</div>
-
+				<div class="col-xs-2">
+						<button class="btn1 selectBtn" type="button">查询</button>
+					</div>
 			</div>
-
-			<div class="row selectRow">
+			<!-- <div class="row selectRow">
 				<div class="col-xs-9"></div>
 				<div class="col-xs-2">
 					<button class="btn1 selectBtn" type="button">查询</button>
 				</div>
+			</div> -->
+
+			<div class="tableaa table3 clearfix"><!--管理员表格-->
+				<div class="th clearfix">
+					<table class="table table-striped">
+						<thead>
+						<tr>
+							<th>科室</th>
+							<th>考试时间</th>
+							<th>客观题平均得分</th>
+							<th>主观题平均得分</th>
+							<th>带教老师</th>
+						</tr>
+						</thead>
+						<tbody class="tabletr3"> 
+								<!-- <tr>
+										<td>科室</td>
+										<td>考试时间</td>
+										<td>客观题平均得分</td>
+										<td>主观题平均得分</td>
+										<td>带教老师</td>
+									</tr> -->
+						</tbody>
+					</table>
+					<!-- <div class="td td3">科室</div><div class="td td3">考试时间</div><div class="td td3">客观题平均得分</div><div class="td td3">主观题平均得分</div><div class="td td3">带教老师</div> -->
+				</div>
+				
+
 			</div>
 
-			<div class="table table3 clearfix"><!--管理员表格-->
+			<div class="tableaa table2 clearfix"><!--老师表格-->
 				<div class="th clearfix">
-					<div class="td td3">科室</div><div class="td td3">考试时间</div><div class="td td3">客观题平均得分</div><div class="td td3">主观题平均得分</div><div class="td td3">带教老师</div>
+						<table class="table table-striped">
+								<thead>
+								<tr>
+									<th>姓名</th>
+									<th>科室</th>
+									<th>考试时间</th>
+									<th>客观题得分</th>
+									<th>主观题得分</th>
+									<th>负责人签字</th>
+									<th>查看试卷</th>
+								</tr>
+								</thead>
+								<tbody class="tabletr2"> 
+										<!-- <tr>
+												<td>科室</td>
+												<td>考试时间</td>
+												<td>客观题平均得分</td>
+												<td>主观题平均得分</td>
+												<td>带教老师</td>
+											</tr> -->
+								</tbody>
+							</table>
+					<!-- <div class="td td2">姓名</div><div class="td td2">科室</div><div class="td td2">考试时间</div><div class="td td2">客观题得分</div><div class="td td2">主观题得分</div><div class="td td2">负责人签字</div><div class="td td2">查看试卷</div> -->
 				</div>
 			</div>
 
-			<div class="table table2 clearfix"><!--老师表格-->
+			<div class="tableaa table1 clearfix"><!--学生表格-->
 				<div class="th clearfix">
-					<div class="td td2">姓名</div><div class="td td2">科室</div><div class="td td2">考试时间</div><div class="td td2">客观题得分</div><div class="td td2">主观题得分</div><div class="td td2">负责人签字</div><div class="td td2">查看试卷</div>
+						<table class="table table-striped">
+								<thead>
+								<tr>
+									<th>科室</th>
+									<th>考试时间</th>
+									<th>客观题平均得分</th>
+									<th>主观题平均得分</th>
+									<th>负责人签字</th>
+									<th>查看试卷</th>
+								</tr>
+								</thead>
+								<tbody class="tabletr1"> 
+										<!-- <tr>
+												<td>科室</td>
+												<td>考试时间</td>
+												<td>客观题平均得分</td>
+												<td>主观题平均得分</td>
+												<td>带教老师</td>
+											</tr> -->
+								</tbody>
+							</table>
+					<!-- <div class="td td1">科室</div><div class="td td1">考试时间</div><div class="td td1">客观题得分</div><div class="td td1">主观题得分</div><div class="td td1">负责人签字</div><div class="td td1">查看试卷</div> -->
 				</div>
 			</div>
 
-			<div class="table table1 clearfix"><!--学生表格-->
-				<div class="th clearfix">
-					<div class="td td1">科室</div><div class="td td1">考试时间</div><div class="td td1">客观题得分</div><div class="td td1">主观题得分</div><div class="td td1">负责人签字</div><div class="td td1">查看试卷</div>
-				</div>
-			</div>
+			
+
+
+
+
+
 
 			<p class="no-data" style="display:none;">该条件下暂无数据<p>
 
@@ -281,14 +356,14 @@
 							var stuid = getCookie('id');
 							var row = arr['data'][i];
 							var starttime = timetodate(row['starttime'],1);
-							$('.table1').append('<div class="tr clearfix">'+
-								'<div class="td td1">'+row['departname']+'</div>'+
-								'<div class="td td1">'+starttime+'</div>'+
-								'<div class="td td1">'+row['objective']+'</div>'+
-								'<div class="td td1">'+row['subjective']+'</div>'+
-								'<div class="td td1">'+row['teachername']+'</div>'+
-								'<div class="td td1"><a href="exam-checkdetail.html?from=view&logid='+row.logid+'&stuid='+stuid+'" class="seeDetail">查看</a></div>'+
-							'</div>');
+							$('.tabletr1').append('<tr>'+
+								'<td>'+row['departname']+'</td>'+
+								'<td>'+starttime+'</td>'+
+								'<td>'+row['objective']+'</td>'+
+								'<td>'+row['subjective']+'</td>'+
+								'<td>'+row['teachername']+'</td>'+
+								'<td"><a href="exam-checkdetail.html?from=view&logid='+row.logid+'&stuid='+stuid+'" class="seeDetail">查看</a></td>'+
+							'</tr>');
 						}
 					}else if( usertype == 2 ){//老师
 						var arrLen = arr['data'].length;
@@ -297,15 +372,15 @@
 						for ( var i = 0; i < arrLen; i++ ){
 							var row = arr['data'][0][i];
 							var starttime = timetodate(row['starttime'],1);
-							$('.table2').append('<div class="tr clearfix">'+
-								'<div class="td td2">'+row['stuname']+'</div>'+
-								'<div class="td td2">'+row['departname']+'</div>'+
-								'<div class="td td2">'+starttime+'</div>'+
-								'<div class="td td2">'+row['objective']+'</div>'+
-								'<div class="td td2">'+row['subjective']+'</div>'+
-								'<div class="td td2">'+row['teachername']+'</div>'+
-								'<div class="td td2"><a href="exam-checkdetail.html?from=view&logid='+row.logid+'&stuid='+row.stuid+'" class="seeDetail">查看</a></div>'+
-							'</div>');
+							$('.tabletr2').append('<tr>'+
+								'<td>'+row['stuname']+'</td>'+
+								'<td>'+row['departname']+'</td>'+
+								'<td>'+starttime+'</td>'+
+								'<td>'+row['objective']+'</td>'+
+								'<td>'+row['subjective']+'</td>'+
+								'<td>'+row['teachername']+'</td>'+
+								'<td><a href="exam-checkdetail.html?from=view&logid='+row.logid+'&stuid='+row.stuid+'" class="seeDetail">查看</a></td>'+
+							'</tr>');
 						}
 					}else if( usertype == 3 ){//管理员
 						var arrLen = arr['data'].length;
@@ -314,13 +389,13 @@
 						for ( var i = 0; i < arrLen; i++ ){
 							var row = arr['data'][i];
 							var starttime = timetodate(row['starttime'],1);
-							$('.table3').append('<div class="tr clearfix">'+
-								'<div class="td td3">'+row['departname']+'</div>'+
-								'<div class="td td3">'+starttime+'</div>'+
-								'<div class="td td3">'+row['objaverage']+'</div>'+
-								'<div class="td td3">'+row['subaverage']+'</div>'+
-								'<div class="td td3">'+row['teachername']+'</div>'+
-							'</div>');
+							$('.tabletr3').append('<tr>'+
+								'<td>'+row['departname']+'</td>'+
+								'<td>'+starttime+'</td>'+
+								'<td>'+row['objaverage']+'</td>'+
+								'<td>'+row['subaverage']+'</td>'+
+								'<td>'+row['teachername']+'</td>'+
+							'</tr>');
 						}
 					}
 					var allcount = arr['allcount'];
@@ -339,7 +414,7 @@
 			getFatherdepart();//获取父科室
 			roleShow();//根据不同的角色显示不同的界面
 
-			$('.table').click(function (e) {
+			$('.tableaa').click(function (e) {
 				if (e.target.tagName.toLowerCase()=='a') {
 					var type;
 					if ($('#chukeRadio').attr('ischeck') == 1 ){

@@ -8,10 +8,9 @@
 		<script type="text/javascript" src="../js/highcharts.js" ></script>
 		<script src="../js/evaluate-look.js" type="text/javascript" charset="utf-8"></script>
 		<style>
-			.topsel { width: 720px; padding: 5px;}
 			.sel-depart { width: 190px;}
 			.sel-depart select { width: 110px;}
-			.outline-out { width: 660px;}
+			
 			.addlesson {right: 30px; top: -38px; background-color:#dc5c59;color: white  }
 			.w220 { width: 220px;}
 			.w50 { width: 50px;}
@@ -43,14 +42,34 @@
 		<div class="outline outline-out">
 			<button class="addlesson none">统计分析</button>
 			<div class="outline-out-top clearfix">
-				<div class="w90">姓名</div>
+				<!-- <div class="w90">姓名</div>
 				<div class="w130">科室</div>
 				<div class="w220">轮转时间</div>
 				<div class="w90">得分</div>
-				<div class="w130 usersure">教师签字</div>
-
+				<div class="w130 usersure">教师签字</div> -->
+				<table class="table table-striped">
+						<thead>
+							<tr>
+								<th></th>
+								<th>姓名</th>
+								<th>科室</th>
+								<th>轮转时间</th>
+								<th>得分</th>
+								<th class="usersure">教师签字</th>
+							</tr>
+						</thead>
+						<tbody class="outline-out-list"> 
+								<!-- <tr>
+										<td>科室</td>
+										<td>考试时间</td>
+										<td>客观题平均得分</td>
+										<td>主观题平均得分</td>
+										<td>带教老师</td>
+									</tr> -->
+						</tbody>
+					</table>
 			</div>
-			<ul class="outline-out-list"></ul>
+			<!-- <ul class="outline-out-list"></ul> -->
 			<div class="clearfix page" id="page"></div>			
 		</div>
 		
