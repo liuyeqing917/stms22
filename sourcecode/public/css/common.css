@@ -1,4 +1,8 @@
 *{box-sizing:border-box; outline:none;}
+.container-fluid{
+	padding: 17px !important;
+	font-size: 14px !important;
+}
 body{font-family: "Microsoft YaHei";font-size: 14px; overflow-x:hidden;}
 select,input{outline: none;}
 label{font-weight:normal; margin: 0;}
@@ -72,7 +76,7 @@ th,td{text-align: center;}
 .foot-bg{background: #066250;}
 
 .return{cursor: pointer;}
-.footer{background: #09A88A;color: #fff;position: fixed;left: 0;bottom: 0;width:100%;font-size:12px;text-align: center;z-index: 100;}
+.footer{height: 45px;line-height: 45px;background: #09A88A;color: #fff;position: fixed;left: 0;bottom: 0;width:100%;font-size:12px;text-align: center;z-index: 100;}
 .footer a:hover{background: #066250;color: #fff;text-decoration: none;}
 
 
@@ -103,14 +107,16 @@ a { text-decoration: none;}
 
 .break {word-wrap: break-word; word-break:break-all;}
 .no-data { height: 200px; line-height: 200px; text-align: center; font-size: 18px;}
-.page { width: 560px; height: 34px; position: absolute; left: 50%; margin-left: -280px; bottom: 30px; line-height: 32px; color: #000; display: none;}
+.page {height: 34px;  line-height: 32px; color: #000; display: none;margin: 0 auto;    display: flex !important;
+    justify-content: center;}
 .page input { float: left;line-height: 32px; background: none; padding: 0 15px; color: #777;cursor: pointer; font-size: 14px; border: 1px solid #ddd; margin-left:-1px ;}
 .page .page_last {border-radius:0 4px 4px 0;}
 .page .page_first {border-radius:4px 0 0 4px;}
-.page div { float: left; width: 210px; position: relative; height: 34px; overflow: hidden; font-size: 14px; margin-left: -1px;}
-.page ul { position: absolute; left: 0; top: 0;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none; user-select: none;}
+.page>div { position: relative; height: 34px; overflow: hidden; font-size: 14px; margin-left: -1px;}
+.page ul { -webkit-user-select:none;-moz-user-select:none;-ms-user-select:none; user-select: none;margin: 0 auto;width: 100% !important;}
 .page ul li { float: left; width: 42px; text-align: center;cursor: pointer; border: 1px solid #ddd; border-right: none; color: #337ab7;}
 .page ul li.active { color: #fff; background: #337ab7; border-color:#337ab7;}
+
 
 /*.page  { visibility:hidden;}*/
 
@@ -152,3 +158,11 @@ color: #ccc;
 .childTitle { display: none;}
 
 body { background: #f3f3f4;}
+.content_border{
+	padding:10px 20px 0 20px;
+	background: white;
+	border-top:5px solid #ddd ;
+}
+.fy{
+	height: 72px;
+}

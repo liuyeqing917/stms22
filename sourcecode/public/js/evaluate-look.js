@@ -109,14 +109,14 @@ window.onload = function () {
 
 			datetiame = timetodate(arr[i].strattime,1) +' ~ ' +  timetodate(arr[i].endtime,1);
 			var str =
-				'<tr class="clearfix line-div">'
-				+'<td class="bl">'+arr[i].uname+'</td>'
-				+'<td>'+arr[i].dname+'</td>'
-				+'<td>'+datetiame+'</td>'
-				+'<td>'+arr[i].scores+'</td>'
-				+'<td>'+arr[i].name+'</td>'
-				+'<td><input type="hidden"  value="'+arr[i].id+'" name="token" /></td>'
-				+'</tr>';
+				'<li class="clearfix line-div">'
+				+'<div class="w90 bl">'+arr[i].uname+'</div>'
+				+'<div class="w130">'+arr[i].dname+'</div>'
+				+'<div class="w220">'+datetiame+'</div>'
+				+'<div class="w90">'+arr[i].scores+'</div>'
+				+'<div class="w130">'+arr[i].name+'</div>'
+				+'<input type="hidden"  value="'+arr[i].id+'" name="token" />'
+				+'</li>';
 			$('.outline-out-list').append(str);
 
 		}
@@ -161,7 +161,8 @@ window.onload = function () {
 	});
 
 		$("body").on('click','.line-div',function(){
-			var url = 'evaluate-replay-detail.html?id='+$(this).find('input').val();
+
+			var url = 'evaluate-replay-detail.html?id='+$(this).children('input').val();
 
 			window.location.href=url;
 

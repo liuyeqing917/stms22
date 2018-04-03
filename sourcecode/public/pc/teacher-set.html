@@ -11,19 +11,17 @@
 			.sel-depart { width: 190px; }
 			.sel-depart select {  width: 110px; }
 			.searchlesson {background-color:#dc5c59;color: #fff;   position: absolute;  top: -8px; height: 30px; line-height: 30px;  width: 80px; font-size: 14px; text-align: center; border-radius: 4px; }
-			.w220 { width: 220px;}
-			.w50 { width: 50px;}
-			.w130 { width: 130px;}
 			.outline-out { display: block;}
 		</style>
 	</head>
-	<body>
+	<body  class="container-fluid">
+		<div class="content_border">
 		<div class="childTitle">教师设置</div>
 		
 		<div class="topsel clearfix ">
-			<div class="sel-depart">
+			<div class="sel-depart ">
 				<span>方向科室</span>
-				<select class="form-control sel-fatherdepart"></select>
+				<select class="form-control  sel-fatherdepart"></select>
 			</div>
 			<div class="sel-depart" style="width: 170px;">
 				<span>科室</span>
@@ -36,20 +34,20 @@
 		
 		<div class="outline outline-out">
 			<a href="teacher-add.html?from=add" class="addlesson">添加教师</a>
-			<div class="outline-out-top clearfix">
-				<div class="w130">工号</div>
-				<div class="w100">姓名</div>
-				<div class="w50">性别</div>
-				<div class="w130">电话</div>
-				<div class="w220">邮箱</div>
-				<div class="w90"></div>
-			</div>
-			<ul class="outline-out-list"></ul>
-			<div class="clearfix page" id="page"></div>				
+			<table class="table table-striped">
+				<thead>
+					<tr><th>工号</th><th>姓名</th><th>性别</th><th>电话</th><th>邮箱</th><th></th></tr>
+				</thead>
+					
+				<tbody class="tbody">
+					
+				</tbody>
+			</table>
+			<div class="clearfix page " id="page"></div>		
 		</div>
 		
 	
 		
-		
+		</div>
 	</body>
 </html>

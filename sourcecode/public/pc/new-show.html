@@ -7,8 +7,7 @@
 		<link rel="stylesheet" type="text/css" href="../css/common2.css"/>
 		<style type="text/css">
 			.messageCon{
-				width:100%; padding-left:60px; padding-right:100px; font-size:14px;
-				padding-top:30px; word-break:break-all; height:400px;
+				font-size:14px;
 			}
 			.messageBox{
 				border-bottom:1px dotted #cccccc; line-height:18px; padding-top:10px;
@@ -20,26 +19,24 @@
 			.messageBox>span{
 				float:left; width:90px; margin-left:-90px;
 			}
-			.fenyeCon{
-				width:700px; padding-bottom:50px; margin:auto;
-			}
-
 		</style>
 		<script>
 			$('.commonCss').remove();
 		</script>
 		<script type="text/javascript" src="../js/jqPaginator.js"></script>
 	</head>
-	<body>
-		<div class="childTitle">
-			新闻查看
-		</div>
-
-		<div class="messageCon">
-
-		</div>
-		<div class="fenyeCon">
-			<ul class="pagination" id="pagination1"></ul>
+	<body class="container-fluid">
+		<div class="content_border">
+			<div class="childTitle">
+				新闻查看
+			</div>
+			<div class="messageCon">
+	
+			</div>
+			<div class="fy">
+				<ul class="pagination pull-right" id="pagination1"></ul>
+			</div>
+				
 		</div>
 	</body>
 	<script type="text/javascript">

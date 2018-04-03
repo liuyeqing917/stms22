@@ -1,5 +1,9 @@
 *{box-sizing:border-box; outline:none;}
 body{font-family: "Microsoft YaHei";font-size: 14px; overflow-x:hidden;}
+.container-fluid{
+	padding: 17px !important;
+	font-size: 14px !important;
+}
 select,input{outline: none;}
 label{font-weight:normal; margin: 0;}
 .col0{color:#000}
@@ -139,3 +143,12 @@ color: #ccc;
 .childTitle { display: none;}
 
 body { background: #f3f3f4;}
+
+.content_border{
+	padding:10px 20px 0 20px;
+	background: white;
+	border-top:5px solid #ddd ;
+}
+.fy{
+	height: 72px;
+}

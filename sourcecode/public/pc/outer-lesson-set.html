@@ -7,7 +7,8 @@
 		<link rel="stylesheet" href="../css/lesson-set.css" />
 		<script src="../js/lesson-set.js" type="text/javascript" charset="utf-8"></script>
 	</head>
-	<body>
+	<body class="container-fluid">
+		<div class="content_border">
 		<div class="childTitle">大纲外课程设置</div>
 		
 		<div class="topsel clearfix">
@@ -24,20 +25,20 @@
 		
 		<div class="outline outline-out">
 			<a href="lesson-add.html?from=add" class="addlesson">添加课程</a>
-			<div class="outline-out-top clearfix">
-				<div class="w210">时间</div>
-				<div class="w100">题目</div>
-				<div class="w110">科室</div>
-				<div class="w100">授课地点</div>
-				<div class="w110">授课人</div>
-				<div class="w90">活动记录</div>				
-			</div>
-			<ul class="outline-out-list"></ul>
+			<table class="table table-striped">
+				<thead>
+					<tr><th>时间</th><th>题目</th><th>科室</th><th>授课地点</th><th>授课人</th><th>活动记录</th></tr>
+				</thead>
+					
+				<tbody class="tbody">
+					
+				</tbody>
+			</table>
 			<div class="clearfix page" id="page"></div>			
 		</div>
 		
 		
-			
+			</div>
 		
 		
 	</body>

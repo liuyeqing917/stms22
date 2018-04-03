@@ -1,7 +1,7 @@
 window.onload = function () {
 'use strict';	
 	common();
-	var oList = $('.outline-out-list')[0];
+	var oList = $('.tbody')[0];
 	togetfatherdepart(function (arr) {
 		writesel('全部方向科室','.sel-fatherdepart',arr,1,function () {
 			togetchilddepart($('.sel-fatherdepart').val(),function (arr) {
@@ -41,22 +41,21 @@ window.onload = function () {
 		console.log(json);
 		var arr = json.data;
 		flipover(json.allcount,Api.perpage,fn,oList);
-				
+				$('.tbody').empty()
 		for (var i = 0 ; i < arr.length; i++) {
 			var _str = '<a href="lesson-student.html?id='+arr[i].id+'" class="view">查看</a>';
 			if (arr[i].ctime>arr[0].nowtime) {
 				_str = '<a href="lesson-add.html?from=edit&id='+arr[i].id+'" class="edit">编辑</a>';
 			}
-			var str = 
-				'<li class="clearfix">'
-					+'<div class="w210 bl">'+timetodate(arr[i].ctime)+'</div>'
-					+'<div class="w100">'+arr[i].cname+'</div>'
-					+'<div class="w110">'+arr[i].departname+'</div>'
-					+'<div class="w100">'+arr[i].venue+'</div>'
-					+'<div class="w110">'+arr[i].teachername+'</div>'
-					+'<div class="w90">'+_str+'</div>'						
-				+'</li>';			
-			$('.outline-out-list').append(str);
+			var str1 ='<tr>'+
+			'<td>'+timetodate(arr[i].ctime)+'</td>'+
+			'<td>'+arr[i].cname+'</td>'+
+			'<td>'+arr[i].departname+'</td>'+
+			'<td>'+arr[i].venue+'</td>'+
+			'<td>'+arr[i].teachername+'</td>'+
+			'<td>'+_str+'</td>'+
+			'</tr>'
+			$('.tbody').append(str1);
 			
 		}						
 	};

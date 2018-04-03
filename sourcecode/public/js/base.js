@@ -13,7 +13,7 @@
  */
 
 var Api = {
-//	url:'http://demo.stms.php56.atapp.com',
+	
 //	url:'http://guiyiguiyi.com/',
 //	url:'http://localhost',
 	url:'../..',

@@ -10,8 +10,7 @@
 		<style type="text/css">
 
 			.messageCon{
-				width:100%; padding-left:35px; padding-right:35px; font-size:14px;
-				padding-top:25px;
+				width:100%;  font-size:14px;
 			}
 			.btn1{
 				display:block; background-color:#DC5C59; border-radius:5px;
@@ -21,30 +20,6 @@
 			.selectBtn{
 				margin:auto; margin-top: 4px;
     			line-height:26px;
-			}
-			.table{
-				width:100%; text-align:center;
-				margin-top:10px; font-size:14px;
-			}
-			.tr{
-				width:100%;
-			}
-			.th .td{
-				margin-left:-1px; 
-				float:left; padding:5px;
-			}
-			.tr:nth-child(odd){
-				background-color:#E1F0FA;
-			}
-			.tr .td{
-				margin-left:-1px; margin-top:-1px;
-				float:left; padding:5px;
-			}
-			.th{
-				font-weight:bold; background-color:#E3E3E5;
-			}
-			.td1{
-				width:14.25%;
 			}
 			.ctime{
 				display:block; border:1px solid #9F9F9F;
@@ -69,9 +44,6 @@
 			    border: none;
 			    text-decoration: none;
 			}
-			.fenyeCon{
-				width:700px; padding-bottom:50px; margin:auto;
-			}
 
 		</style>
 		<script>
@@ -79,7 +51,8 @@
 		</script>
 		<script type="text/javascript" src="../js/jqPaginator.js"></script>
 	</head>
-	<body>
+	<body class="container-fluid">
+		<div class="content_border">
 		<div class="childTitle">
 			考勤统计
 		</div>
@@ -88,7 +61,7 @@
 
 			<div class="row">
 				
-				<div class="col-xs-1 pad0 right">开始时间:</div>
+				<div class="col-xs-1 pad0 " style="text-align: center;">开始时间:</div>
 				<div class="col-xs-2">
 					<input type="text" class="ctime form-control startInp">
 				</div>
@@ -120,20 +93,22 @@
 		</div>
 
 		<div class="messageCon clearfix firstPage">
-			<div class="table clearfix">
-				<div class="th clearfix">
-					<div class="td td1">姓名</div><div class="td td1">科室</div><div class="td td1">出勤天数</div><div class="td td1">迟到天数</div><div class="td td1">早退天数</div><div class="td td1">请假天数</div><div class="td td1">教师填写</div>
-				</div>
-				
-			</div>
-			
+			<table class="table table-striped">
+				<thead>
+					<tr><th>姓名</th><th>科室</th><th>出勤天数</th><th>迟到天数</th><th>早退天数</th><th>请假天数</th><th>教师填写</th></tr>
+				</thead>
+					
+				<tbody class="tbody">
+					
+				</tbody>
+			</table>
 			<p class="no-data" style="display:none;">该条件下暂无数据<p>
 
-			<div class="fenyeCon">
-				<ul class="pagination" id="pagination1"></ul>
+			<div class="fy">
+				<ul class="pagination pull-right" id="pagination1"></ul>
 			</div>
 		</div>
-
+</div>
 
 	</body>
 	<script type="text/javascript">
@@ -306,21 +281,33 @@
 					var dataLen = arr['data'].length;
 					
 					var data = arr['data'];
-					$('.tr').remove();
+					$('.tbody').empty();
 					//判断学生老师，有没有填写
 					if ( type == 1 ){//是学生
 						for( var i = 0; i < dataLen; i++ ){
 							if( data[i]['teacher'] == '' ){//如果没有填写
-								$('.table').append(
-								'<div class="tr clearfix">'+
-									'<div class="td td1">'+data[i]['stuname']+'</div><div class="td td1">'+data[i]['depart']+'</div><div class="td td1"></div><div class="td td1"></div><div class="td td1"></div><div class="td td1"></div><div class="td td1">未填写</div>'+
-								'</div>'
+								$('.tbody').append(
+									'<tr>'+
+									'<td>'+data[i]['stuname']+'</td>'+
+									'<td>'+data[i]['depart']+'</td>'+
+									'<td></td>'+
+									'<td></td>'+
+									'<td></td>'+
+									'<td></td>'+
+									'<td>未填写</td>'+
+									'</tr>'
 								);
 							}else{//如果填写过
-								$('.table').append(
-								'<div class="tr clearfix">'+
-									'<div class="td td1">'+data[i]['stuname']+'</div><div class="td td1">'+data[i]['depart']+'</div><div class="td td1">'+data[i]['attendance']+'</div><div class="td td1">'+data[i]['late']+'</div><div class="td td1">'+data[i]['early']+'</div><div class="td td1">'+data[i]['leave']+'</div><div class="td td1">'+data[i]['teacher']+'</div>'+
-								'</div>'
+								$('.tbody').append(
+									'<tr>'+
+									'<td>'+data[i]['stuname']+'</td>'+
+									'<td>'+data[i]['depart']+'</td>'+
+									'<td>'+data[i]['attendance']+'</td>'+
+									'<td>'+data[i]['late']+'</td>'+
+									'<td>'+data[i]['early']+'</td>'+
+									'<td>'+data[i]['leave']+'</td>'+
+									'<td>'+data[i]['teacher']+'</td>'+
+									'</tr>'
 								);
 							}
 
@@ -328,16 +315,28 @@
 					}else if ( type == 2 ){//是老师
 						for( var i = 0; i < dataLen; i++ ){
 							if( data[i]['teacher'] == '' ){//如果没有填写
-								$('.table').append(
-								'<div class="tr clearfix">'+
-									'<div class="td td1">'+data[i]['stuname']+'</div><div class="td td1">'+data[i]['depart']+'</div><div class="td td1"></div><div class="td td1"></div><div class="td td1"></div><div class="td td1"></div><div class="td td1"><span class="add" stuid="'+data[i]['stuid']+'" department_id="'+data[i]['department_id']+'" name="'+data[i]['stuname']+'" departmentname="'+data[i]['depart']+'">填写</span></div>'+
-								'</div>'
+								$('.tbody').append(
+									'<tr>'+
+									'<td>'+data[i]['stuname']+'</td>'+
+									'<td>'+data[i]['depart']+'</td>'+
+									'<td></td>'+
+									'<td></td>'+
+									'<td></td>'+
+									'<td></td>'+
+									'<td><span class="add" stuid="'+data[i]['stuid']+'" department_id="'+data[i]['department_id']+'" name="'+data[i]['stuname']+'" departmentname="'+data[i]['depart']+'">填写</span></td>'+
+									'</tr>'
 								);
 							}else{//如果填写过
-								$('.table').append(
-								'<div class="tr clearfix">'+
-									'<div class="td td1">'+data[i]['stuname']+'</div><div class="td td1">'+data[i]['depart']+'</div><div class="td td1">'+data[i]['attendance']+'</div><div class="td td1">'+data[i]['late']+'</div><div class="td td1">'+data[i]['early']+'</div><div class="td td1">'+data[i]['leave']+'</div><div class="td td1">'+data[i]['teacher']+'</div>'+
-								'</div>'
+								$('.tbody').append(
+									'<tr>'+
+									'<td>'+data[i]['stuname']+'</td>'+
+									'<td>'+data[i]['depart']+'</td>'+
+									'<td>'+data[i]['attendance']+'</td>'+
+									'<td>'+data[i]['late']+'</td>'+
+									'<td>'+data[i]['early']+'</td>'+
+									'<td>'+data[i]['leave']+'</td>'+
+									'<td>'+data[i]['teacher']+'</td>'+
+									'</tr>'
 								);
 							}
 							
@@ -347,17 +346,23 @@
 							if( data[i]['teacher'] == '' ){//如果没有填写,就不显示
 								
 							}else{//如果填写过
-								$('.table').append(
-								'<div class="tr clearfix">'+
-									'<div class="td td1">'+data[i]['stuname']+'</div><div class="td td1">'+data[i]['depart']+'</div><div class="td td1">'+data[i]['attendance']+'</div><div class="td td1">'+data[i]['late']+'</div><div class="td td1">'+data[i]['early']+'</div><div class="td td1">'+data[i]['leave']+'</div><div class="td td1">'+data[i]['teacher']+'</div>'+
-								'</div>'
+								$('.tbody').append(
+									'<tr>'+
+									'<td>'+data[i]['stuname']+'</td>'+
+									'<td>'+data[i]['depart']+'</td>'+
+									'<td>'+data[i]['attendance']+'</td>'+
+									'<td>'+data[i]['late']+'</td>'+
+									'<td>'+data[i]['early']+'</td>'+
+									'<td>'+data[i]['leave']+'</td>'+
+									'<td>'+data[i]['teacher']+'</td>'+
+									'</tr>'
 								);
 							}
 							
 						}
 					}
 					
-					if($('.tr').length == 0){
+					if($('.tbody tr').length == 0){
 						$('.no-data').css('display', 'block');
 						$('.pagination').css('display', 'none');
 					}else{

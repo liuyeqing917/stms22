@@ -9,8 +9,8 @@
 		<script type="text/javascript" src="../js/bootstrap-datetimepicker.min.js" ></script>
 		<style type="text/css">
 			.messageCon{
-				width:100%; padding-left:35px; padding-right:35px; font-size:14px;
-				padding-top:25px;
+				width:100%;  font-size:14px;
+				padding-bottom:3px;
 			}
 			.btn1{
 				display:block; background-color:#DC5C59; border-radius:5px;
@@ -38,18 +38,22 @@
 				width:100%; cursor:pointer;
 			}
 			.th .td{
+				   
 				margin-left:-1px; 
 				float:left; padding:5px;
 			}
-			.tr:nth-child(odd){
-				background-color:#E1F0FA;
+			.tr:nth-child(2n){
+				background-color:#f9f9f9;
+				border-top: ;
 			}
 			.tr .td{
+				 border-top: 1px solid #e7eaec;
 				margin-left:-1px; margin-top:-1px;
-				float:left; padding:5px;
+				float:left; padding:8px;
 			}
 			.th{
-				font-weight:bold; background-color:#E3E3E5;
+				font-weight:bold; 
+				border-bottom: 1px solid #e7eaec;
 			}
 			.td1{
 				width:16.6%;
@@ -97,16 +101,14 @@
 			.selectrow{
 				height:34px; line-height:34px; margin-bottom:10px;
 			}
-			.fenyeCon{
-				width:700px; padding-bottom:50px; margin:auto;
-			}
 		</style>
 		<script>
 			$('.commonCss').remove();
 		</script>
 		<script type="text/javascript" src="../js/jqPaginator.js"></script>
 	</head>
-	<body>
+	<body class="container-fluid">
+		<div class="content_border">
 		<div class="childTitle">
 			轮转管理
 		</div>
@@ -171,8 +173,8 @@
 			
 			<p class="no-data" style="display:none;">该条件下暂无数据<p>
 
-			<div class="fenyeCon">
-				<ul class="pagination" id="pagination1"></ul>
+			<div class="fy">
+				<ul class="pagination pull-right" id="pagination1"></ul>
 			</div>
 		</div>
 
@@ -634,7 +636,7 @@
 				</div>
 			</div>
 		</div>
-
+</div>
 	</body>
 	<script type="text/javascript">
 		$(function() {

@@ -6,8 +6,8 @@
 		<title>高州市人民医院 - 住院医师轮转系统 - 轮转方案列表</title>
 		<style type="text/css">
 			.messageCon{
-				width:100%; padding-left:35px; padding-right:35px; font-size:14px;
-				padding-top:25px;
+				width:100%; font-size:14px;
+				padding-bottom: 20px;
 			}
 			.btn1{
 				display:block; background-color:#DC5C59; border-radius:5px;
@@ -54,27 +54,25 @@
 			//$('.bootstrap').remove();
 		</script>
 	</head>
-	<body>
+	<body class="container-fluid">
+		<div class="content_border">
+			
+		
 		<div class="childTitle">
 			轮转方案列表
 		</div>
 
 
 		<div class="messageCon clearfix firstPage">
-			<div class="table clearfix">
-				<div class="th clearfix">
-					<div class="td td1">轮转表名</div><div class="td td1">开始时间</div><div class="td td1">结束时间</div><div class="td td1">操作</div>
-				</div>
-				<!--<div class="tr clearfix">
-					<div class="td td1">表1</div><div class="td td1">2016-11-11</div><div class="td td1">2016-11-11</div><div class="td td1"><span class='delete'>删除</span></div><div class="td td1"><span class='add'>添加</span></div>
-				</div>
-
-				<div class="tr clearfix">
-					<div class="td td1">表1</div><div class="td td1">2016-11-11</div><div class="td td1">2016-11-11</div><div class="td td1"><span class='delete'>删除</span></div><div class="td td1"><span class='add'>添加</span></div>
-				</div>-->
-				
-			</div>
-
+			<table class="table table-striped">
+				<thead>
+					<tr><th>轮转表名</th><th>开始时间</th><th>结束时间</th><th>操作</th></tr>
+				</thead>
+					
+				<tbody class="tbody">
+					
+				</tbody>
+			</table>
 		</div>
 		
 		<div class="eidt-view" id="eidt-view">
@@ -91,7 +89,7 @@
 			
 		</div>
 		
-		
+		</div>
 
 	</body>
 	<script type="text/javascript">
@@ -103,21 +101,21 @@
 				},
 				fn:function (arr) {
 					console.log(arr);
-					$(".tr").remove();
+					$(".tbody").empty();
 					var arrLen = arr.length;
 					
 					for( var i = 0; i < arrLen; i++ ){
 						var starttime = timetodate(arr[i]['starttime'],1);
 						var endtime = timetodate(arr[i]['endtime'],1);
-						$(".table").append(
-							'<div class="tr clearfix">'+
-								'<div class="td td1">'+arr[i]['name']+'</div>'+
-								'<div class="td td1">'+starttime+'</div>'+
-								'<div class="td td1">'+endtime+'</div>'+
-								'<div class="td td2"><span class="edit" mid="'+arr[i].id+'">编辑</span></div>'+
-								'<div class="td td2"><a href="inner-lesson-set.html?mid='+arr[i].id+'" class="add" >添加</a></div>'+
-							'</div>'
-						);
+						$('.tbody').append(
+									'<tr>'+
+									'<td>'+arr[i]['name']+'</td>'+
+									'<td>'+starttime+'</td>'+
+									'<td>'+endtime+'</td>'+
+									'<td><span class="edit" mid="'+arr[i].id+'">编辑</span></td>'+
+									'<td><a href="inner-lesson-set.html?mid='+arr[i].id+'" class="add" >添加</a></td>'+
+									'</tr>'
+								);
 					}
 					writesel('','.sel-cycle',arr);
 					$(".edit").click(function() {

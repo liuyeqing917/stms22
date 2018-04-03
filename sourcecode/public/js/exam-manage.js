@@ -11,13 +11,13 @@ window.onload = function () {
 				var _arr = arr[i].child;
 				var _str = '';
 				for (var j = 0; j < _arr.length; j++) {
-					_str += '<li><input type="checkbox" id="'+_arr[j].name+'" class="childInp" value="'+_arr[j].id+'" /><label style="margin:0 10px;" for="'+_arr[j].name+'">'+_arr[j].name+'</label></li>';
+					_str += '<li><input type="checkbox" id="'+_arr[j].name+'" class="childInp" value="'+_arr[j].id+'" /><label for="'+_arr[j].name+'">'+_arr[j].name+'</label></li>';
 				}
 				var str = 
 					'<div>'
 						+'<p>'
 							+'<input type="checkbox" id="'+arr[i].name+'" class="fatherInp" />'
-							+'<label style="margin:0 10px;" for="'+arr[i].name+'">'+arr[i].name+'</label>'
+							+'<label for="'+arr[i].name+'">'+arr[i].name+'</label>'
 						+'</p>'
 						+'<ul class="clearfix">'
 						+_str

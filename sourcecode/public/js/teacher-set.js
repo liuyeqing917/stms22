@@ -1,7 +1,7 @@
 window.onload = function () {
 	'use strict';
 	common();
-	var oList = $('.outline-out-list')[0];
+	var oList = $('.tbody')[0];
 	togetfatherdepart(function (arr) {
 		writesel('全部','.sel-fatherdepart',arr,1,function () {
 			togetchilddepart($('.sel-fatherdepart').val(),function (arr) {
@@ -47,6 +47,7 @@ window.onload = function () {
 		if($('.sel-childdepart').val()==0&&$('.sel-fatherdepart').val()==0){
 			index =1;
 		}
+		$('.tbody').empty();
 		for (var i = 0 ; i < arr.length; i++) {
 			zzdata=arr[i];
 			var	_str = '<a href="teacher-add.html?from=edit&id='+zzdata.id+'" class="edit">编辑</a>';
@@ -56,16 +57,15 @@ window.onload = function () {
 			}else{
 				sex = "女";
 			}
-			var str =
-				'<li class="clearfix">'
-				+'<div class="w130 bl">'+zzdata.stu_nu+'</div>'
-				+'<div class="w100">'+zzdata.name+'</div>'
-				+'<div class="w50">'+sex+'</div>'
-				+'<div class="w130">'+zzdata.phone_number+'</div>'
-				+'<div class="w220">'+zzdata.email+'</div>'
-				+'<div class="w90">'+_str+'</div>'
-				+'</li>';
-			$('.outline-out-list').append(str);
+			var str1 ='<tr>'+
+			'<td>'+zzdata.stu_nu+'</td>'+
+			'<td>'+zzdata.name+'</td>'+
+			'<td>'+sex+'</td>'+
+			'<td>'+zzdata.phone_number+'</td>'+
+			'<td>'+zzdata.email+'</td>'+
+			'<td>'+_str+'</td>'+
+			'</tr>'
+			$('.tbody').append(str1);
 
 		}
 	};
